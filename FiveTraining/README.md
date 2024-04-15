@@ -1,1 +1,0 @@
-# elc117-paradigmas
