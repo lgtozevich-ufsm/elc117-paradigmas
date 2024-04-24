@@ -1,4 +1,4 @@
-package console.items;
+package com.fivetraining.console.items;
 
 public class ConsoleSeparator implements ConsoleDisplayable {
     private final String content;

@@ -1,7 +1,7 @@
-package console;
+package com.fivetraining.console;
 
-import console.exceptions.ConsoleExecutionException;
-import console.parsers.*;
+import com.fivetraining.console.exceptions.ConsoleExecutionException;
+import com.fivetraining.console.parsers.*;
 
 public class ConsoleParameter {
     private final ConsoleParser parser;

@@ -1,9 +1,9 @@
-package console;
+package com.fivetraining.console;
 
-import console.exceptions.ConsoleExecutionException;
-import console.exceptions.ConsoleSyntaxException;
-import console.items.ConsoleCommand;
-import console.items.ConsoleDisplayable;
+import com.fivetraining.console.exceptions.ConsoleExecutionException;
+import com.fivetraining.console.exceptions.ConsoleSyntaxException;
+import com.fivetraining.console.items.ConsoleCommand;
+import com.fivetraining.console.items.ConsoleDisplayable;
 
 import java.util.*;
 

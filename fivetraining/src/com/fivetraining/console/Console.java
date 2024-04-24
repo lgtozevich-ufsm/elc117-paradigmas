@@ -1,4 +1,4 @@
-package console;
+package com.fivetraining.console;
 
 import java.io.InputStream;
 import java.io.PrintStream;

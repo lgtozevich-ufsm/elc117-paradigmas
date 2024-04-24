@@ -1,9 +1,11 @@
-import commands.CreateUserCommand;
-import commands.ExitCommand;
-import commands.HelpCommand;
-import console.Console;
-import console.ConsoleGuard;
-import console.items.ConsoleSeparator;
+package com.fivetraining;
+
+import com.fivetraining.commands.CreateUserCommand;
+import com.fivetraining.commands.ExitCommand;
+import com.fivetraining.commands.HelpCommand;
+import com.fivetraining.console.Console;
+import com.fivetraining.console.ConsoleGuard;
+import com.fivetraining.console.items.ConsoleSeparator;
 
 public class Main {
     public static void main(String[] args) {

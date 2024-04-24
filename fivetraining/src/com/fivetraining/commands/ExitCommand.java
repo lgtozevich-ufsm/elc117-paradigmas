@@ -1,7 +1,7 @@
-package commands;
+package com.fivetraining.commands;
 
-import console.ConsoleInteraction;
-import console.items.ConsoleCommand;
+import com.fivetraining.console.ConsoleInteraction;
+import com.fivetraining.console.items.ConsoleCommand;
 
 public class ExitCommand extends ConsoleCommand {
     @Override

@@ -1,9 +1,9 @@
-package commands;
+package com.fivetraining.commands;
 
-import console.ConsoleGuard;
-import console.ConsoleInteraction;
-import console.items.ConsoleCommand;
-import console.items.ConsoleDisplayable;
+import com.fivetraining.console.ConsoleGuard;
+import com.fivetraining.console.ConsoleInteraction;
+import com.fivetraining.console.items.ConsoleCommand;
+import com.fivetraining.console.items.ConsoleDisplayable;
 
 public class HelpCommand extends ConsoleCommand {
     private final ConsoleGuard guard;

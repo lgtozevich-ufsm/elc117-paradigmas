@@ -1,4 +1,4 @@
-package console;
+package com.fivetraining.console;
 
 public class ConsoleArgument {
     private final boolean filled;

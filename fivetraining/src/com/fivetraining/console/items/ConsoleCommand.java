@@ -1,7 +1,7 @@
-package console.items;
+package com.fivetraining.console.items;
 
-import console.ConsoleInteraction;
-import console.ConsoleParameter;
+import com.fivetraining.console.ConsoleInteraction;
+import com.fivetraining.console.ConsoleParameter;
 
 import java.util.ArrayList;
 import java.util.List;

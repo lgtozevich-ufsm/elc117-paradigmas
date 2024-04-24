@@ -1,6 +1,6 @@
-package console;
+package com.fivetraining.console;
 
-import console.exceptions.ConsoleSyntaxException;
+import com.fivetraining.console.exceptions.ConsoleSyntaxException;
 
 public class ConsoleTokenizer {
     private final String source;

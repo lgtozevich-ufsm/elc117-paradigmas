@@ -1,4 +1,4 @@
-package console.exceptions;
+package com.fivetraining.console.exceptions;
 
 public class ConsoleExecutionException extends Exception {
     public ConsoleExecutionException() {

@@ -1,8 +1,8 @@
-package commands;
+package com.fivetraining.commands;
 
-import console.ConsoleInteraction;
-import console.ConsoleParameter;
-import console.items.ConsoleCommand;
+import com.fivetraining.console.ConsoleInteraction;
+import com.fivetraining.console.ConsoleParameter;
+import com.fivetraining.console.items.ConsoleCommand;
 
 public class CreateUserCommand extends ConsoleCommand {
     public CreateUserCommand() {

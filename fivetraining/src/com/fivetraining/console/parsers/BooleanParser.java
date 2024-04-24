@@ -1,6 +1,6 @@
-package console.parsers;
+package com.fivetraining.console.parsers;
 
-import console.ConsoleArgument;
+import com.fivetraining.console.ConsoleArgument;
 
 public class BooleanParser implements ConsoleParser {
     @Override
