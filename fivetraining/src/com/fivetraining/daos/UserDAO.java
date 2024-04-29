@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDAO {
-    private Database database;
+    private final Database database;
 
     public UserDAO(Database database) {
         this.database = database;

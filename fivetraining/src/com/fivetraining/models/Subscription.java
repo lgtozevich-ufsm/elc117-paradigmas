@@ -4,12 +4,13 @@ import java.util.Date;
 
 public class Subscription {
     private int id;
-
     private int userId;
     private int planId;
 
     private Date startDate;
     private Date endDate;
+
+    private CreditCard creditCard;
 
     public Subscription() {}
 
@@ -51,5 +52,13 @@ public class Subscription {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
     }
 }
