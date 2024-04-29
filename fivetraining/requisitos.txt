@@ -1,0 +1,30 @@
+reg-aluno <cpf> <nome> <data de nascimento>
+reg-plano <codigo plano> <nome> <valor>
+reg-exerc <codigo exercicio> <nome> <musculos>
+
+insc-aluno <codigo aluno> <codigo plano> <data inicio> <numero cartao> <expiracao cartao> <cvc cartao>
+
+list-alunos
+list-exercs
+list-planos
+
+entrar <codigo aluno>
+sair
+
+reg-prog <codigo aluno>
+del-prog <codigo prog>
+
+add-exerc-prog <codigo programa> <codigo exercicio> <repeticoes minima> <repeticoes maxima> <carga> <descanso> <data inicio>
+alt-exerc-prog <codigo programa> <codigo exercicio> <carga> <data inicio>
+rm-exerc-prog <codigo programa> <codigo exercicio>
+
+inic-treino <codigo programa>
+conc-treino <codigo exercicio>
+ver-treino
+enc-treino
+
+list-progs
+list-treinos
+
+relat-comparecimento
+relat-evolucao
