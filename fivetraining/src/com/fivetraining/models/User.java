@@ -3,12 +3,20 @@ package com.fivetraining.models;
 import java.time.LocalDate;
 
 public class User {
+    private  int id;
     private String cpf;
     private String name;
     private LocalDate birthDate;
 
     public User() {}
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getCpf() {
         return cpf;
     }

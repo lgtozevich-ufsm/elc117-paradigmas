@@ -15,50 +15,70 @@ public class UserDAO {
     }
 
     public void insert(User user) throws SQLException {
-        String sql = "INSERT INTO users(cpf, name, birth_date) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO users(id, cpf, name, birth_date) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setString(1, user.getCpf());
-            statement.setString(2, user.getName());
-            statement.setDate(3, Date.valueOf(user.getBirthDate()));
+            statement.setInt(1, user.getId());
+            statement.setString(2, user.getCpf());
+            statement.setString(3, user.getName());
+            statement.setDate(4, Date.valueOf(user.getBirthDate()));
 
             statement.executeUpdate();
         }
     }
 
     public void update(User user) throws SQLException {
-        String sql = "UPDATE users SET name = ? birth_date = ? WHERE cpf = ?";
+        String sql = "UPDATE users SET name = ? birth_date = ? WHERE id = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setString(1, user.getName());
             statement.setDate(2, Date.valueOf(user.getBirthDate()));
-            statement.setString(3, user.getCpf());
+            statement.setInt(3, user.getId());
         }
     }
 
     public void delete(User user) throws SQLException {
-        String sql = "DELETE FROM users WHERE cpf = ?";
+        String sql = "DELETE FROM users WHERE id = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setString(1, user.getCpf());
+            statement.setInt(1, user.getId());
         }
     }
 
     public User findByCpf(String cpf) throws SQLException {
-        String sql = "SELECT (cpf, name, birth_date) FROM users WHERE cpf = ?";
+        String sql = "SELECT (id, cpf, name, birth_date) FROM users WHERE cpf = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setString(1, cpf);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 User user = new User();
-
-                user.setCpf(resultSet.getString(1));
-                user.setName(resultSet.getString(2));
-                user.setBirthDate(resultSet.getDate(3).toLocalDate());
+                user.setId(resultSet.getInt(1));
+                user.setCpf(resultSet.getString(2));
+                user.setName(resultSet.getString(3));
+                user.setBirthDate(resultSet.getDate(4).toLocalDate());
 
                 return user;
             }
         }
     }
+
+    public User findById(int id) throws SQLException {
+        String sql = "SELECT (id, cpf, name, birth_date) FROM users WHERE id = ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                User user = new User();
+                user.setId(resultSet.getInt(1));
+                user.setCpf(resultSet.getString(2));
+                user.setName(resultSet.getString(3));
+                user.setBirthDate(resultSet.getDate(4).toLocalDate());
+
+                return user;
+            }
+        }
+    }
+
 }
