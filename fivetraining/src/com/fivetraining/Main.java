@@ -7,8 +7,13 @@ import com.fivetraining.console.Console;
 import com.fivetraining.console.ConsoleGuard;
 import com.fivetraining.console.items.ConsoleSeparator;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         Console console = new Console(System.in, System.out);
         ConsoleGuard guard = new ConsoleGuard(console);
 
@@ -31,6 +36,8 @@ public class Main {
         console.writeLine();
         console.writeLine();
 
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:fivetraining.sqlite");
 
         while (true) {
             console.write("$ ");
