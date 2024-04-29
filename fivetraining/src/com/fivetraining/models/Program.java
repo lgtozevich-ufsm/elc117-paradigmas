@@ -1,10 +1,20 @@
 package com.fivetraining.models;
 
 public class Program {
+    private int id;
     private int userId;
+
     private String name;
 
     public Program() {}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getUserId() {
         return userId;

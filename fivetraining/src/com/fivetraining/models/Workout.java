@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class Workout {
     private int id;
+    private int userId;
     private int programId;
 
     private LocalDateTime startTime;
@@ -17,6 +18,14 @@ public class Workout {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId(int id) {
+        return userId;
     }
 
     public int getProgramId() {
