@@ -1,4 +1,4 @@
-package com.fivetraining.daos;
+package com.fivetraining.app.daos;
 
 import java.sql.Connection;
 

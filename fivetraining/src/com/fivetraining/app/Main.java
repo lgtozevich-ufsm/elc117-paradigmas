@@ -1,8 +1,8 @@
-package com.fivetraining;
+package com.fivetraining.app;
 
-import com.fivetraining.commands.CreateUserCommand;
-import com.fivetraining.commands.ExitCommand;
-import com.fivetraining.commands.HelpCommand;
+import com.fivetraining.app.commands.CreateUserCommand;
+import com.fivetraining.app.commands.ExitCommand;
+import com.fivetraining.app.commands.HelpCommand;
 import com.fivetraining.console.Console;
 import com.fivetraining.console.ConsoleGuard;
 import com.fivetraining.console.items.ConsoleSeparator;
@@ -10,7 +10,6 @@ import com.fivetraining.console.items.ConsoleSeparator;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {

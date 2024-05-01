@@ -1,4 +1,4 @@
-package com.fivetraining.models;
+package com.fivetraining.app.models;
 
 import java.util.Date;
 

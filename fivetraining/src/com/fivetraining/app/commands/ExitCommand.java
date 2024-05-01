@@ -1,4 +1,4 @@
-package com.fivetraining.commands;
+package com.fivetraining.app.commands;
 
 import com.fivetraining.console.ConsoleInteraction;
 import com.fivetraining.console.items.ConsoleCommand;

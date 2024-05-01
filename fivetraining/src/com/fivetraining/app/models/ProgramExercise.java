@@ -1,9 +1,7 @@
-package com.fivetraining.models;
+package com.fivetraining.app.models;
 
-import java.time.LocalDateTime;
-
-public class WorkoutActivity {
-    private int workoutId;
+public class ProgramExercise {
+    private int programId;
     private int exerciseCode;
 
     private int load;
@@ -14,16 +12,14 @@ public class WorkoutActivity {
 
     private double restingTime;
 
-    private LocalDateTime completedDateTime;
+    public ProgramExercise() {}
 
-    public WorkoutActivity() {}
-
-    public int getWorkoutId() {
-        return workoutId;
+    public int getProgramId() {
+        return programId;
     }
 
-    public void setWorkoutId(int workoutId) {
-        this.workoutId = workoutId;
+    public void setProgramId(int programId) {
+        this.programId = programId;
     }
 
     public int getExerciseCode() {
@@ -72,13 +68,5 @@ public class WorkoutActivity {
 
     public void setRestingTime(double restingTime) {
         this.restingTime = restingTime;
-    }
-
-    public LocalDateTime getCompletedDateTime() {
-        return completedDateTime;
-    }
-
-    public void setCompletedDateTime(LocalDateTime completedDateTime) {
-        this.completedDateTime = completedDateTime;
     }
 }

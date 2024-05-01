@@ -1,6 +1,6 @@
-package com.fivetraining.daos;
+package com.fivetraining.app.daos;
 
-import com.fivetraining.models.Workout;
+import com.fivetraining.app.models.Workout;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

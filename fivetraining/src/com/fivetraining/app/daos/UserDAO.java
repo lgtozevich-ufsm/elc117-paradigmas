@@ -1,6 +1,6 @@
-package com.fivetraining.daos;
+package com.fivetraining.app.daos;
 
-import com.fivetraining.models.User;
+import com.fivetraining.app.models.User;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
