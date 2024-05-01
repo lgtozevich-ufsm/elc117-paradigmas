@@ -14,11 +14,11 @@ public class ProgramExerciseDAO {
     }
 
     public void insert(ProgramExercise programExercise) throws SQLException {
-        String sql = "INSERT INTO program_exercises(program_id, exercise_id, load, sets, minimum_repetitions, maximum_repetitions, resting_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO program_exercises(program_id, exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, programExercise.getProgramId());
-            statement.setInt(2, programExercise.getExerciseId());
+            statement.setInt(2, programExercise.getExerciseCode());
             statement.setInt(3, programExercise.getLoad());
             statement.setInt(4, programExercise.getSets());
             statement.setInt(5, programExercise.getMinimumRepetitions());
@@ -30,7 +30,7 @@ public class ProgramExerciseDAO {
     }
 
     public void update(ProgramExercise programExercise) throws SQLException {
-        String sql = "UPDATE program_exercises SET load = ?, sets = ?, minimum_repetitions = ?, maximum_repetitions = ?, resting_time = ? WHERE program_id = ? AND exercise_id = ?";
+        String sql = "UPDATE program_exercises SET load = ?, sets = ?, minimum_repetitions = ?, maximum_repetitions = ?, resting_time = ? WHERE program_id = ? AND exercise_code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, programExercise.getLoad());
@@ -39,14 +39,14 @@ public class ProgramExerciseDAO {
             statement.setInt(4, programExercise.getMaximumRepetitions());
             statement.setDouble(5, programExercise.getRestingTime());
             statement.setInt(6, programExercise.getProgramId());
-            statement.setInt(7, programExercise.getExerciseId());
+            statement.setInt(7, programExercise.getExerciseCode());
 
             statement.executeUpdate();
         }
     }
 
     public void delete(int programId, int exerciseId) throws SQLException {
-        String sql = "DELETE FROM program_exercises WHERE program_id = ? AND exercise_id = ?";
+        String sql = "DELETE FROM program_exercises WHERE program_id = ? AND exercise_code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, programId);
@@ -57,7 +57,7 @@ public class ProgramExerciseDAO {
     }
 
     public ProgramExercise findByProgramAndExerciseId(int programId, int exerciseId) throws SQLException {
-        String sql = "SELECT load, sets, minimum_repetitions, maximum_repetitions, resting_time FROM program_exercises WHERE program_id = ? AND exercise_id = ?";
+        String sql = "SELECT load, sets, minimum_repetitions, maximum_repetitions, resting_time FROM program_exercises WHERE program_id = ? AND exercise_code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, programId);
@@ -67,7 +67,7 @@ public class ProgramExerciseDAO {
                 if (resultSet.next()) {
                     ProgramExercise programExercise = new ProgramExercise();
                     programExercise.setProgramId(programId);
-                    programExercise.setExerciseId(exerciseId);
+                    programExercise.setExerciseCode(exerciseId);
                     programExercise.setLoad(resultSet.getInt("load"));
                     programExercise.setSets(resultSet.getInt("sets"));
                     programExercise.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));

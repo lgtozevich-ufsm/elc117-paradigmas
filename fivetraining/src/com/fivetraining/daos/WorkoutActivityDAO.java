@@ -15,11 +15,11 @@ public class WorkoutActivityDAO {
     }
 
     public void insert(WorkoutActivity workoutActivity) throws SQLException {
-        String sql = "INSERT INTO workout_activities(workout_id, exercise_id, load, sets, minimum_repetitions, maximum_repetitions, resting_time, completed_date_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO workout_activities(workout_id, exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time, completed_date_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, workoutActivity.getWorkoutId());
-            statement.setInt(2, workoutActivity.getExerciseId());
+            statement.setInt(2, workoutActivity.getExerciseCode());
             statement.setInt(3, workoutActivity.getLoad());
             statement.setInt(4, workoutActivity.getSets());
             statement.setInt(5, workoutActivity.getMinimumRepetitions());
@@ -32,7 +32,7 @@ public class WorkoutActivityDAO {
     }
 
     public void update(WorkoutActivity workoutActivity) throws SQLException {
-        String sql = "UPDATE workout_activities SET load = ?, sets = ?, minimum_repetitions = ?, maximum_repetitions = ?, resting_time = ?, completed_date_time = ? WHERE workout_id = ? AND exercise_id = ?";
+        String sql = "UPDATE workout_activities SET load = ?, sets = ?, minimum_repetitions = ?, maximum_repetitions = ?, resting_time = ?, completed_date_time = ? WHERE workout_id = ? AND exercise_code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, workoutActivity.getLoad());
@@ -42,14 +42,14 @@ public class WorkoutActivityDAO {
             statement.setDouble(5, workoutActivity.getRestingTime());
             statement.setTimestamp(6, Timestamp.valueOf(workoutActivity.getCompletedDateTime()));
             statement.setInt(7, workoutActivity.getWorkoutId());
-            statement.setInt(8, workoutActivity.getExerciseId());
+            statement.setInt(8, workoutActivity.getExerciseCode());
 
             statement.executeUpdate();
         }
     }
 
     public void delete(int workoutId, int exerciseId) throws SQLException {
-        String sql = "DELETE FROM workout_activities WHERE workout_id = ? AND exercise_id = ?";
+        String sql = "DELETE FROM workout_activities WHERE workout_id = ? AND exercise_code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, workoutId);
@@ -60,7 +60,7 @@ public class WorkoutActivityDAO {
     }
 
     public WorkoutActivity findByWorkoutAndExerciseId(int workoutId, int exerciseId) throws SQLException {
-        String sql = "SELECT load, sets, minimum_repetitions, maximum_repetitions, resting_time, completed_date_time FROM workout_activities WHERE workout_id = ? AND exercise_id = ?";
+        String sql = "SELECT load, sets, minimum_repetitions, maximum_repetitions, resting_time, completed_date_time FROM workout_activities WHERE workout_id = ? AND exercise_code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, workoutId);
@@ -70,7 +70,7 @@ public class WorkoutActivityDAO {
                 if (resultSet.next()) {
                     WorkoutActivity workoutActivity = new WorkoutActivity();
                     workoutActivity.setWorkoutId(workoutId);
-                    workoutActivity.setExerciseId(exerciseId);
+                    workoutActivity.setExerciseCode(exerciseId);
                     workoutActivity.setLoad(resultSet.getInt("load"));
                     workoutActivity.setSets(resultSet.getInt("sets"));
                     workoutActivity.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));

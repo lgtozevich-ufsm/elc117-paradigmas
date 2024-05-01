@@ -2,7 +2,7 @@ package com.fivetraining.models;
 
 public class ProgramExercise {
     private int programId;
-    private int exerciseId;
+    private int exerciseCode;
 
     private int load;
     private int sets;
@@ -22,12 +22,12 @@ public class ProgramExercise {
         this.programId = programId;
     }
 
-    public int getExerciseId() {
-        return exerciseId;
+    public int getExerciseCode() {
+        return exerciseCode;
     }
 
-    public void setExerciseId(int exerciseId) {
-        this.exerciseId = exerciseId;
+    public void setExerciseCode(int exerciseCode) {
+        this.exerciseCode = exerciseCode;
     }
 
     public int getLoad() {
