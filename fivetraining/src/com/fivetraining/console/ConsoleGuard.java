@@ -1,6 +1,8 @@
 package com.fivetraining.console;
 
-import com.fivetraining.console.exceptions.ConsoleExecutionException;
+import com.fivetraining.console.exceptions.ConsoleCommandException;
+import com.fivetraining.console.exceptions.ConsoleCommandExecutionException;
+import com.fivetraining.console.exceptions.ConsoleCommandNotFoundException;
 import com.fivetraining.console.exceptions.ConsoleSyntaxException;
 import com.fivetraining.console.items.ConsoleCommand;
 import com.fivetraining.console.items.ConsoleDisplayable;
@@ -36,7 +38,7 @@ public class ConsoleGuard {
         return null;
     }
 
-    public void execute(String line) throws ConsoleSyntaxException, ConsoleExecutionException {
+    public void execute(String line) throws ConsoleSyntaxException, ConsoleCommandException {
         ConsoleTokenizer tokenizer = new ConsoleTokenizer(line);
 
         String name = tokenizer.nextToken();
@@ -49,7 +51,7 @@ public class ConsoleGuard {
         ConsoleCommand command = getCommand(name);
 
         if (command == null) {
-            throw new ConsoleExecutionException("No such command: \"" + name + "\"");
+            throw new ConsoleCommandNotFoundException("No such command: \"" + name + "\"");
         }
 
         List<ConsoleParameter> parameters = command.getParameters();

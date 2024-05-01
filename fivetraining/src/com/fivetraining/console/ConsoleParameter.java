@@ -1,6 +1,7 @@
 package com.fivetraining.console;
 
-import com.fivetraining.console.exceptions.ConsoleExecutionException;
+import com.fivetraining.console.exceptions.ConsoleCommandExecutionException;
+import com.fivetraining.console.exceptions.ConsoleCommandParsingException;
 import com.fivetraining.console.parsers.*;
 
 public class ConsoleParameter {
@@ -17,10 +18,10 @@ public class ConsoleParameter {
         this.required = required;
     }
 
-    public ConsoleArgument parse(String token) throws ConsoleExecutionException {
+    public ConsoleArgument parse(String token) throws ConsoleCommandParsingException {
         if (token == null || token.isEmpty()) {
             if (isRequired()) {
-                throw new ConsoleExecutionException("Required argument \"" + name + "\" is not filled");
+                throw new ConsoleCommandParsingException("Required argument \"" + name + "\" is not filled");
             }
 
             return new ConsoleArgument();
@@ -29,7 +30,7 @@ public class ConsoleParameter {
         try {
             return parser.parse(token);
         } catch (Exception exception) {
-            throw new ConsoleExecutionException("Invalid argument \"" + name + "\": " + exception.toString());
+            throw new ConsoleCommandParsingException("Invalid argument \"" + name + "\": " + exception.toString());
         }
     }
 
