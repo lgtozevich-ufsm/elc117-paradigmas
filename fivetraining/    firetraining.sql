@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS users(
     id INTEGER,
-    cpf VARCHAR(20) NOT NULL,
+    cpf VARCHAR(20) UNIQUE NOT NULL,
     name VARCHAR(100) NOT NULL,
     birth_date DATE NOT NULL,
     PRIMARY KEY (id)
