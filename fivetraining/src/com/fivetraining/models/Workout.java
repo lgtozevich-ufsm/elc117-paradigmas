@@ -24,7 +24,7 @@ public class Workout {
         this.userId = userId;
     }
 
-    public int getUserId(int id) {
+    public int getUserId() {
         return userId;
     }
 
