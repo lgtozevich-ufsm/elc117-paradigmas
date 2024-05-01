@@ -46,7 +46,7 @@ public class RegisterUserCommand extends ConsoleCommand {
             interaction.getConsole().writeLine("- nome: " + user.getName());
             interaction.getConsole().writeLine("- data de nascimento: " + user.getBirthDate());
         } catch (SQLException exception) {
-            throw new ConsoleCommandExecutionException("Um erro ocorreu ao registrar o aluno", exception);
+            throw new ConsoleCommandExecutionException("Um erro ocorreu ao registrar o aluno: " + exception);
         }
     }
 }
