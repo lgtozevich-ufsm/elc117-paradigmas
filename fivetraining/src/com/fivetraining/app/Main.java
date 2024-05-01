@@ -1,8 +1,10 @@
 package com.fivetraining.app;
 
-import com.fivetraining.app.commands.CreateUserCommand;
+import com.fivetraining.app.commands.RegisterUserCommand;
 import com.fivetraining.app.commands.ExitCommand;
 import com.fivetraining.app.commands.HelpCommand;
+import com.fivetraining.app.daos.Database;
+import com.fivetraining.app.daos.UserDAO;
 import com.fivetraining.console.Console;
 import com.fivetraining.console.ConsoleGuard;
 import com.fivetraining.console.items.ConsoleSeparator;
@@ -13,11 +15,17 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        Class.forName("org.sqlite.JDBC");
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:fivetraining.sqlite");
+
         Console console = new Console(System.in, System.out);
         ConsoleGuard guard = new ConsoleGuard(console);
 
-        guard.addItem(new ConsoleSeparator("> Usuário"));
-        guard.addItem(new CreateUserCommand());
+        Database database = new Database(connection);
+        UserDAO userDAO = new UserDAO(database);
+
+        guard.addItem(new ConsoleSeparator("> Painél do instrutor"));
+        guard.addItem(new RegisterUserCommand(userDAO));
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
         guard.addItem(new ExitCommand());
@@ -31,12 +39,9 @@ public class Main {
         console.writeLine();
         console.writeLine("Exemplo:");
         console.writeLine();
-        console.writeLine("   criarusuario \"Jaime Daniel\" 18 true");
+        console.writeLine("   reg-aluno 834.380.650-61 \"Jaime Daniel\" 25/07/2005");
         console.writeLine();
         console.writeLine();
-
-        Class.forName("org.sqlite.JDBC");
-        Connection connection = DriverManager.getConnection("jdbc:sqlite:fivetraining.sqlite");
 
         while (true) {
             console.write("$ ");

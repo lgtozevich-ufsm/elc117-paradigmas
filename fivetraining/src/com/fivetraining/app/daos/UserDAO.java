@@ -15,15 +15,24 @@ public class UserDAO {
     }
 
     public void insert(User user) throws SQLException {
-        String sql = "INSERT INTO users(id, cpf, name, birth_date) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users(cpf, name, birth_date) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, user.getId());
-            statement.setString(2, user.getCpf());
-            statement.setString(3, user.getName());
-            statement.setDate(4, Date.valueOf(user.getBirthDate()));
+            statement.setString(1, user.getCpf());
+            statement.setString(2, user.getName());
+            statement.setDate(3, Date.valueOf(user.getBirthDate()));
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to insert user");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setId(generatedKeys.getInt(1));
+                }
+            }
         }
     }
 
