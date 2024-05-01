@@ -64,4 +64,12 @@ public class ConsoleParameter {
     public static ConsoleParameter createString(String name, boolean required) {
         return new ConsoleParameter(new StringParser(), "str", name, required);
     }
+
+    public static ConsoleParameter createDate(String name, boolean required) {
+        return new ConsoleParameter(new DateParser(), "dd/MM/yyyy", name, required);
+    }
+
+    public static ConsoleParameter createDateTime(String name, boolean required) {
+        return new ConsoleParameter(new DateTimeParser(), "dd/MM/yyyy HH:mm:ss", name, required);
+    }
 }
