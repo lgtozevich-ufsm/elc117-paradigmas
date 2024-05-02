@@ -15,19 +15,28 @@ public class WorkoutActivityDAO {
     }
 
     public void insert(WorkoutActivity workoutActivity) throws SQLException {
-        String sql = "INSERT INTO workout_activities(workout_id, exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time, completed_date_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO workout_activities(exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time, completed_date_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, workoutActivity.getWorkoutId());
-            statement.setInt(2, workoutActivity.getExerciseCode());
-            statement.setInt(3, workoutActivity.getLoad());
-            statement.setInt(4, workoutActivity.getSets());
-            statement.setInt(5, workoutActivity.getMinimumRepetitions());
-            statement.setInt(6, workoutActivity.getMaximumRepetitions());
-            statement.setDouble(7, workoutActivity.getRestingTime());
-            statement.setTimestamp(8, Timestamp.valueOf(workoutActivity.getCompletedDateTime()));
+            statement.setInt(1, workoutActivity.getExerciseCode());
+            statement.setInt(2, workoutActivity.getLoad());
+            statement.setInt(3, workoutActivity.getSets());
+            statement.setInt(4, workoutActivity.getMinimumRepetitions());
+            statement.setInt(5, workoutActivity.getMaximumRepetitions());
+            statement.setDouble(6, workoutActivity.getRestingTime());
+            statement.setTimestamp(7, Timestamp.valueOf(workoutActivity.getCompletedDateTime()));
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to insert plan");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    workoutActivity.setWorkoutId(generatedKeys.getInt(1));
+                }
+            }
         }
     }
 

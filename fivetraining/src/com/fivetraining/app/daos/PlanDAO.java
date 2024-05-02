@@ -5,6 +5,7 @@ import com.fivetraining.app.models.Plan;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +17,24 @@ public class PlanDAO {
     }
 
     public void insert(Plan plan) throws SQLException {
-        String sql = "INSERT INTO plans(id, name, price) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO plans(name, price) VALUES (?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, plan.getId());
-            statement.setString(2, plan.getName());
-            statement.setDouble(3, plan.getPrice());
 
-            statement.executeUpdate();
+            statement.setString(1, plan.getName());
+            statement.setDouble(2, plan.getPrice());
+
+        int affectedRows = statement.executeUpdate();
+
+        if (affectedRows == 0) {
+            throw new SQLException("Failed to insert plan");
+        }
+
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                plan.setId(generatedKeys.getInt(1));
+            }
+        }
         }
     }
 

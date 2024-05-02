@@ -14,16 +14,25 @@ public class WorkoutDAO {
     }
 
     public void insert(Workout workout) throws SQLException {
-        String sql = "INSERT INTO workouts(id, user_id, program_id, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO workouts( user_id, program_id, start_time, end_time) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, workout.getId());
-            statement.setInt(2, workout.getUserId());
-            statement.setInt(3, workout.getProgramId());
-            statement.setTimestamp(4, java.sql.Timestamp.valueOf(workout.getStartTime()));
-            statement.setTimestamp(5, java.sql.Timestamp.valueOf(workout.getEndTime()));
+            statement.setInt(1, workout.getUserId());
+            statement.setInt(2, workout.getProgramId());
+            statement.setTimestamp(3, java.sql.Timestamp.valueOf(workout.getStartTime()));
+            statement.setTimestamp(4, java.sql.Timestamp.valueOf(workout.getEndTime()));
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to insert plan");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    workout.setId(generatedKeys.getInt(1));
+                }
+            }
         }
     }
 

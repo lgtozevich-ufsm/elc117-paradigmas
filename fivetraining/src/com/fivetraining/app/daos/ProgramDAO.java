@@ -14,14 +14,23 @@ public class ProgramDAO {
     }
 
     public void insert(Program program) throws SQLException {
-        String sql = "INSERT INTO programs(id, user_id, name) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO programs(user_id, name) VALUES (?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, program.getId());
-            statement.setInt(2, program.getUserId());
-            statement.setString(3, program.getName());
+            statement.setInt(1, program.getUserId());
+            statement.setString(2, program.getName());
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to insert plan");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                   program.setId(generatedKeys.getInt(1));
+                }
+            }
         }
     }
 

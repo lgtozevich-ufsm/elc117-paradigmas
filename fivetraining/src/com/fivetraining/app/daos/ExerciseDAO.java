@@ -6,6 +6,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExerciseDAO {
     private final Database database;
 
@@ -21,7 +24,17 @@ public class ExerciseDAO {
             statement.setString(2, exercise.getName());
             statement.setString(3, exercise.getMuscles());
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to insert plan");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    exercise.setCode(generatedKeys.getInt(1));
+                }
+            }
         }
     }
 
@@ -59,5 +72,23 @@ public class ExerciseDAO {
                 return exercise;
             }
         }
+    }
+    public List<Exercise> findAll() throws SQLException {
+        List<Exercise> exercises = new ArrayList<>();
+        String sql = "SELECT code, name, muscles FROM exercises";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Exercise exercise = new Exercise();
+                exercise.setCode(resultSet.getInt("code"));
+                exercise.setName(resultSet.getString("name"));
+                exercise.setMuscles(resultSet.getString("muscles"));
+                exercises.add(exercise);
+            }
+        }
+
+        return exercises;
     }
 }
