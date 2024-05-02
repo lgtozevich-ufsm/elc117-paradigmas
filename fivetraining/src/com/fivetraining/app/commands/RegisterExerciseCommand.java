@@ -15,9 +15,9 @@ public class RegisterExerciseCommand extends ConsoleCommand {
     public RegisterExerciseCommand(ExerciseDAO exerciseDAO) {
         this.exerciseDAO = exerciseDAO;
 
-        addParameter(ConsoleParameter.createString("codigo exercicio", true));
+        addParameter(ConsoleParameter.createInteger("código", true));
         addParameter(ConsoleParameter.createString("nome", true));
-        addParameter(ConsoleParameter.createString("musculos", true));
+        addParameter(ConsoleParameter.createString("músculos", true));
     }
 
     @Override
@@ -27,10 +27,12 @@ public class RegisterExerciseCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
+        int code = interaction.getArgument("código").asInteger();
         String name = interaction.getArgument("nome").asString();
-        String muscles = interaction.getArgument("musculos").asString();
+        String muscles = interaction.getArgument("músculos").asString();
 
         Exercise exercise = new Exercise();
+        exercise.setCode(code);
         exercise.setName(name);
         exercise.setMuscles(muscles);
 
@@ -38,11 +40,12 @@ public class RegisterExerciseCommand extends ConsoleCommand {
             exerciseDAO.insert(exercise);
 
             interaction.getConsole().writeLine("O exercício foi registrado com sucesso.");
-            interaction.getConsole().writeLine("- Código do exercício: " + exercise.getCode());
-            interaction.getConsole().writeLine("- Nome: " + exercise.getName());
-            interaction.getConsole().writeLine("- Músculos trabalhados: " + exercise.getMuscles());
+            interaction.getConsole().writeLine();
+            interaction.getConsole().writeLine("o  código: " + exercise.getCode());
+            interaction.getConsole().writeLine("|  nome: " + exercise.getName());
+            interaction.getConsole().writeLine("`- músculos: " + exercise.getMuscles());
         } catch (SQLException exception) {
-            throw new ConsoleCommandExecutionException("Um erro ocorreu ao registrar o exercício: " + exception);
+            throw new ConsoleCommandExecutionException(exception.getMessage());
         }
     }
 }

@@ -37,11 +37,12 @@ public class RegisterPlanCommand extends ConsoleCommand {
             planDAO.insert(plan);
 
             interaction.getConsole().writeLine("O plano foi registrado com sucesso.");
-            interaction.getConsole().writeLine("- código do plano: " + plan.getId());
-            interaction.getConsole().writeLine("- nome: " + plan.getName());
-            interaction.getConsole().writeLine("- valor: " + plan.getPrice());
+            interaction.getConsole().writeLine();
+            interaction.getConsole().writeLine("o  id: " + plan.getId());
+            interaction.getConsole().writeLine("|  nome: " + plan.getName());
+            interaction.getConsole().writeLine("`- valor: " + plan.getPrice());
         } catch (SQLException exception) {
-            throw new ConsoleCommandExecutionException("Um erro ocorreu ao registrar o plano: " + exception);
+            throw new ConsoleCommandExecutionException(exception.getMessage());
         }
     }
 }

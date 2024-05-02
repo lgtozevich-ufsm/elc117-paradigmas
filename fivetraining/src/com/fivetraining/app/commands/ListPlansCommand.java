@@ -26,15 +26,14 @@ public class ListPlansCommand extends ConsoleCommand {
         try {
             List<Plan> plans = planDAO.findAll();
 
-            interaction.getConsole().writeLine("Lista de planos");
             for (Plan plan : plans) {
-                interaction.getConsole().writeLine("ID: " + plan.getId());
-                interaction.getConsole().writeLine("Nome: " + plan.getName());
-                interaction.getConsole().writeLine("Preço: " + plan.getPrice());
                 interaction.getConsole().writeLine();
+                interaction.getConsole().writeLine("o  id: " + plan.getId());
+                interaction.getConsole().writeLine("|  nome: " + plan.getName());
+                interaction.getConsole().writeLine("`- valor: " + plan.getPrice());
             }
-        } catch (SQLException e) {
-            throw new ConsoleCommandExecutionException("Erro ao listar planos: " + e.getMessage());
+        } catch (SQLException exception) {
+            throw new ConsoleCommandExecutionException(exception.getMessage());
         }
     }
 }

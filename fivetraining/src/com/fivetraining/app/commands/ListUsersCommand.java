@@ -26,17 +26,15 @@ public class ListUsersCommand extends ConsoleCommand {
         try {
             List<User> users = userDAO.findAll();
 
-            interaction.getConsole().writeLine("Lista de alunos");
             for (User user : users) {
-                interaction.getConsole().writeLine("ID: " + user.getId());
-                interaction.getConsole().writeLine("CPF: " + user.getCpf());
-                interaction.getConsole().writeLine("Nome: " + user.getName());
-                interaction.getConsole().writeLine("Data de Nascimento: " + user.getBirthDate());
                 interaction.getConsole().writeLine();
-
+                interaction.getConsole().writeLine("o  id: " + user.getId());
+                interaction.getConsole().writeLine("|  cpf: " + user.getCpf());
+                interaction.getConsole().writeLine("|  nome: " + user.getName());
+                interaction.getConsole().writeLine("`- data de nascimento: " + user.getBirthDate());
             }
-        } catch (SQLException e) {
-            throw new ConsoleCommandExecutionException("Erro ao listar alunos" + e.getMessage());
+        } catch (SQLException exception) {
+            throw new ConsoleCommandExecutionException(exception.getMessage());
         }
     }
 }

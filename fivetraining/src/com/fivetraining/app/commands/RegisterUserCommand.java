@@ -41,10 +41,11 @@ public class RegisterUserCommand extends ConsoleCommand {
             userDAO.insert(user);
 
             interaction.getConsole().writeLine("O aluno foi registrado com sucesso.");
-            interaction.getConsole().writeLine("- id: " + user.getId());
-            interaction.getConsole().writeLine("- cpf: " + user.getCpf());
-            interaction.getConsole().writeLine("- nome: " + user.getName());
-            interaction.getConsole().writeLine("- data de nascimento: " + user.getBirthDate());
+            interaction.getConsole().writeLine();
+            interaction.getConsole().writeLine("o  id: " + user.getId());
+            interaction.getConsole().writeLine("|  cpf: " + user.getCpf());
+            interaction.getConsole().writeLine("|  nome: " + user.getName());
+            interaction.getConsole().writeLine("`- data de nascimento: " + user.getBirthDate());
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException("Um erro ocorreu ao registrar o aluno: " + exception);
         }

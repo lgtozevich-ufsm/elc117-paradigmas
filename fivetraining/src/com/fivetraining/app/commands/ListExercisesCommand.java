@@ -26,15 +26,14 @@ public class ListExercisesCommand extends ConsoleCommand {
         try {
             List<Exercise> exercises = exerciseDAO.findAll();
 
-            interaction.getConsole().writeLine("Lista de Exercícios:");
             for (Exercise exercise : exercises) {
-                interaction.getConsole().writeLine("Código: " + exercise.getCode());
-                interaction.getConsole().writeLine("Nome: " + exercise.getName());
-                interaction.getConsole().writeLine("Músculos: " + exercise.getMuscles());
                 interaction.getConsole().writeLine();
+                interaction.getConsole().writeLine("o  código: " + exercise.getCode());
+                interaction.getConsole().writeLine("|  nome: " + exercise.getName());
+                interaction.getConsole().writeLine("`- músculos: " + exercise.getMuscles());
             }
-        } catch (SQLException e) {
-            throw new ConsoleCommandExecutionException("Erro ao listar exercícios: " + e.getMessage());
+        } catch (SQLException exception) {
+            throw new ConsoleCommandExecutionException(exception.getMessage());
         }
     }
 }
