@@ -65,10 +65,10 @@ public class ConsoleParameter {
     }
 
     public static ConsoleParameter createDate(String name, boolean required) {
-        return new ConsoleParameter(new DateParser(), "(dd/MM/yyyy)", name, required);
+        return new ConsoleParameter(new DateParser(), "(yyyy-MM-dd)", name, required);
     }
 
     public static ConsoleParameter createDateTime(String name, boolean required) {
-        return new ConsoleParameter(new DateTimeParser(), "(HH:mm:ss-dd/MM/yyyy)", name, required);
+        return new ConsoleParameter(new DateTimeParser(), "(yyyy-MM-ddTHH:mm:ss)", name, required);
     }
 }
