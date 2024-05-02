@@ -28,10 +28,10 @@ public class ProgramDAO {
                 throw new SQLException("Failed to insert program");
             }
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                   program.setId(generatedKeys.getInt(1));
-                }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+
+            if (generatedKeys.next()) {
+               program.setId(generatedKeys.getInt(1));
             }
         }
     }
@@ -58,18 +58,18 @@ public class ProgramDAO {
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, id);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return null;
-                }
+            ResultSet resultSet = statement.executeQuery();
 
-                Program program = new Program();
-                program.setId(id);
-                program.setUserId(resultSet.getInt("user_id"));
-                program.setName(resultSet.getString("name"));
-
-                return program;
+            if (!resultSet.next()) {
+                return null;
             }
+
+            Program program = new Program();
+            program.setId(id);
+            program.setUserId(resultSet.getInt("user_id"));
+            program.setName(resultSet.getString("name"));
+
+            return program;
         }
     }
 

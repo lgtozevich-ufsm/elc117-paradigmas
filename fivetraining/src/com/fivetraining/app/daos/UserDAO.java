@@ -30,10 +30,10 @@ public class UserDAO {
                 throw new SQLException("Failed to insert user");
             }
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    user.setId(generatedKeys.getInt(1));
-                }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+
+            if (generatedKeys.next()) {
+                user.setId(generatedKeys.getInt(1));
             }
         }
     }
@@ -74,19 +74,19 @@ public class UserDAO {
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setString(1, cpf);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return null;
-                }
+            ResultSet resultSet = statement.executeQuery();
 
-                User user = new User();
-                user.setId(resultSet.getInt(1));
-                user.setCpf(resultSet.getString(2));
-                user.setName(resultSet.getString(3));
-                user.setBirthDate(resultSet.getDate(4).toLocalDate());
-
-                return user;
+            if (!resultSet.next()) {
+                return null;
             }
+
+            User user = new User();
+            user.setId(resultSet.getInt(1));
+            user.setCpf(resultSet.getString(2));
+            user.setName(resultSet.getString(3));
+            user.setBirthDate(resultSet.getDate(4).toLocalDate());
+
+            return user;
         }
     }
 
@@ -96,19 +96,19 @@ public class UserDAO {
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, id);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (!resultSet.next()) {
-                    return null;
-                }
+            ResultSet resultSet = statement.executeQuery();
 
-                User user = new User();
-                user.setId(resultSet.getInt(1));
-                user.setCpf(resultSet.getString(2));
-                user.setName(resultSet.getString(3));
-                user.setBirthDate(resultSet.getDate(4).toLocalDate());
-
-                return user;
+            if (!resultSet.next()) {
+                return null;
             }
+
+            User user = new User();
+            user.setId(resultSet.getInt(1));
+            user.setCpf(resultSet.getString(2));
+            user.setName(resultSet.getString(3));
+            user.setBirthDate(resultSet.getDate(4).toLocalDate());
+
+            return user;
         }
     }
 
@@ -132,5 +132,4 @@ public class UserDAO {
 
         return users;
     }
-
 }

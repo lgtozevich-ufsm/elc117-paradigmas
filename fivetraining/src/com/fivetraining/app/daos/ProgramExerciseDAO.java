@@ -33,10 +33,10 @@ public class ProgramExerciseDAO {
                 throw new SQLException("Failed to insert program exercise");
             }
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    programExercise.setProgramId(generatedKeys.getInt(1));
-                }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+
+            if (generatedKeys.next()) {
+                programExercise.setProgramId(generatedKeys.getInt(1));
             }
         }
     }
