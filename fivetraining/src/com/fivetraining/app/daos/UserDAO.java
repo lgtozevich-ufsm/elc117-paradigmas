@@ -54,6 +54,7 @@ public class UserDAO {
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, user.getId());
         }
+
     }
 
     public User findByCpf(String cpf) throws SQLException {

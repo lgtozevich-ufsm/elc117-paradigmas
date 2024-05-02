@@ -2,8 +2,10 @@ package com.fivetraining.app;
 
 import com.fivetraining.app.commands.*;
 import com.fivetraining.app.daos.*;
+import com.fivetraining.app.commands.*;
 import com.fivetraining.app.daos.Database;
 import com.fivetraining.app.daos.UserDAO;
+import com.fivetraining.app.models.Program;
 import com.fivetraining.console.Console;
 import com.fivetraining.console.ConsoleGuard;
 import com.fivetraining.console.items.ConsoleSeparator;
@@ -27,12 +29,14 @@ public class Main {
         PlanDAO planDAO = new PlanDAO(database);
         ExerciseDAO exerciseDAO = new ExerciseDAO(database);
         SubscriptionDAO subscriptionDAO = new SubscriptionDAO(database);
+        ProgramDAO programDAO = new ProgramDAO(database);
 
         guard.addItem(new ConsoleSeparator("> Painél do instrutor"));
         guard.addItem(new RegisterUserCommand(userDAO));
         guard.addItem(new RegisterPlanCommand(planDAO));
         guard.addItem(new RegisterExerciseCommand(exerciseDAO));
         guard.addItem(new SubscribeCommand(subscriptionDAO, userDAO));
+        guard.addItem(new RegisterProgramCommand(programDAO, userDAO));
         guard.addItem(new ListUsersCommand(userDAO));
         guard.addItem(new ListExercisesCommand(exerciseDAO));
         guard.addItem(new ListPlansCommand(planDAO));
