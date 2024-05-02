@@ -14,16 +14,15 @@ public class ProgramExerciseDAO {
     }
 
     public void insert(ProgramExercise programExercise) throws SQLException {
-        String sql = "INSERT INTO program_exercises(program_id, exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO program_exercises(exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time) VALUES ( ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, programExercise.getProgramId());
-            statement.setInt(2, programExercise.getExerciseCode());
-            statement.setInt(3, programExercise.getLoad());
-            statement.setInt(4, programExercise.getSets());
-            statement.setInt(5, programExercise.getMinimumRepetitions());
-            statement.setInt(6, programExercise.getMaximumRepetitions());
-            statement.setDouble(7, programExercise.getRestingTime());
+            statement.setInt(1, programExercise.getExerciseCode());
+            statement.setInt(2, programExercise.getLoad());
+            statement.setInt(3, programExercise.getSets());
+            statement.setInt(4, programExercise.getMinimumRepetitions());
+            statement.setInt(5, programExercise.getMaximumRepetitions());
+            statement.setDouble(6, programExercise.getRestingTime());
 
             statement.executeUpdate();
         }
