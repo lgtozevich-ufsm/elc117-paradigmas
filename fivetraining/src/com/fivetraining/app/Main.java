@@ -2,7 +2,6 @@ package com.fivetraining.app;
 
 import com.fivetraining.app.commands.*;
 import com.fivetraining.app.daos.*;
-import com.fivetraining.app.commands.*;
 import com.fivetraining.app.daos.Database;
 import com.fivetraining.app.daos.UserDAO;
 import com.fivetraining.console.Console;
