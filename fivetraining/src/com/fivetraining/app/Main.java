@@ -33,14 +33,18 @@ public class Main {
         guard.addItem(new RegisterPlanCommand(planDAO));
         guard.addItem(new RegisterExerciseCommand(exerciseDAO));
         guard.addItem(new SubscribeCommand(subscriptionDAO, userDAO));
+        guard.addItem(new ConsoleSeparator());
         guard.addItem(new UpdateUserCommand(userDAO));
         guard.addItem(new DeleteUserCommand(userDAO));
+        guard.addItem(new ConsoleSeparator());
         guard.addItem(new ListUsersCommand(userDAO));
         guard.addItem(new ListExercisesCommand(exerciseDAO));
         guard.addItem(new ListPlansCommand(planDAO));
+
         guard.addItem(new ConsoleSeparator("> Painél do usuário"));
         guard.addItem(new SignInCommand(userSession, userDAO));
         guard.addItem(new SignOutCommand(userSession));
+
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
         guard.addItem(new ExitCommand());
