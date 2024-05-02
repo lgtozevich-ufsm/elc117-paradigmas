@@ -20,7 +20,8 @@ public class WorkoutDAO {
             statement.setInt(1, workout.getUserId());
             statement.setInt(2, workout.getProgramId());
             statement.setTimestamp(3, java.sql.Timestamp.valueOf(workout.getStartTime()));
-            statement.setTimestamp(4, java.sql.Timestamp.valueOf(workout.getEndTime()));
+            statement.setTimestamp(4, workout.getEndTime() != null ? java.sql.Timestamp.valueOf(workout.getEndTime()) : null);
+
 
             int affectedRows = statement.executeUpdate();
 

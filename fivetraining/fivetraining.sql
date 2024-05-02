@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS workouts(
     user_id INTEGER NOT NULL,
     program_id INTEGER NOT NULL,
     start_time DATETIME NOT NULL,
-    end_time DATETIME NOT NULL,
+    end_time DATETIME,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (program_id) REFERENCES programs(id)
