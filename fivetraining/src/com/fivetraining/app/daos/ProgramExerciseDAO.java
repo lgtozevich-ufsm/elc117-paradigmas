@@ -14,17 +14,28 @@ public class ProgramExerciseDAO {
     }
 
     public void insert(ProgramExercise programExercise) throws SQLException {
-        String sql = "INSERT INTO program_exercises(exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time) VALUES ( ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO program_exercises(program_id,exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time) VALUES ( ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, programExercise.getExerciseCode());
-            statement.setInt(2, programExercise.getLoad());
-            statement.setInt(3, programExercise.getSets());
-            statement.setInt(4, programExercise.getMinimumRepetitions());
-            statement.setInt(5, programExercise.getMaximumRepetitions());
-            statement.setDouble(6, programExercise.getRestingTime());
+            statement.setInt(1, programExercise.getProgramId());
+            statement.setInt(2, programExercise.getExerciseCode());
+            statement.setInt(3, programExercise.getLoad());
+            statement.setInt(4, programExercise.getSets());
+            statement.setInt(5, programExercise.getMinimumRepetitions());
+            statement.setInt(6, programExercise.getMaximumRepetitions());
+            statement.setDouble(7, programExercise.getRestingTime());
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to insert plan");
+            }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    programExercise.setProgramId(generatedKeys.getInt(1));
+                }
+            }
         }
     }
 
@@ -55,6 +66,16 @@ public class ProgramExerciseDAO {
         }
     }
 
+    public void deleteByProgramId(int programId) throws SQLException {
+        String sql = "DELETE FROM program_exercises WHERE program_id = ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, programId);
+
+            statement.executeUpdate();
+        }
+    }
+
     public ProgramExercise findByProgramAndExerciseId(int programId, int exerciseId) throws SQLException {
         String sql = "SELECT load, sets, minimum_repetitions, maximum_repetitions, resting_time FROM program_exercises WHERE program_id = ? AND exercise_code = ?";
 
@@ -78,6 +99,7 @@ public class ProgramExerciseDAO {
         }
         return null;
     }
+
 }
 
 
