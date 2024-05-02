@@ -34,10 +34,10 @@ public class WorkoutActivityDAO {
                 throw new SQLException("Failed to insert workout activity");
             }
 
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    workoutActivity.setWorkoutId(generatedKeys.getInt(1));
-                }
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+
+            if (generatedKeys.next()) {
+                workoutActivity.setWorkoutId(generatedKeys.getInt(1));
             }
         }
     }
@@ -60,6 +60,33 @@ public class WorkoutActivityDAO {
             if (affectedRows == 0) {
                 throw new SQLException("Failed to update workout activity");
             }
+        }
+    }
+
+    public WorkoutActivity findByWorkoutIdAndExerciseCode(int workoutId, int exerciseCode) throws SQLException {
+        String sql = "SELECT load, sets, minimum_repetitions, maximum_repetitions, resting_time, completed_date_time FROM workout_activities WHERE workout_id = ? AND exercise_code = ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, workoutId);
+            statement.setInt(2, exerciseCode);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                return null;
+            }
+
+            WorkoutActivity activity = new WorkoutActivity();
+            activity.setWorkoutId(workoutId);
+            activity.setExerciseCode(exerciseCode);
+            activity.setLoad(resultSet.getInt("load"));
+            activity.setSets(resultSet.getInt("sets"));
+            activity.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));
+            activity.setMaximumRepetitions(resultSet.getInt("maximum_repetitions"));
+            activity.setRestingTime(resultSet.getDouble("resting_time"));
+            activity.setCompleted(resultSet.getBoolean("completed"));
+
+            return activity;
         }
     }
 
