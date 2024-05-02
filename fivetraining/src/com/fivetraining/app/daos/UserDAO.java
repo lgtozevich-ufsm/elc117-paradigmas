@@ -6,15 +6,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserDAO {
     private final Database database;
 
     public UserDAO(Database database) {
         this.database = database;
-
     }
 
     public void insert(User user) throws SQLException {
@@ -64,27 +61,10 @@ public class UserDAO {
             statement.setString(1, cpf);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                User user = new User();
-                if (resultSet.next()) {
-                    user.setId(resultSet.getInt("id"));
-                    user.setCpf(resultSet.getString("cpf"));
-                    user.setName(resultSet.getString("name"));
-                    user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+                if (!resultSet.next()) {
+                    return null;
                 }
 
-                return user;
-            }
-        }
-    }
-
-
-    public User findById(int id) throws SQLException {
-        String sql = "SELECT (id, cpf, name, birth_date) FROM users WHERE id = ?";
-
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, id);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
                 User user = new User();
                 user.setId(resultSet.getInt(1));
                 user.setCpf(resultSet.getString(2));
@@ -95,6 +75,29 @@ public class UserDAO {
             }
         }
     }
+
+    public User findById(int id) throws SQLException {
+        String sql = "SELECT id, cpf, name, birth_date FROM users WHERE id = ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return null;
+                }
+
+                User user = new User();
+                user.setId(resultSet.getInt(1));
+                user.setCpf(resultSet.getString(2));
+                user.setName(resultSet.getString(3));
+                user.setBirthDate(resultSet.getDate(4).toLocalDate());
+
+                return user;
+            }
+        }
+    }
+
     public List<User> findAll() throws SQLException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT id, cpf, name, birth_date FROM users";

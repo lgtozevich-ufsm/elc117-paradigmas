@@ -2,6 +2,9 @@ package com.fivetraining.app;
 
 import com.fivetraining.app.commands.*;
 import com.fivetraining.app.daos.*;
+import com.fivetraining.app.commands.*;
+import com.fivetraining.app.daos.Database;
+import com.fivetraining.app.daos.UserDAO;
 import com.fivetraining.console.Console;
 import com.fivetraining.console.ConsoleGuard;
 import com.fivetraining.console.items.ConsoleSeparator;
@@ -18,6 +21,8 @@ public class Main {
         Console console = new Console(System.in, System.out);
         ConsoleGuard guard = new ConsoleGuard(console);
 
+        UserSession userSession = new UserSession();
+
         Database database = new Database(connection);
         UserDAO userDAO = new UserDAO(database);
         PlanDAO planDAO = new PlanDAO(database);
@@ -32,6 +37,9 @@ public class Main {
         guard.addItem(new ListUsersCommand(userDAO));
         guard.addItem(new ListExercisesCommand(exerciseDAO));
         guard.addItem(new ListPlansCommand(planDAO));
+        guard.addItem(new ConsoleSeparator("> Painél do usuário"));
+        guard.addItem(new SignInCommand(userSession, userDAO));
+        guard.addItem(new SignOutCommand(userSession));
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
         guard.addItem(new ExitCommand());
@@ -51,6 +59,11 @@ public class Main {
 
         while (true) {
             console.write("$ ");
+
+            if (userSession.isAuthenticated()) {
+                console.write("(" + userSession.getAuthenticatedUser().getName() + ") ");
+            }
+
             String line = console.readLine();
 
             if (line.isBlank()) {
