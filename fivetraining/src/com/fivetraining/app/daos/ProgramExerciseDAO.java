@@ -128,6 +128,32 @@ public class ProgramExerciseDAO {
 
         return exercises;
     }
+
+    public List<ProgramExercise> findByProgramId(int programId) throws SQLException {
+        List<ProgramExercise> programExercises = new ArrayList<>();
+        String sql = "SELECT exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time FROM program_exercises WHERE program_id = ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, programId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    ProgramExercise programExercise = new ProgramExercise();
+                    programExercise.setExerciseCode(resultSet.getInt("exercise_code"));
+                    programExercise.setLoad(resultSet.getInt("load"));
+                    programExercise.setSets(resultSet.getInt("sets"));
+                    programExercise.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));
+                    programExercise.setMaximumRepetitions(resultSet.getInt("maximum_repetitions"));
+                    programExercise.setRestingTime(resultSet.getDouble("resting_time"));
+                    programExercises.add(programExercise);
+                }
+            }
+        }
+
+        return programExercises;
+    }
+
+
 }
 
 

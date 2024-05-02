@@ -5,6 +5,8 @@ import com.fivetraining.app.models.Program;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgramDAO {
     private final Database database;
@@ -70,4 +72,23 @@ public class ProgramDAO {
             }
         }
     }
+    public List<Program> findAll() throws SQLException {
+        List<Program> programs = new ArrayList<>();
+        String sql = "SELECT id, user_id, name FROM programs";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Program program = new Program();
+                program.setId(resultSet.getInt("id"));
+                program.setUserId(resultSet.getInt("user_id"));
+                program.setName(resultSet.getString("name"));
+                programs.add(program);
+            }
+        }
+
+        return programs;
+    }
+
 }
