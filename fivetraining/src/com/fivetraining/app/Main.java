@@ -27,6 +27,10 @@ public class Main {
         PlanDAO planDAO = new PlanDAO(database);
         ExerciseDAO exerciseDAO = new ExerciseDAO(database);
         SubscriptionDAO subscriptionDAO = new SubscriptionDAO(database);
+        ProgramDAO programDAO = new ProgramDAO(database);
+        ProgramExerciseDAO programExerciseDAO = new ProgramExerciseDAO(database);
+        WorkoutDAO workoutDAO = new WorkoutDAO(database);
+        WorkoutActivityDAO workoutActivityDAO = new WorkoutActivityDAO(database);
 
         guard.addItem(new ConsoleSeparator("> Painél do instrutor"));
         guard.addItem(new RegisterUserCommand(userDAO));
@@ -44,6 +48,9 @@ public class Main {
         guard.addItem(new ConsoleSeparator("> Painél do usuário"));
         guard.addItem(new SignInCommand(userSession, userDAO));
         guard.addItem(new SignOutCommand(userSession));
+        guard.addItem(new ConsoleSeparator());
+        guard.addItem(new StartWorkoutCommand(userSession, programDAO, programExerciseDAO, workoutDAO, workoutActivityDAO));
+        guard.addItem(new StopWorkoutCommand(userSession, workoutDAO));
 
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));

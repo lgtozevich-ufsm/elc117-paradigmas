@@ -1,10 +1,13 @@
 package com.fivetraining.app.daos;
 
 import com.fivetraining.app.models.ProgramExercise;
+import com.fivetraining.app.models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgramExerciseDAO {
     private final Database database;
@@ -76,7 +79,33 @@ public class ProgramExerciseDAO {
                 }
             }
         }
+
         return null;
+    }
+
+    public List<ProgramExercise> findAllByProgramId(int programId) throws SQLException {
+        List<ProgramExercise> exercises = new ArrayList<>();
+        String sql = "SELECT exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time FROM program_exercises WHERE program_id = ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, programId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    ProgramExercise exercise = new ProgramExercise();
+                    exercise.setProgramId(programId);
+                    exercise.setExerciseCode(resultSet.getInt("exercise_code"));
+                    exercise.setLoad(resultSet.getInt("load"));
+                    exercise.setSets(resultSet.getInt("sets"));
+                    exercise.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));
+                    exercise.setMaximumRepetitions(resultSet.getInt("maximum_repetitions"));
+                    exercise.setRestingTime(resultSet.getDouble("resting_time"));
+                    exercises.add(exercise);
+                }
+            }
+        }
+
+        return exercises;
     }
 }
 

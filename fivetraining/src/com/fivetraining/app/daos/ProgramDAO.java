@@ -23,7 +23,7 @@ public class ProgramDAO {
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Failed to insert plan");
+                throw new SQLException("Failed to insert program");
             }
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -34,17 +34,6 @@ public class ProgramDAO {
         }
     }
 
-    public void update(Program program) throws SQLException {
-        String sql = "UPDATE programs SET name = ? WHERE id = ?";
-
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setString(1, program.getName());
-            statement.setInt(2, program.getId());
-
-            statement.executeUpdate();
-        }
-    }
-
     public void delete(int id) throws SQLException {
         String sql = "DELETE FROM programs WHERE id = ?";
 
@@ -52,6 +41,12 @@ public class ProgramDAO {
             statement.setInt(1, id);
 
             statement.executeUpdate();
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to delete program");
+            }
         }
     }
 
@@ -62,15 +57,17 @@ public class ProgramDAO {
             statement.setInt(1, id);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Program program = new Program();
-                    program.setId(id);
-                    program.setUserId(resultSet.getInt("user_id"));
-                    program.setName(resultSet.getString("name"));
-                    return program;
+                if (!resultSet.next()) {
+                    return null;
                 }
+
+                Program program = new Program();
+                program.setId(id);
+                program.setUserId(resultSet.getInt("user_id"));
+                program.setName(resultSet.getString("name"));
+
+                return program;
             }
         }
-        return null;
     }
 }

@@ -25,7 +25,7 @@ public class WorkoutDAO {
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Failed to insert plan");
+                throw new SQLException("Failed to insert workout");
             }
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -45,6 +45,12 @@ public class WorkoutDAO {
             statement.setInt(3, workout.getId());
 
             statement.executeUpdate();
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to update workout");
+            }
         }
     }
 
@@ -65,17 +71,42 @@ public class WorkoutDAO {
             statement.setInt(1, id);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Workout workout = new Workout();
-                    workout.setId(id);
-                    workout.setUserId(resultSet.getInt("user_id"));
-                    workout.setProgramId(resultSet.getInt("program_id"));
-                    workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
-                    workout.setEndTime(resultSet.getTimestamp("end_time").toLocalDateTime());
-                    return workout;
+                if (!resultSet.next()) {
+                    return null;
                 }
+
+                Workout workout = new Workout();
+                workout.setId(id);
+                workout.setUserId(resultSet.getInt("user_id"));
+                workout.setProgramId(resultSet.getInt("program_id"));
+                workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
+                workout.setEndTime(resultSet.getTimestamp("end_time").toLocalDateTime());
+
+                return workout;
             }
         }
-        return null;
+    }
+
+    public Workout findUnfinishedByUserId(int userId) throws SQLException {
+        String sql = "SELECT id, user_id, program_id, start_time, end_time FROM workouts WHERE user_id = ? AND end_time is NULL";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, userId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return null;
+                }
+
+                Workout workout = new Workout();
+                workout.setId(resultSet.getInt("id"));
+                workout.setUserId(resultSet.getInt("user_id"));
+                workout.setProgramId(resultSet.getInt("program_id"));
+                workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
+                workout.setEndTime(resultSet.getTimestamp("end_time").toLocalDateTime());
+
+                return workout;
+            }
+        }
     }
 }
