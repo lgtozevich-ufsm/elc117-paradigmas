@@ -2,6 +2,7 @@ package com.fivetraining.app.commands;
 
 import com.fivetraining.app.daos.ProgramDAO;
 import com.fivetraining.app.daos.ProgramExerciseDAO;
+import com.fivetraining.app.models.Program;
 import com.fivetraining.console.ConsoleInteraction;
 import com.fivetraining.console.ConsoleParameter;
 import com.fivetraining.console.exceptions.ConsoleCommandExecutionException;
@@ -11,13 +12,11 @@ import java.sql.SQLException;
 
 public class DeleteProgramCommand extends ConsoleCommand {
     private final ProgramDAO programDAO;
-    private final ProgramExerciseDAO programExerciseDAO;
 
     public DeleteProgramCommand(ProgramDAO programDAO, ProgramExerciseDAO programExerciseDAO) {
         this.programDAO = programDAO;
-        this.programExerciseDAO = programExerciseDAO;
 
-        addParameter(ConsoleParameter.createInteger("codigo prog", true));
+        addParameter(ConsoleParameter.createInteger("id do programa", true));
     }
 
     @Override
@@ -27,17 +26,20 @@ public class DeleteProgramCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
-        int programId = interaction.getArgument("codigo prog").asInteger();
+        int programId = interaction.getArgument("id do programa").asInteger();
 
         try {
+            Program program = programDAO.findById(programId);
 
-            programExerciseDAO.deleteByProgramId(programId);
+            if (program == null) {
+                throw new ConsoleCommandExecutionException("Nenhum programa com o id \"" + programId + "\" foi encontrado");
+            }
 
-            programDAO.delete(programId);
+            programDAO.delete(program);
 
-            interaction.getConsole().writeLine("Programa com código " + programId + " foi excluído com sucesso");
+            interaction.getConsole().writeLine("O programa \"" + program.getName() + "\" foi excluído com sucesso!");
         } catch (SQLException exception) {
-            throw new ConsoleCommandExecutionException("Erro ao excluir o programa: " + exception.getMessage());
+            throw new ConsoleCommandExecutionException(exception.getMessage());
         }
     }
 }

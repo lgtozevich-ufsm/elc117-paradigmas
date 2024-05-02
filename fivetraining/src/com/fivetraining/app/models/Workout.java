@@ -51,4 +51,8 @@ public class Workout {
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
+
+    public boolean hasEnded() {
+        return getEndTime() != null;
+    }
 }

@@ -1,7 +1,6 @@
 package com.fivetraining.app.daos;
 
 import com.fivetraining.app.models.ProgramExercise;
-import com.fivetraining.app.models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +30,7 @@ public class ProgramExerciseDAO {
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Failed to insert plan");
+                throw new SQLException("Failed to insert program exercise");
             }
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -54,106 +53,80 @@ public class ProgramExerciseDAO {
             statement.setInt(6, programExercise.getProgramId());
             statement.setInt(7, programExercise.getExerciseCode());
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to update program exercise");
+            }
         }
     }
 
-    public void delete(int programId, int exerciseId) throws SQLException {
+    public void delete(ProgramExercise programExercise) throws SQLException {
         String sql = "DELETE FROM program_exercises WHERE program_id = ? AND exercise_code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, programId);
-            statement.setInt(2, exerciseId);
+            statement.setInt(1, programExercise.getProgramId());
+            statement.setInt(2, programExercise.getExerciseCode());
 
-            statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to delete program exercise");
+            }
         }
     }
 
-    public void deleteByProgramId(int programId) throws SQLException {
-        String sql = "DELETE FROM program_exercises WHERE program_id = ?";
-
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, programId);
-
-            statement.executeUpdate();
-        }
-    }
-
-    public ProgramExercise findByProgramAndExerciseId(int programId, int exerciseId) throws SQLException {
+    public ProgramExercise findByProgramIdAndExerciseCode(int programId, int exerciseCode) throws SQLException {
         String sql = "SELECT load, sets, minimum_repetitions, maximum_repetitions, resting_time FROM program_exercises WHERE program_id = ? AND exercise_code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, programId);
-            statement.setInt(2, exerciseId);
+            statement.setInt(2, exerciseCode);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    ProgramExercise programExercise = new ProgramExercise();
-                    programExercise.setProgramId(programId);
-                    programExercise.setExerciseCode(exerciseId);
-                    programExercise.setLoad(resultSet.getInt("load"));
-                    programExercise.setSets(resultSet.getInt("sets"));
-                    programExercise.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));
-                    programExercise.setMaximumRepetitions(resultSet.getInt("maximum_repetitions"));
-                    programExercise.setRestingTime(resultSet.getDouble("resting_time"));
-                    return programExercise;
-                }
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                return null;
             }
-        }
 
-        return null;
+            ProgramExercise programExercise = new ProgramExercise();
+            programExercise.setProgramId(programId);
+            programExercise.setExerciseCode(exerciseCode);
+            programExercise.setLoad(resultSet.getInt("load"));
+            programExercise.setSets(resultSet.getInt("sets"));
+            programExercise.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));
+            programExercise.setMaximumRepetitions(resultSet.getInt("maximum_repetitions"));
+            programExercise.setRestingTime(resultSet.getDouble("resting_time"));
+
+            return programExercise;
+        }
     }
 
-    public List<ProgramExercise> findAllByProgramId(int programId) throws SQLException {
+    public List<ProgramExercise> findAllWithProgramId(int programId) throws SQLException {
         List<ProgramExercise> exercises = new ArrayList<>();
         String sql = "SELECT exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time FROM program_exercises WHERE program_id = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, programId);
 
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    ProgramExercise exercise = new ProgramExercise();
-                    exercise.setProgramId(programId);
-                    exercise.setExerciseCode(resultSet.getInt("exercise_code"));
-                    exercise.setLoad(resultSet.getInt("load"));
-                    exercise.setSets(resultSet.getInt("sets"));
-                    exercise.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));
-                    exercise.setMaximumRepetitions(resultSet.getInt("maximum_repetitions"));
-                    exercise.setRestingTime(resultSet.getDouble("resting_time"));
-                    exercises.add(exercise);
-                }
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                ProgramExercise programExercise = new ProgramExercise();
+                programExercise.setProgramId(programId);
+                programExercise.setExerciseCode(resultSet.getInt("exercise_code"));
+                programExercise.setLoad(resultSet.getInt("load"));
+                programExercise.setSets(resultSet.getInt("sets"));
+                programExercise.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));
+                programExercise.setMaximumRepetitions(resultSet.getInt("maximum_repetitions"));
+                programExercise.setRestingTime(resultSet.getDouble("resting_time"));
+
+                exercises.add(programExercise);
             }
         }
 
         return exercises;
     }
-
-    public List<ProgramExercise> findByProgramId(int programId) throws SQLException {
-        List<ProgramExercise> programExercises = new ArrayList<>();
-        String sql = "SELECT exercise_code, load, sets, minimum_repetitions, maximum_repetitions, resting_time FROM program_exercises WHERE program_id = ?";
-
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, programId);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    ProgramExercise programExercise = new ProgramExercise();
-                    programExercise.setExerciseCode(resultSet.getInt("exercise_code"));
-                    programExercise.setLoad(resultSet.getInt("load"));
-                    programExercise.setSets(resultSet.getInt("sets"));
-                    programExercise.setMinimumRepetitions(resultSet.getInt("minimum_repetitions"));
-                    programExercise.setMaximumRepetitions(resultSet.getInt("maximum_repetitions"));
-                    programExercise.setRestingTime(resultSet.getDouble("resting_time"));
-                    programExercises.add(programExercise);
-                }
-            }
-        }
-
-        return programExercises;
-    }
-
-
 }
 
 

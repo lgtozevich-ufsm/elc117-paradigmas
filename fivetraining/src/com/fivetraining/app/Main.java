@@ -49,13 +49,17 @@ public class Main {
         guard.addItem(new SignInCommand(userSession, userDAO));
         guard.addItem(new SignOutCommand(userSession));
         guard.addItem(new ConsoleSeparator());
-        guard.addItem(new RegisterProgramCommand(programDAO,userDAO));
-        guard.addItem(new AddExerciseToProgramCommand(programExerciseDAO,userSession,programDAO));
-        guard.addItem(new UpdateExercInProgCommand(programExerciseDAO,userSession));
-        guard.addItem(new DeleteProgramCommand(programDAO,programExerciseDAO));
+        guard.addItem(new RegisterProgramCommand(userSession, programDAO));
+        guard.addItem(new AddProgramExerciseCommand(userSession, exerciseDAO, programDAO, programExerciseDAO));
+        guard.addItem(new UpdateProgramExerciseCommand(userSession, exerciseDAO, programExerciseDAO));
+        guard.addItem(new DeleteProgramCommand(programDAO, programExerciseDAO));
+        guard.addItem(new ConsoleSeparator());
         guard.addItem(new StartWorkoutCommand(userSession, programDAO, programExerciseDAO, workoutDAO, workoutActivityDAO));
+        guard.addItem(new InspectWorkoutCommand(userSession, exerciseDAO, programDAO, workoutDAO, workoutActivityDAO));
         guard.addItem(new StopWorkoutCommand(userSession, workoutDAO));
-        guard.addItem(new ListProgsCommand(programDAO,programExerciseDAO));
+        guard.addItem(new ConsoleSeparator());
+        guard.addItem(new ListProgramsCommand(userSession, exerciseDAO, programDAO, programExerciseDAO));
+        guard.addItem(new ListWorkoutsCommand(userSession, exerciseDAO, programDAO, workoutDAO, workoutActivityDAO));
 
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));

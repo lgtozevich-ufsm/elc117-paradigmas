@@ -31,7 +31,7 @@ public class SubscriptionDAO {
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Failed to insert plan");
+                throw new SQLException("Failed to insert subscription");
             }
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -63,6 +63,4 @@ public class SubscriptionDAO {
             statement.executeUpdate();
         }
     }
-
-
 }

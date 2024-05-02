@@ -9,14 +9,12 @@ import com.fivetraining.app.models.Program;
 import com.fivetraining.app.models.ProgramExercise;
 import com.fivetraining.app.models.Workout;
 import com.fivetraining.app.models.WorkoutActivity;
-import com.fivetraining.console.Console;
 import com.fivetraining.console.ConsoleInteraction;
 import com.fivetraining.console.ConsoleParameter;
 import com.fivetraining.console.exceptions.ConsoleCommandExecutionException;
 import com.fivetraining.console.items.ConsoleCommand;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -63,7 +61,7 @@ public class StartWorkoutCommand extends ConsoleCommand {
                 throw new ConsoleCommandExecutionException("Você precisa encerrar o treino anterior antes de começar um novo.");
             }
 
-            List<ProgramExercise> programExercise = programExerciseDAO.findAllByProgramId(programId);
+            List<ProgramExercise> programExercise = programExerciseDAO.findAllWithProgramId(programId);
 
             Workout workout = new Workout();
             workout.setUserId(userSession.getAuthenticatedUser().getId());

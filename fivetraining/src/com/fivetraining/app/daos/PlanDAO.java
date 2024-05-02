@@ -24,17 +24,17 @@ public class PlanDAO {
             statement.setString(1, plan.getName());
             statement.setDouble(2, plan.getPrice());
 
-        int affectedRows = statement.executeUpdate();
+            int affectedRows = statement.executeUpdate();
 
-        if (affectedRows == 0) {
-            throw new SQLException("Failed to insert plan");
-        }
-
-        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                plan.setId(generatedKeys.getInt(1));
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to insert plan");
             }
-        }
+
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    plan.setId(generatedKeys.getInt(1));
+                }
+            }
         }
     }
 
@@ -67,32 +67,37 @@ public class PlanDAO {
             statement.setInt(1, id);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    Plan plan = new Plan();
-                    plan.setId(resultSet.getInt("id"));
-                    plan.setName(resultSet.getString("name"));
-                    plan.setPrice(resultSet.getDouble("price"));
-                    return plan;
+                if (!resultSet.next()) {
+                    return null;
                 }
+
+                Plan plan = new Plan();
+                plan.setId(resultSet.getInt("id"));
+                plan.setName(resultSet.getString("name"));
+                plan.setPrice(resultSet.getDouble("price"));
+
+                return plan;
             }
         }
-        return null;
     }
 
     public List<Plan> findAll() throws SQLException {
         List<Plan> plans = new ArrayList<>();
         String sql = "SELECT id, name, price FROM plans";
 
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
                 Plan plan = new Plan();
                 plan.setId(resultSet.getInt("id"));
                 plan.setName(resultSet.getString("name"));
                 plan.setPrice(resultSet.getDouble("price"));
+
                 plans.add(plan);
             }
         }
+
         return plans;
     }
 }

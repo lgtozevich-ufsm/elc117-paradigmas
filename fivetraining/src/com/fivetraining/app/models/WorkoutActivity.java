@@ -14,7 +14,7 @@ public class WorkoutActivity {
 
     private double restingTime;
 
-    private LocalDateTime completedDateTime;
+    private boolean completed;
 
     public WorkoutActivity() {}
 
@@ -74,11 +74,11 @@ public class WorkoutActivity {
         this.restingTime = restingTime;
     }
 
-    public LocalDateTime getCompletedDateTime() {
-        return completedDateTime;
+    public boolean isCompleted() {
+        return completed;
     }
 
-    public void setCompletedDateTime(LocalDateTime completedDateTime) {
-        this.completedDateTime = completedDateTime;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

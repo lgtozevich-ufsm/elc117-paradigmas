@@ -66,7 +66,6 @@ public class UserDAO {
                 throw new SQLException("Failed to delete user");
             }
         }
-
     }
 
     public User findByCpf(String cpf) throws SQLException {
@@ -126,6 +125,7 @@ public class UserDAO {
                 user.setCpf(resultSet.getString("cpf"));
                 user.setName(resultSet.getString("name"));
                 user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+
                 users.add(user);
             }
         }

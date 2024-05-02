@@ -1,8 +1,10 @@
 package com.fivetraining.app.commands;
 
+import com.fivetraining.app.UserSession;
 import com.fivetraining.app.daos.ProgramDAO;
 import com.fivetraining.app.daos.UserDAO;
 import com.fivetraining.app.models.Program;
+import com.fivetraining.app.models.User;
 import com.fivetraining.console.ConsoleInteraction;
 import com.fivetraining.console.ConsoleParameter;
 import com.fivetraining.console.exceptions.ConsoleCommandExecutionException;
@@ -11,15 +13,14 @@ import com.fivetraining.console.items.ConsoleCommand;
 import java.sql.SQLException;
 
 public class RegisterProgramCommand extends ConsoleCommand {
+    private final UserSession userSession;
     private final ProgramDAO programDAO;
-    private final UserDAO userDAO;
 
-    public RegisterProgramCommand(ProgramDAO programDAO, UserDAO userDAO) {
+    public RegisterProgramCommand(UserSession userSession, ProgramDAO programDAO) {
+        this.userSession = userSession;
         this.programDAO = programDAO;
-        this.userDAO = userDAO;
 
-        addParameter(ConsoleParameter.createString("cpf aluno", true));
-        addParameter(ConsoleParameter.createString("nome programa", true));
+        addParameter(ConsoleParameter.createString("nome", true));
     }
 
     @Override
@@ -29,21 +30,20 @@ public class RegisterProgramCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
-        String cpf = interaction.getArgument("cpf aluno").asString();
-        String programName = interaction.getArgument("nome programa").asString();
+        userSession.throwIfNotAuthenticated();
+
+        String name = interaction.getArgument("nome").asString();
 
         try {
-            int studentId = userDAO.findByCpf(cpf).getId();
-
             Program program = new Program();
-            program.setUserId(studentId);
-            program.setName(programName);
+            program.setUserId(userSession.getAuthenticatedUser().getId());
+            program.setName(name);
 
             programDAO.insert(program);
 
-            interaction.getConsole().writeLine("Programa registrado com sucesso para o aluno com CPF: " + cpf);
+            interaction.getConsole().writeLine("O programa foi registrado com sucesso!");
         } catch (SQLException exception) {
-            throw new ConsoleCommandExecutionException("Erro ao registrar programa: " + exception.getMessage());
+            throw new ConsoleCommandExecutionException(exception.getMessage());
         }
     }
 }

@@ -85,6 +85,7 @@ public class ExerciseDAO {
                 exercise.setCode(resultSet.getInt("code"));
                 exercise.setName(resultSet.getString("name"));
                 exercise.setMuscles(resultSet.getString("muscles"));
+
                 exercises.add(exercise);
             }
         }

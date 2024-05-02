@@ -36,11 +36,11 @@ public class ProgramDAO {
         }
     }
 
-    public void delete(int id) throws SQLException {
+    public void delete(Program program) throws SQLException {
         String sql = "DELETE FROM programs WHERE id = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setInt(1, program.getId());
 
             statement.executeUpdate();
 
@@ -72,23 +72,24 @@ public class ProgramDAO {
             }
         }
     }
-    public List<Program> findAll() throws SQLException {
-        List<Program> programs = new ArrayList<>();
-        String sql = "SELECT id, user_id, name FROM programs";
 
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+    public List<Program> findAllWithUserId(int userId) throws SQLException {
+        List<Program> programs = new ArrayList<>();
+        String sql = "SELECT id, name FROM programs WHERE user_id = ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 Program program = new Program();
                 program.setId(resultSet.getInt("id"));
-                program.setUserId(resultSet.getInt("user_id"));
+                program.setUserId(resultSet.getInt(userId));
                 program.setName(resultSet.getString("name"));
+
                 programs.add(program);
             }
         }
 
         return programs;
     }
-
 }

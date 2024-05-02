@@ -20,7 +20,7 @@ public class DeleteUserCommand extends ConsoleCommand {
 
     @Override
     public String getName() {
-        return "rm-aluno";
+        return "del-aluno";
     }
 
     @Override
@@ -36,7 +36,7 @@ public class DeleteUserCommand extends ConsoleCommand {
 
             userDAO.delete(user);
 
-            interaction.getConsole().writeLine("O usuário \"" + user.getName() + "\" foi removido com sucesso!");
+            interaction.getConsole().writeLine("O usuário \"" + user.getName() + "\" foi excluído com sucesso!");
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
         }
