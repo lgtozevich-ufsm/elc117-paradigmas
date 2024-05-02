@@ -55,12 +55,16 @@ public class UserDAO {
     }
 
     public User findByCpf(String cpf) throws SQLException {
-        String sql = "SELECT (id, cpf, name, birth_date) FROM users WHERE cpf = ?";
+        String sql = "SELECT id, cpf, name, birth_date FROM users WHERE cpf = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setString(1, cpf);
 
             try (ResultSet resultSet = statement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return null;
+                }
+
                 User user = new User();
                 user.setId(resultSet.getInt(1));
                 user.setCpf(resultSet.getString(2));
@@ -73,12 +77,16 @@ public class UserDAO {
     }
 
     public User findById(int id) throws SQLException {
-        String sql = "SELECT (id, cpf, name, birth_date) FROM users WHERE id = ?";
+        String sql = "SELECT id, cpf, name, birth_date FROM users WHERE id = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, id);
 
             try (ResultSet resultSet = statement.executeQuery()) {
+                if (!resultSet.next()) {
+                    return null;
+                }
+
                 User user = new User();
                 user.setId(resultSet.getInt(1));
                 user.setCpf(resultSet.getString(2));
@@ -89,5 +97,4 @@ public class UserDAO {
             }
         }
     }
-
 }

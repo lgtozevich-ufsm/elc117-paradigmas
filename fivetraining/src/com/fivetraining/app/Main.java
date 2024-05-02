@@ -1,8 +1,6 @@
 package com.fivetraining.app;
 
-import com.fivetraining.app.commands.RegisterUserCommand;
-import com.fivetraining.app.commands.ExitCommand;
-import com.fivetraining.app.commands.HelpCommand;
+import com.fivetraining.app.commands.*;
 import com.fivetraining.app.daos.Database;
 import com.fivetraining.app.daos.UserDAO;
 import com.fivetraining.console.Console;
@@ -21,11 +19,16 @@ public class Main {
         Console console = new Console(System.in, System.out);
         ConsoleGuard guard = new ConsoleGuard(console);
 
+        UserSession userSession = new UserSession();
+
         Database database = new Database(connection);
         UserDAO userDAO = new UserDAO(database);
 
         guard.addItem(new ConsoleSeparator("> Painél do instrutor"));
         guard.addItem(new RegisterUserCommand(userDAO));
+        guard.addItem(new ConsoleSeparator("> Painél do usuário"));
+        guard.addItem(new SignInCommand(userSession, userDAO));
+        guard.addItem(new SignOutCommand(userSession));
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
         guard.addItem(new ExitCommand());
@@ -45,6 +48,11 @@ public class Main {
 
         while (true) {
             console.write("$ ");
+
+            if (userSession.isAuthenticated()) {
+                console.write("(" + userSession.getAuthenticatedUser().getName() + ") ");
+            }
+
             String line = console.readLine();
 
             if (line.isBlank()) {
