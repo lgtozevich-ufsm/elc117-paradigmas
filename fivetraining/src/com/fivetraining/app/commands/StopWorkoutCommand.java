@@ -27,7 +27,7 @@ public class StopWorkoutCommand extends ConsoleCommand {
 
     @Override
     public String getName() {
-        return "end-treino";
+        return "enc-treino";
     }
 
     @Override
@@ -40,11 +40,13 @@ public class StopWorkoutCommand extends ConsoleCommand {
             Workout unfinishedWorkout = workoutDAO.findUnfinishedByUserId(userSession.getAuthenticatedUser().getId());
 
             if (unfinishedWorkout == null) {
-                throw new ConsoleCommandExecutionException("Você precisa ter um treino em andamento para encerrá-lo.");
+                throw new ConsoleCommandExecutionException("Você precisa ter um treino em andamento para encerrá-lo");
             }
 
             unfinishedWorkout.setEndTime(endTime);
             workoutDAO.update(unfinishedWorkout);
+
+            interaction.getConsole().writeLine("O treino foi encerrado com sucesso!");
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
         }
