@@ -54,21 +54,21 @@ public class ListWorkoutsCommand extends ConsoleCommand {
 
                 interaction.getConsole().writeLine("|  atividades:");
 
-                List<WorkoutActivity> activities = workoutActivityDAO.findAllWithWorkoutId(program.getId());
+                List<WorkoutActivity> activities = workoutActivityDAO.findAllWithWorkoutId(workout.getId());
 
                 for (WorkoutActivity activity : activities) {
                     Exercise exercise = exerciseDAO.findByCode(activity.getExerciseCode());
 
+                    interaction.getConsole().writeLine("|    o  concluído: " + (activity.isCompleted() ? "[x]" : "[ ]"));
+                    interaction.getConsole().writeLine("|    |  código: " + exercise.getCode());
+                    interaction.getConsole().writeLine("|    |  nome: " + exercise.getName());
+                    interaction.getConsole().writeLine("|    |  músculos: " + exercise.getMuscles());
+                    interaction.getConsole().writeLine("|    |  carga: " + activity.getLoad());
+                    interaction.getConsole().writeLine("|    |  n° de séries: " + activity.getSets());
+                    interaction.getConsole().writeLine("|    |  n° mínimo de repetições: " + activity.getMaximumRepetitions());
+                    interaction.getConsole().writeLine("|    |  n° máximo de repetições: " + activity.getMaximumRepetitions());
+                    interaction.getConsole().writeLine("|    `- minutos de descanso: " + activity.getRestingTime());
                     interaction.getConsole().writeLine("|");
-                    interaction.getConsole().writeLine("|  o  concluído: " + (activity.isCompleted() ? "[x]" : "[ ]"));
-                    interaction.getConsole().writeLine("|  |  código: " + exercise.getCode());
-                    interaction.getConsole().writeLine("|  |  nome: " + exercise.getName());
-                    interaction.getConsole().writeLine("|  |  músculos: " + exercise.getMuscles());
-                    interaction.getConsole().writeLine("|  |  carga: " + activity.getLoad());
-                    interaction.getConsole().writeLine("|  |  n° de séries: " + activity.getSets());
-                    interaction.getConsole().writeLine("|  |  n° mínimo de repetições: " + activity.getMaximumRepetitions());
-                    interaction.getConsole().writeLine("|  |  n° máximo de repetições: " + activity.getMaximumRepetitions());
-                    interaction.getConsole().writeLine("|  `- minutos de descanso: " + activity.getRestingTime());
                 }
 
                 interaction.getConsole().writeLine("`-");

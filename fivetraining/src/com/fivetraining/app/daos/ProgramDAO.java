@@ -78,6 +78,8 @@ public class ProgramDAO {
         String sql = "SELECT id, name FROM programs WHERE user_id = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, userId);
+
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {

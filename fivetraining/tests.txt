@@ -1,0 +1,29 @@
+reg-plano Simples 79.90
+reg-plano Gold 89.90
+reg-plano Premium 99.90
+
+reg-exerc 1 "Leg Press" "Quadríceps, Glúteos"
+reg-exerc 5 "Cadeira Adutora" "Adutores"
+reg-exerc 20 "Supino Máquina" "Peitorais, Tríceps"
+reg-exerc 26 "Crucifixo Máquina" "Peitorais"
+reg-exerc 40 "Abdominal Máquina" "Abdominais"
+reg-exerc 50 "Desenvolvimento "Máquina Aberto" Deltoides, Trapézio, Tríceps"
+
+reg-aluno 1 Jaime 25/07/2005
+
+insc-aluno 1 1 2022-01-01 2025-01-01 123 2030-01-01 123
+
+entrar 1
+
+reg-prog "Treino A"
+
+add-exerc-prog 1 1 5 3 10 15 1
+add-exerc-prog 1 5 10 3 10 15 1
+add-exerc-prog 1 20 15 3 10 15 1
+add-exerc-prog 1 26 20 3 10 15 1
+add-exerc-prog 1 50 25 3 10 15 1
+
+inic-treino 1 2024-05-02T10:15:30
+conc-treino 1
+conc-treino 50
+enc-treino 2024-05-02T11:15:30

@@ -27,8 +27,8 @@ public class SubscribeCommand extends ConsoleCommand {
         addParameter(ConsoleParameter.createDate("data de início", true));
         addParameter(ConsoleParameter.createDate("data de fim", true));
         addParameter(ConsoleParameter.createString("número do cartão", true));
-        addParameter(ConsoleParameter.createDate("expiração do cartão", true));
-        addParameter(ConsoleParameter.createString("cvc cartão", true));
+        addParameter(ConsoleParameter.createDate("data de expiração do cartão", true));
+        addParameter(ConsoleParameter.createString("cvc do cartão", true));
     }
 
     @Override
@@ -38,7 +38,13 @@ public class SubscribeCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
-        String cpf = interaction.getArgument("cpf aluno").asString();
+        String cpf = interaction.getArgument("cpf do aluno").asString();
+        int planId = interaction.getArgument("código do plano").asInteger();
+        LocalDate startDate = interaction.getArgument("data de início").asDate();
+        LocalDate endDate = interaction.getArgument("data de fim").asDate();
+        String cardNumber = interaction.getArgument("número do cartão").asString();
+        LocalDate cardExpiration = interaction.getArgument("data de expiração do cartão").asDate();
+        String cardCvv = interaction.getArgument("cvc do cartão").asString();
 
         try {
             User user = userDAO.findByCpf(cpf);
@@ -47,21 +53,13 @@ public class SubscribeCommand extends ConsoleCommand {
                 throw new ConsoleCommandExecutionException("Nenhum usuário com o cpf \"" + cpf + "\" foi encontrado");
             }
 
-            int userId = user.getId();
-            int planId = interaction.getArgument("código do plano").asInteger();
-            LocalDate startDate = interaction.getArgument("data de início").asDate();
-            LocalDate endDate = interaction.getArgument("data de fim").asDate();
-            String cardNumber = interaction.getArgument("número do cartao").asString();
-            LocalDate cardExpiration = interaction.getArgument("data de expiração do cartão").asDate();
-            String cardCvv = interaction.getArgument("cvc do cartão").asString();
-
             CreditCard creditCard = new CreditCard();
             creditCard.setNumber(cardNumber);
             creditCard.setExpiryDate(cardExpiration.toString());
             creditCard.setCvv(cardCvv);
 
             Subscription subscription = new Subscription();
-            subscription.setUserId(userId);
+            subscription.setUserId(user.getId());
             subscription.setPlanId(planId);
             subscription.setStartDate(Date.valueOf(startDate));
             subscription.setEndDate(Date.valueOf(endDate));

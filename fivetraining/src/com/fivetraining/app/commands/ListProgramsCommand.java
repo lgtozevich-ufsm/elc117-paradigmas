@@ -43,22 +43,22 @@ public class ListProgramsCommand extends ConsoleCommand {
                 interaction.getConsole().writeLine();
                 interaction.getConsole().writeLine("o  id: " + program.getId());
                 interaction.getConsole().writeLine("|  nome: " + program.getName());
-                interaction.getConsole().writeLine("|  exercícios: " + program.getName());
+                interaction.getConsole().writeLine("|  exercícios: ");
 
                 List<ProgramExercise> programExercises = programExerciseDAO.findAllWithProgramId(program.getId());
 
                 for (ProgramExercise programExercise : programExercises) {
                     Exercise exercise = exerciseDAO.findByCode(programExercise.getExerciseCode());
 
+                    interaction.getConsole().writeLine("|    o  código: " + exercise.getCode());
+                    interaction.getConsole().writeLine("|    |  nome: " + exercise.getName());
+                    interaction.getConsole().writeLine("|    |  músculos: " + exercise.getMuscles());
+                    interaction.getConsole().writeLine("|    |  carga: " + programExercise.getLoad());
+                    interaction.getConsole().writeLine("|    |  n° de séries: " + programExercise.getSets());
+                    interaction.getConsole().writeLine("|    |  n° mínimo de repetições: " + programExercise.getMaximumRepetitions());
+                    interaction.getConsole().writeLine("|    |  n° máximo de repetições: " + programExercise.getMaximumRepetitions());
+                    interaction.getConsole().writeLine("|    `- minutos de descanso: " + programExercise.getRestingTime());
                     interaction.getConsole().writeLine("|");
-                    interaction.getConsole().writeLine("|  o  código: " + exercise.getCode());
-                    interaction.getConsole().writeLine("|  |  nome: " + exercise.getName());
-                    interaction.getConsole().writeLine("|  |  músculos: " + exercise.getMuscles());
-                    interaction.getConsole().writeLine("|  |  carga: " + programExercise.getLoad());
-                    interaction.getConsole().writeLine("|  |  n° de séries: " + programExercise.getSets());
-                    interaction.getConsole().writeLine("|  |  n° mínimo de repetições: " + programExercise.getMaximumRepetitions());
-                    interaction.getConsole().writeLine("|  |  n° máximo de repetições: " + programExercise.getMaximumRepetitions());
-                    interaction.getConsole().writeLine("|  `- minutos de descanso: " + programExercise.getRestingTime());
                 }
 
                 interaction.getConsole().writeLine("`-");

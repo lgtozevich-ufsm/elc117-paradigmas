@@ -16,7 +16,7 @@ public class WorkoutDAO {
     }
 
     public void insert(Workout workout) throws SQLException {
-        String sql = "INSERT INTO workouts( user_id, program_id, start_time, end_time) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO workouts(user_id, program_id, start_time, end_time) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, workout.getUserId());

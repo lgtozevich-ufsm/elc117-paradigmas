@@ -75,7 +75,7 @@ public class Main {
         console.writeLine();
         console.writeLine("Exemplo:");
         console.writeLine();
-        console.writeLine("   reg-aluno 834.380.650-61 \"Jaime Daniel\" 25/07/2005");
+        console.writeLine("   reg-aluno 834.380.650-61 \"Jaime Daniel\" 2005-07-25");
         console.writeLine();
         console.writeLine();
 

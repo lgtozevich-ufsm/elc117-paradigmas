@@ -38,7 +38,7 @@ public class ExerciseDAO {
     }
 
     public Exercise findByCode(int code) throws SQLException {
-        String sql = "SELECT (code, name, muscles) FROM exercises WHERE code = ?";
+        String sql = "SELECT code, name, muscles FROM exercises WHERE code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, code);

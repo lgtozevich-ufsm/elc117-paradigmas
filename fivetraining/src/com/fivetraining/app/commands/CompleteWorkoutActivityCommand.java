@@ -44,24 +44,24 @@ public class CompleteWorkoutActivityCommand extends ConsoleCommand {
             Workout unfinishedWorkout = workoutDAO.findUnfinishedByUserId(userSession.getAuthenticatedUser().getId());
 
             if (unfinishedWorkout == null) {
-                throw new ConsoleCommandExecutionException("Você precisa ter um treino em andamento para completar uma atividade");
+                throw new ConsoleCommandExecutionException("Você precisa ter um treino em andamento para completar um exercício");
             }
 
             Exercise exercise = exerciseDAO.findByCode(exerciseCode);
             WorkoutActivity activity = workoutActivityDAO.findByWorkoutIdAndExerciseCode(unfinishedWorkout.getId(), exerciseCode);
 
             if (activity == null) {
-                throw new ConsoleCommandExecutionException("Nenhuma atividade com o código \"" + exerciseCode + "\" foi encontrada no treino em andamento");
+                throw new ConsoleCommandExecutionException("Nenhuma exercício com o código \"" + exerciseCode + "\" foi encontrado no treino em andamento");
             }
 
             if (activity.isCompleted()) {
-                throw new ConsoleCommandExecutionException("A atividade do exercício \"" + exercise.getName() + "\" já foi completada");
+                throw new ConsoleCommandExecutionException("O exercício \"" + exercise.getName() + "\" já foi completado");
             }
 
             activity.setCompleted(true);
             workoutActivityDAO.update(activity);
             
-            interaction.getConsole().writeLine("A atividade do exercício \"" + exercise.getName() + "\" foi completada com sucesso!");
+            interaction.getConsole().writeLine("O exercício \"" + exercise.getName() + "\" foi completado com sucesso!");
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
         }

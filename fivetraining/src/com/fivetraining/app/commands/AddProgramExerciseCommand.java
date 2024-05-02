@@ -44,7 +44,7 @@ public class AddProgramExerciseCommand extends ConsoleCommand {
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
         userSession.throwIfNotAuthenticated();
 
-        int programId = interaction.getArgument("id programa").asInteger();
+        int programId = interaction.getArgument("id do programa").asInteger();
         int exerciseCode = interaction.getArgument("código do exercício").asInteger();
         int load = interaction.getArgument("carga").asInteger();
         int sets = interaction.getArgument("n° de séries").asInteger();
