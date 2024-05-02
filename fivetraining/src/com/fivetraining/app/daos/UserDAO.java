@@ -39,12 +39,18 @@ public class UserDAO {
     }
 
     public void update(User user) throws SQLException {
-        String sql = "UPDATE users SET name = ? birth_date = ? WHERE id = ?";
+        String sql = "UPDATE users SET name = ?, birth_date = ? WHERE id = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setString(1, user.getName());
             statement.setDate(2, Date.valueOf(user.getBirthDate()));
             statement.setInt(3, user.getId());
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to update user");
+            }
         }
     }
 
@@ -53,6 +59,12 @@ public class UserDAO {
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, user.getId());
+
+            int affectedRows = statement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Failed to delete user");
+            }
         }
     }
 

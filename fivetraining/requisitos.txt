@@ -2,16 +2,19 @@ reg-aluno <cpf> <nome> <data de nascimento>
 reg-plano <codigo plano> <nome> <valor>
 reg-exerc <codigo exercicio> <nome> <musculos>
 
-insc-aluno <codigo aluno> <codigo plano> <data inicio> <numero cartao> <expiracao cartao> <cvc cartao>
+insc-aluno <cpf> <codigo plano> <data inicio> <numero cartao> <expiracao cartao> <cvc cartao>
+
+rm-aluno <cpf>
+alt-aluno <cpf> <novo nome> <nova data de nascimento>
 
 list-alunos
 list-exercs
 list-planos
 
-entrar <codigo aluno>
+entrar <cpf>
 sair
 
-reg-prog <codigo aluno>
+reg-prog <cpf>
 del-prog <codigo prog>
 
 add-exerc-prog <codigo programa> <codigo exercicio> <repeticoes minima> <repeticoes maxima> <carga> <descanso> <data inicio>

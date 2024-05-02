@@ -33,6 +33,8 @@ public class Main {
         guard.addItem(new RegisterPlanCommand(planDAO));
         guard.addItem(new RegisterExerciseCommand(exerciseDAO));
         guard.addItem(new SubscribeCommand(subscriptionDAO, userDAO));
+        guard.addItem(new UpdateUserCommand(userDAO));
+        guard.addItem(new DeleteUserCommand(userDAO));
         guard.addItem(new ListUsersCommand(userDAO));
         guard.addItem(new ListExercisesCommand(exerciseDAO));
         guard.addItem(new ListPlansCommand(planDAO));
