@@ -2,10 +2,8 @@ package com.fivetraining.app;
 
 import com.fivetraining.app.commands.*;
 import com.fivetraining.app.daos.*;
-import com.fivetraining.app.commands.*;
 import com.fivetraining.app.daos.Database;
 import com.fivetraining.app.daos.UserDAO;
-import com.fivetraining.app.models.Program;
 import com.fivetraining.console.Console;
 import com.fivetraining.console.ConsoleGuard;
 import com.fivetraining.console.items.ConsoleSeparator;
@@ -30,19 +28,30 @@ public class Main {
         ExerciseDAO exerciseDAO = new ExerciseDAO(database);
         SubscriptionDAO subscriptionDAO = new SubscriptionDAO(database);
         ProgramDAO programDAO = new ProgramDAO(database);
+        ProgramExerciseDAO programExerciseDAO = new ProgramExerciseDAO(database);
+        WorkoutDAO workoutDAO = new WorkoutDAO(database);
+        WorkoutActivityDAO workoutActivityDAO = new WorkoutActivityDAO(database);
 
         guard.addItem(new ConsoleSeparator("> Painél do instrutor"));
         guard.addItem(new RegisterUserCommand(userDAO));
         guard.addItem(new RegisterPlanCommand(planDAO));
         guard.addItem(new RegisterExerciseCommand(exerciseDAO));
         guard.addItem(new SubscribeCommand(subscriptionDAO, userDAO));
-        guard.addItem(new RegisterProgramCommand(programDAO, userDAO));
+        guard.addItem(new ConsoleSeparator());
+        guard.addItem(new UpdateUserCommand(userDAO));
+        guard.addItem(new DeleteUserCommand(userDAO));
+        guard.addItem(new ConsoleSeparator());
         guard.addItem(new ListUsersCommand(userDAO));
         guard.addItem(new ListExercisesCommand(exerciseDAO));
         guard.addItem(new ListPlansCommand(planDAO));
+
         guard.addItem(new ConsoleSeparator("> Painél do usuário"));
         guard.addItem(new SignInCommand(userSession, userDAO));
         guard.addItem(new SignOutCommand(userSession));
+        guard.addItem(new ConsoleSeparator());
+        guard.addItem(new StartWorkoutCommand(userSession, programDAO, programExerciseDAO, workoutDAO, workoutActivityDAO));
+        guard.addItem(new StopWorkoutCommand(userSession, workoutDAO));
+
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
         guard.addItem(new ExitCommand());

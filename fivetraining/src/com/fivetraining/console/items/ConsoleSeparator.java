@@ -8,7 +8,7 @@ public class ConsoleSeparator implements ConsoleDisplayable {
     }
 
     public ConsoleSeparator(String content) {
-        this.content = content;
+        this.content = '\n' + content;
     }
 
     public String getContent() {
@@ -17,6 +17,6 @@ public class ConsoleSeparator implements ConsoleDisplayable {
 
     @Override
     public String display() {
-        return '\n' + this.getContent();
+        return getContent();
     }
 }
