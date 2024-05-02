@@ -55,6 +55,7 @@ public class Main {
         guard.addItem(new DeleteProgramCommand(programDAO,programExerciseDAO));
         guard.addItem(new StartWorkoutCommand(userSession, programDAO, programExerciseDAO, workoutDAO, workoutActivityDAO));
         guard.addItem(new StopWorkoutCommand(userSession, workoutDAO));
+        guard.addItem(new ListProgsCommand(programDAO,programExerciseDAO));
 
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
