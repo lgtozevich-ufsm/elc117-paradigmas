@@ -49,6 +49,10 @@ public class Main {
         guard.addItem(new SignInCommand(userSession, userDAO));
         guard.addItem(new SignOutCommand(userSession));
         guard.addItem(new ConsoleSeparator());
+        guard.addItem(new RegisterProgramCommand(programDAO,userDAO));
+        guard.addItem(new AddExerciseToProgramCommand(programExerciseDAO,userSession,programDAO));
+        guard.addItem(new UpdateExercInProgCommand(programExerciseDAO,userSession));
+        guard.addItem(new DeleteProgramCommand(programDAO,programExerciseDAO));
         guard.addItem(new StartWorkoutCommand(userSession, programDAO, programExerciseDAO, workoutDAO, workoutActivityDAO));
         guard.addItem(new StopWorkoutCommand(userSession, workoutDAO));
 

@@ -48,7 +48,7 @@ public class StartWorkoutCommand extends ConsoleCommand {
         userSession.throwIfNotAuthenticated();
 
         int programId = interaction.getArgument("id do programa").asInteger();
-        LocalDateTime startDate = interaction.getArgument("data de início").asDateTime();
+        LocalDateTime startDate = interaction.getArgument("tempo de início").asDateTime();
 
         try {
             Program program = programDAO.findById(programId);
