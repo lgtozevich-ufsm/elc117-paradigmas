@@ -1,10 +1,7 @@
 package com.fivetraining.app;
 
-import com.fivetraining.app.commands.RegisterUserCommand;
-import com.fivetraining.app.commands.ExitCommand;
-import com.fivetraining.app.commands.HelpCommand;
-import com.fivetraining.app.daos.Database;
-import com.fivetraining.app.daos.UserDAO;
+import com.fivetraining.app.commands.*;
+import com.fivetraining.app.daos.*;
 import com.fivetraining.console.Console;
 import com.fivetraining.console.ConsoleGuard;
 import com.fivetraining.console.items.ConsoleSeparator;
@@ -23,9 +20,18 @@ public class Main {
 
         Database database = new Database(connection);
         UserDAO userDAO = new UserDAO(database);
+        PlanDAO planDAO = new PlanDAO(database);
+        ExerciseDAO exerciseDAO = new ExerciseDAO(database);
+        SubscriptionDAO subscriptionDAO = new SubscriptionDAO(database);
 
         guard.addItem(new ConsoleSeparator("> Painél do instrutor"));
         guard.addItem(new RegisterUserCommand(userDAO));
+        guard.addItem(new RegisterPlanCommand(planDAO));
+        guard.addItem(new RegisterExerciseCommand(exerciseDAO));
+        guard.addItem(new RegisterSubscriptionCommand(subscriptionDAO, userDAO));
+        guard.addItem(new ListUsersCommand(userDAO));
+        guard.addItem(new ListExercisesCommand(exerciseDAO));
+        guard.addItem(new ListPlansCommand(planDAO));
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
         guard.addItem(new ExitCommand());
