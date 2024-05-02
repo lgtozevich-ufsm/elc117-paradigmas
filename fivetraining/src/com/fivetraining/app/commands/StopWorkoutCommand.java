@@ -45,6 +45,8 @@ public class StopWorkoutCommand extends ConsoleCommand {
 
             unfinishedWorkout.setEndTime(endTime);
             workoutDAO.update(unfinishedWorkout);
+
+            interaction.getConsole().writeLine("O treino foi encerrado com sucesso!");
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
         }

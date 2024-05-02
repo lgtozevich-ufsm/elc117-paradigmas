@@ -20,8 +20,7 @@ public class WorkoutDAO {
             statement.setInt(1, workout.getUserId());
             statement.setInt(2, workout.getProgramId());
             statement.setTimestamp(3, java.sql.Timestamp.valueOf(workout.getStartTime()));
-            statement.setTimestamp(4, workout.getEndTime() != null ? java.sql.Timestamp.valueOf(workout.getEndTime()) : null);
-
+            statement.setTimestamp(4, workout.getEndTime() == null ? null : java.sql.Timestamp.valueOf(workout.getEndTime()));
 
             int affectedRows = statement.executeUpdate();
 
@@ -81,7 +80,7 @@ public class WorkoutDAO {
                 workout.setUserId(resultSet.getInt("user_id"));
                 workout.setProgramId(resultSet.getInt("program_id"));
                 workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
-                workout.setEndTime(resultSet.getTimestamp("end_time").toLocalDateTime());
+                workout.setEndTime(resultSet.getTimestamp("end_time") == null ? null : resultSet.getTimestamp("end_time").toLocalDateTime());
 
                 return workout;
             }
@@ -104,7 +103,7 @@ public class WorkoutDAO {
                 workout.setUserId(resultSet.getInt("user_id"));
                 workout.setProgramId(resultSet.getInt("program_id"));
                 workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
-                workout.setEndTime(resultSet.getTimestamp("end_time").toLocalDateTime());
+                workout.setEndTime(null);
 
                 return workout;
             }
