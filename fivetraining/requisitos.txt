@@ -18,7 +18,7 @@ reg-prog <cpf>
 del-prog <codigo prog>
 
 add-exerc-prog <codigo programa> <codigo exercicio> <repeticoes minima> <repeticoes maxima> <carga> <descanso> <data inicio>
-alt-exerc-prog <codigo programa> <codigo exercicio> <carga> <data inicio>
+alt-exerc-prog <codigo programa> <codigo exercicio> <carga>
 rm-exerc-prog <codigo programa> <codigo exercicio>
 
 inic-treino <codigo programa> <data de início>

@@ -38,6 +38,29 @@ public class WorkoutDAO {
         }
     }
 
+    public Workout findById(int id) throws SQLException {
+        String sql = "SELECT user_id, program_name, start_time, end_time FROM workouts WHERE id = ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next()) {
+                return null;
+            }
+
+            Workout workout = new Workout();
+            workout.setId(id);
+            workout.setUserId(resultSet.getInt("user_id"));
+            workout.setProgramName(resultSet.getString("program_name"));
+            workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
+            workout.setEndTime(resultSet.getTimestamp("end_time") == null ? null : resultSet.getTimestamp("end_time").toLocalDateTime());
+
+            return workout;
+        }
+    }
+
     public void update(Workout workout) throws SQLException {
         String sql = "UPDATE workouts SET user_id = ?, program_name = ?, start_time = ?, end_time = ? WHERE id = ?";
 

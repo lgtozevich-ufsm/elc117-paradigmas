@@ -58,6 +58,8 @@ conc-treino 1
 conc-treino 50
 enc-treino 2024-07-01T23:59:59
 
+alt-exerc-prog 1 50 50
+
 inic-treino 1 2024-07-02T23:59:59
 conc-treino 1
 conc-treino 50
@@ -67,6 +69,8 @@ inic-treino 1 2024-07-03T23:59:59
 conc-treino 1
 conc-treino 50
 enc-treino 2024-07-03T23:59:59
+
+alt-exerc-prog 1 50 25
 
 inic-treino 1 2024-08-03T23:59:59
 conc-treino 1

@@ -65,6 +65,7 @@ public class Main {
         guard.addItem(new ListWorkoutsCommand(userSession, exerciseDAO, programDAO, workoutDAO, workoutActivityDAO));
         guard.addItem(new ConsoleSeparator());
         guard.addItem(new ReportAttendanceCommand(userSession, workoutDAO));
+        guard.addItem(new ReportLoadCommand(userSession, workoutDAO, workoutActivityDAO));
 
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
