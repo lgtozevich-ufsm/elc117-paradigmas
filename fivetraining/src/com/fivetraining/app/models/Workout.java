@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Workout {
     private int id;
     private int userId;
-    private int programId;
+    private String programName;
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -28,12 +28,12 @@ public class Workout {
         return userId;
     }
 
-    public int getProgramId() {
-        return programId;
+    public String getProgramName() {
+        return programName;
     }
 
-    public void setProgramId(int programId) {
-        this.programId = programId;
+    public void setProgramName(String programName) {
+        this.programName = programName;
     }
 
     public LocalDateTime getStartTime() {

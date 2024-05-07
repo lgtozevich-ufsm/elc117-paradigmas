@@ -38,12 +38,9 @@ public class ListWorkoutsCommand extends ConsoleCommand {
             List<Workout> workouts = workoutDAO.findAllWithUserId(userSession.getAuthenticatedUser().getId());
 
             for (Workout workout : workouts) {
-                Program program = programDAO.findById(workout.getProgramId());
-
                 interaction.getConsole().writeLine();
                 interaction.getConsole().writeLine("o  id: " + workout.getId());
-                interaction.getConsole().writeLine("|  id do programa: " + program.getId());
-                interaction.getConsole().writeLine("|  nome do programa: " + program.getName());
+                interaction.getConsole().writeLine("|  nome do programa: " + workout.getProgramName());
                 interaction.getConsole().writeLine("|  tempo de início: " + workout.getStartTime());
 
                 if (!workout.hasEnded()) {

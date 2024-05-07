@@ -65,7 +65,7 @@ public class StartWorkoutCommand extends ConsoleCommand {
 
             Workout workout = new Workout();
             workout.setUserId(userSession.getAuthenticatedUser().getId());
-            workout.setProgramId(programId);
+            workout.setProgramName(program.getName());
             workout.setStartTime(startDate);
 
             workoutDAO.insert(workout);

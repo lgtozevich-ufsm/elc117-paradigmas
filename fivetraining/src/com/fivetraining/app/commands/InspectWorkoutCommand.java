@@ -47,16 +47,13 @@ public class InspectWorkoutCommand extends ConsoleCommand {
                 throw new ConsoleCommandExecutionException("Você precisa ter um treino em andamento para visualizá-lo");
             }
 
-            Program program = programDAO.findById(workout.getProgramId());
-
             interaction.getConsole().writeLine();
             interaction.getConsole().writeLine("o  id: " + workout.getId());
-            interaction.getConsole().writeLine("|  id do programa: " + program.getId());
-            interaction.getConsole().writeLine("|  nome do programa: " + program.getName());
+            interaction.getConsole().writeLine("|  nome do programa: " + workout.getProgramName());
             interaction.getConsole().writeLine("|  tempo de início: " + workout.getStartTime());
             interaction.getConsole().writeLine("|  atividades:");
 
-            List<WorkoutActivity> activities = workoutActivityDAO.findAllWithWorkoutId(program.getId());
+            List<WorkoutActivity> activities = workoutActivityDAO.findAllWithWorkoutId(workout.getId());
 
             for (WorkoutActivity activity : activities) {
                 Exercise exercise = exerciseDAO.findByCode(activity.getExerciseCode());
