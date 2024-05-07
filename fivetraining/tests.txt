@@ -9,7 +9,7 @@ reg-exerc 26 "Crucifixo Máquina" "Peitorais"
 reg-exerc 40 "Abdominal Máquina" "Abdominais"
 reg-exerc 50 "Desenvolvimento "Máquina Aberto" Deltoides, Trapézio, Tríceps"
 
-reg-aluno 1 Jaime 25/07/2005
+reg-aluno 1 Jaime 2005-07-25
 
 insc-aluno 1 1 2022-01-01 2025-01-01 123 2030-01-01 123
 
@@ -27,3 +27,53 @@ inic-treino 1 2024-05-02T10:15:30
 conc-treino 1
 conc-treino 50
 enc-treino 2024-05-02T11:15:30
+
+inic-treino 1 2024-05-03T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-05-03T23:59:59
+
+inic-treino 1 2024-05-04T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-05-04T23:59:59
+
+inic-treino 1 2024-05-05T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-05-05T23:59:59
+
+inic-treino 1 2024-05-06T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-05-06T23:59:59
+
+inic-treino 1 2024-06-06T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-06-06T23:59:59
+
+inic-treino 1 2024-07-01T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-07-01T23:59:59
+
+inic-treino 1 2024-07-02T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-07-02T23:59:59
+
+inic-treino 1 2024-07-03T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-07-03T23:59:59
+
+inic-treino 1 2024-08-03T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-08-03T23:59:59
+
+inic-treino 1 2024-08-04T23:59:59
+conc-treino 1
+conc-treino 50
+enc-treino 2024-08-04T23:59:59

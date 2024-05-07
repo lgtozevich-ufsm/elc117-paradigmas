@@ -11,6 +11,8 @@ import com.fivetraining.console.items.ConsoleSeparator;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -61,6 +63,8 @@ public class Main {
         guard.addItem(new ConsoleSeparator());
         guard.addItem(new ListProgramsCommand(userSession, exerciseDAO, programDAO, programExerciseDAO));
         guard.addItem(new ListWorkoutsCommand(userSession, exerciseDAO, programDAO, workoutDAO, workoutActivityDAO));
+        guard.addItem(new ConsoleSeparator());
+        guard.addItem(new ReportAttendanceCommand(userSession, workoutDAO));
 
         guard.addItem(new ConsoleSeparator("> Outros"));
         guard.addItem(new HelpCommand(guard));
