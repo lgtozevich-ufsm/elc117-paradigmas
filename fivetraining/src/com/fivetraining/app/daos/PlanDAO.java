@@ -31,7 +31,7 @@ public class PlanDAO {
         }
     }
 
-    public Plan findById(int id) throws SQLException {
+    public Plan findByCode(int id) throws SQLException {
         String sql = "SELECT code, name, price FROM plans WHERE code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {

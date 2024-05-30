@@ -43,7 +43,7 @@ public class SubscribeCommand extends ConsoleCommand {
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
         String cpf = interaction.getArgument("cpf").asString();
-        int planId = interaction.getArgument("código do plano").asInteger();
+        int planCode = interaction.getArgument("código do plano").asInteger();
         LocalDate startDate = interaction.getArgument("data de início").asDate();
         LocalDate endDate = interaction.getArgument("data de fim").asDate();
         String cardNumber = interaction.getArgument("número do cartão").asString();
@@ -57,10 +57,10 @@ public class SubscribeCommand extends ConsoleCommand {
                 throw new ConsoleCommandExecutionException("Nenhum usuário com o cpf \"" + cpf + "\" foi encontrado");
             }
 
-            Plan plan = planDAO.findById(planId);
+            Plan plan = planDAO.findByCode(planCode);
 
             if (plan == null) {
-                throw new ConsoleCommandExecutionException("Nenhum plano com o id \"" + planId + "\" foi encontrado");
+                throw new ConsoleCommandExecutionException("Nenhum plano com o id \"" + planCode + "\" foi encontrado");
             }
 
             CreditCard creditCard = new CreditCard();
@@ -70,7 +70,7 @@ public class SubscribeCommand extends ConsoleCommand {
 
             Subscription subscription = new Subscription();
             subscription.setUserId(user.getId());
-            subscription.setPlanId(planId);
+            subscription.setPlanCode(planCode);
             subscription.setStartDate(Date.valueOf(startDate));
             subscription.setEndDate(Date.valueOf(endDate));
             subscription.setCreditCard(creditCard);
@@ -81,7 +81,7 @@ public class SubscribeCommand extends ConsoleCommand {
             interaction.getConsole().writeLine();
             interaction.getConsole().writeLine("o  id: " + subscription.getId());
             interaction.getConsole().writeLine("|  id do aluno: " + subscription.getUserId());
-            interaction.getConsole().writeLine("|  id do plano: " + subscription.getPlanId());
+            interaction.getConsole().writeLine("|  código do plano: " + subscription.getPlanCode());
             interaction.getConsole().writeLine("|  data de início: " + subscription.getStartDate());
             interaction.getConsole().writeLine("|  data de fim: " + subscription.getEndDate());
             interaction.getConsole().writeLine("|  número do cartão: " + subscription.getCreditCard().getNumber());

@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS plans(
 CREATE TABLE IF NOT EXISTS subscriptions(
     id INTEGER,
     user_id INTEGER NOT NULL,
-    plan_id INTEGER NOT NULL,
+    plan_code INTEGER NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     card_number VARCHAR(255) NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS subscriptions(
     card_cvv VARCHAR(10) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (plan_id) REFERENCES plans(id)
+    FOREIGN KEY (plan_code) REFERENCES plans(code)
 );
 
 CREATE TABLE IF NOT EXISTS programs(

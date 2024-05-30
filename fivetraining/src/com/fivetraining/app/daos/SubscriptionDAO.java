@@ -14,11 +14,11 @@ public class SubscriptionDAO {
     }
 
     public void insert(Subscription subscription) throws SQLException {
-        String sql = "INSERT INTO subscriptions(user_id, plan_id, start_date, end_date, card_number,card_cvv, card_expiry_date ) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO subscriptions(user_id, plan_code, start_date, end_date, card_number,card_cvv, card_expiry_date ) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, subscription.getUserId());
-            statement.setInt(2, subscription.getPlanId());
+            statement.setInt(2, subscription.getPlanCode());
             statement.setDate(3, new java.sql.Date(subscription.getStartDate().getTime()));
             statement.setDate(4, new java.sql.Date(subscription.getEndDate().getTime()));
             statement.setString(5, subscription.getCreditCard().getNumber());

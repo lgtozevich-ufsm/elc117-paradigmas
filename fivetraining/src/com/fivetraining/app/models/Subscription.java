@@ -5,7 +5,7 @@ import java.util.Date;
 public class Subscription {
     private int id;
     private int userId;
-    private int planId;
+    private int planCode;
 
     private Date startDate;
     private Date endDate;
@@ -30,12 +30,12 @@ public class Subscription {
         this.userId = userId;
     }
 
-    public int getPlanId() {
-        return planId;
+    public int getPlanCode() {
+        return planCode;
     }
 
-    public void setPlanId(int planId) {
-        this.planId = planId;
+    public void setPlanCode(int planCode) {
+        this.planCode = planCode;
     }
 
     public Date getStartDate() {
