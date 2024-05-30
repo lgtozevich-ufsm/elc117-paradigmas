@@ -17,8 +17,9 @@ public class UpdateUserCommand extends ConsoleCommand {
         this.userDAO = userDAO;
 
         addParameter(ConsoleParameter.createString("cpf", true));
+        addParameter(ConsoleParameter.createString("novo cpf", true));
         addParameter(ConsoleParameter.createString("novo nome", true));
-        addParameter(ConsoleParameter.createDate("novo data de nascimento", true));
+        addParameter(ConsoleParameter.createDate("nova data de nascimento", true));
     }
 
     @Override
@@ -29,8 +30,9 @@ public class UpdateUserCommand extends ConsoleCommand {
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
         String cpf = interaction.getArgument("cpf").asString();
+        String newCpf = interaction.getArgument("novo cpf").asString();
         String newName = interaction.getArgument("novo nome").asString();
-        LocalDate newBirthDate = interaction.getArgument("novo data de nascimento").asDate();
+        LocalDate newBirthDate = interaction.getArgument("nova data de nascimento").asDate();
 
         try {
             User user = userDAO.findByCpf(cpf);
@@ -39,6 +41,7 @@ public class UpdateUserCommand extends ConsoleCommand {
                 throw new ConsoleCommandExecutionException("Nenhum usuário com o cpf \"" + cpf + "\" foi encontrado");
             }
 
+            user.setCpf(newCpf);
             user.setName(newName);
             user.setBirthDate(newBirthDate);
 
