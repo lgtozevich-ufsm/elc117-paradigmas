@@ -5,6 +5,7 @@ import com.fivetraining.app.models.Workout;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,29 +36,6 @@ public class WorkoutDAO {
             if (generatedKeys.next()) {
                 workout.setId(generatedKeys.getInt(1));
             }
-        }
-    }
-
-    public Workout findById(int id) throws SQLException {
-        String sql = "SELECT user_id, program_name, start_time, end_time FROM workouts WHERE id = ?";
-
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, id);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (!resultSet.next()) {
-                return null;
-            }
-
-            Workout workout = new Workout();
-            workout.setId(id);
-            workout.setUserId(resultSet.getInt("user_id"));
-            workout.setProgramName(resultSet.getString("program_name"));
-            workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
-            workout.setEndTime(resultSet.getTimestamp("end_time") == null ? null : resultSet.getTimestamp("end_time").toLocalDateTime());
-
-            return workout;
         }
     }
 
@@ -121,6 +99,31 @@ public class WorkoutDAO {
                 workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
                 workout.setEndTime(resultSet.getTimestamp("end_time") == null ? null : resultSet.getTimestamp("end_time").toLocalDateTime());
 
+                workouts.add(workout);
+            }
+        }
+
+        return workouts;
+    }
+
+    public List<Workout> findAllWithUserIdInRange(int userId, LocalDateTime fromTime, LocalDateTime toTime) throws SQLException {
+        List<Workout> workouts = new ArrayList<>();
+        String sql = "SELECT id, program_name, start_time, end_time FROM workouts WHERE user_id = ? AND start_time BETWEEN ? AND ?";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            statement.setTimestamp(2, java.sql.Timestamp.valueOf(fromTime));
+            statement.setTimestamp(3, java.sql.Timestamp.valueOf(toTime));
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Workout workout = new Workout();
+                workout.setId(resultSet.getInt("id"));
+                workout.setUserId(userId);
+                workout.setProgramName(resultSet.getString("program_name"));
+                workout.setStartTime(resultSet.getTimestamp("start_time").toLocalDateTime());
+                workout.setEndTime(resultSet.getTimestamp("end_time") == null ? null : resultSet.getTimestamp("end_time").toLocalDateTime());
                 workouts.add(workout);
             }
         }

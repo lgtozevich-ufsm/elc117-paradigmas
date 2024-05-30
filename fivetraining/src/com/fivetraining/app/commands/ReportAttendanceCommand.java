@@ -1,24 +1,27 @@
 package com.fivetraining.app.commands;
 
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fivetraining.app.UserSession;
 import com.fivetraining.app.daos.WorkoutDAO;
 import com.fivetraining.app.models.Workout;
 import com.fivetraining.console.ConsoleInteraction;
+import com.fivetraining.console.ConsoleParameter;
 import com.fivetraining.console.exceptions.ConsoleCommandExecutionException;
 import com.fivetraining.console.items.ConsoleCommand;
 
 public class ReportAttendanceCommand extends ConsoleCommand {
-    private UserSession userSession;
-    private WorkoutDAO workoutDAO;
+    private final UserSession userSession;
+    private final WorkoutDAO workoutDAO;
 
     public ReportAttendanceCommand(UserSession userSession, WorkoutDAO workoutDAO) {
         this.userSession = userSession;
         this.workoutDAO = workoutDAO;
+
+        addParameter(ConsoleParameter.createDateTime("tempo inicial", true));
+        addParameter(ConsoleParameter.createDateTime("tempo final", true));
     }
 
 
@@ -30,39 +33,16 @@ public class ReportAttendanceCommand extends ConsoleCommand {
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
         userSession.throwIfNotAuthenticated();
+
+        LocalDateTime fromTime = interaction.getArgument("tempo inicial").asDateTime();
+        LocalDateTime toTime = interaction.getArgument("tempo final").asDateTime();
         
         try {
-            List<Workout> workouts = workoutDAO.findAllWithUserId(userSession.getAuthenticatedUser().getId());
+            List<Workout> workouts = workoutDAO.findAllWithUserIdInRange(userSession.getAuthenticatedUser().getId(), fromTime, toTime);
 
-            for (int i = 0; i < workouts.size(); i++) {
-                Workout startWorkout = workouts.get(i);
-
-                LocalDate rangeStartDate = startWorkout.getStartTime().toLocalDate();
-                LocalDate rangeEndDate = rangeStartDate;
-
-                while ((i + 1) < workouts.size()) {
-                    Workout endWorkout = workouts.get(i + 1);
-
-                    if (endWorkout.getStartTime().toLocalDate().isAfter(rangeEndDate.plusDays(1))) {
-                        break;
-                    }
-
-                    rangeEndDate = endWorkout.getStartTime().toLocalDate();
-                    i++;
-                }
-
-                long days = Duration.between(rangeStartDate.atStartOfDay(), rangeEndDate.atStartOfDay()).toDays();
-
-                interaction.getConsole().writeLine();
-                interaction.getConsole().writeLine("o " + rangeStartDate);
-
-                if (!rangeStartDate.equals(rangeEndDate)) {
-                    for (int j = 0; j < days; j++) {
-                        interaction.getConsole().writeLine("| ");
-                    }
-
-                    interaction.getConsole().writeLine("o " + rangeEndDate);
-                }
+            for (Workout workout : workouts) {
+                interaction.getConsole().write("o " + workout.getProgramName() + ": " + workout.getStartTime() + " - ");
+                interaction.getConsole().writeLine(workout.getEndTime() != null ? workout.getEndTime().toString() : "(em andamento)");
             }
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
