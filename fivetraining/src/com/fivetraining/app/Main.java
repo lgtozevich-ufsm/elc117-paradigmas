@@ -55,6 +55,7 @@ public class Main {
         guard.addItem(new ListUsersCommand(userDAO));
         guard.addItem(new ListExercisesCommand(exerciseDAO));
         guard.addItem(new ListPlansCommand(planDAO));
+        guard.addItem(new ListSubscriptionsCommand(subscriptionDAO));
         
         guard.addItem(new ConsoleSeparator("> Painél do usuário"));
         guard.addItem(new SignInCommand(userSession, userDAO));
