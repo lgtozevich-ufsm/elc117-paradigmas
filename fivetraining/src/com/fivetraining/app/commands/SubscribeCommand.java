@@ -1,8 +1,10 @@
 package com.fivetraining.app.commands;
 
+import com.fivetraining.app.daos.PlanDAO;
 import com.fivetraining.app.daos.SubscriptionDAO;
 import com.fivetraining.app.daos.UserDAO;
 import com.fivetraining.app.models.CreditCard;
+import com.fivetraining.app.models.Plan;
 import com.fivetraining.app.models.Subscription;
 import com.fivetraining.app.models.User;
 import com.fivetraining.console.ConsoleInteraction;
@@ -15,12 +17,14 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class SubscribeCommand extends ConsoleCommand {
-    private final SubscriptionDAO subscriptionDAO;
     private final UserDAO userDAO;
+    private final PlanDAO planDAO;
+    private final SubscriptionDAO subscriptionDAO;
 
-    public SubscribeCommand(SubscriptionDAO subscriptionDAO, UserDAO userDAO) {
-        this.subscriptionDAO = subscriptionDAO;
+    public SubscribeCommand(UserDAO userDAO, PlanDAO planDAO, SubscriptionDAO subscriptionDAO) {
         this.userDAO = userDAO;
+        this.planDAO = planDAO;
+        this.subscriptionDAO = subscriptionDAO;
 
         addParameter(ConsoleParameter.createString("cpf", true));
         addParameter(ConsoleParameter.createInteger("código do plano", true));
@@ -51,6 +55,12 @@ public class SubscribeCommand extends ConsoleCommand {
 
             if (user == null) {
                 throw new ConsoleCommandExecutionException("Nenhum usuário com o cpf \"" + cpf + "\" foi encontrado");
+            }
+
+            Plan plan = planDAO.findById(planId);
+
+            if (plan == null) {
+                throw new ConsoleCommandExecutionException("Nenhum plano com o id \"" + planId + "\" foi encontrado");
             }
 
             CreditCard creditCard = new CreditCard();

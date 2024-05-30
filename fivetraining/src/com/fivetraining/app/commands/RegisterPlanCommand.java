@@ -15,6 +15,7 @@ public class RegisterPlanCommand extends ConsoleCommand {
     public RegisterPlanCommand(PlanDAO planDAO) {
         this.planDAO = planDAO;
 
+        addParameter(ConsoleParameter.createInteger("código", true));
         addParameter(ConsoleParameter.createString("nome", true));
         addParameter(ConsoleParameter.createDouble("valor", true));
     }
@@ -26,10 +27,12 @@ public class RegisterPlanCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
+        int code = interaction.getArgument("código").asInteger();
         String name = interaction.getArgument("nome").asString();
         double price = interaction.getArgument("valor").asDouble();
 
         Plan plan = new Plan();
+        plan.setCode(code);
         plan.setName(name);
         plan.setPrice(price);
 
@@ -38,7 +41,7 @@ public class RegisterPlanCommand extends ConsoleCommand {
 
             interaction.getConsole().writeLine("O plano foi registrado com sucesso.");
             interaction.getConsole().writeLine();
-            interaction.getConsole().writeLine("o  id: " + plan.getId());
+            interaction.getConsole().writeLine("o  código: " + plan.getCode());
             interaction.getConsole().writeLine("|  nome: " + plan.getName());
             interaction.getConsole().writeLine("`- valor: " + plan.getPrice());
         } catch (SQLException exception) {

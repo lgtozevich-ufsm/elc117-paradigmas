@@ -14,10 +14,10 @@ CREATE TABLE IF NOT EXISTS exercises(
 );
 
 CREATE TABLE IF NOT EXISTS plans(
-    id INTEGER,
+    code INTEGER NOT NULL,
     name VARCHAR(100) NOT NULL,
     price DOUBLE NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (code)
 );
 
 CREATE TABLE IF NOT EXISTS subscriptions(

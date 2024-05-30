@@ -1,19 +1,18 @@
 package com.fivetraining.app.models;
 
 public class Plan {
-    private int id;
-
+    private int code;
     private String name;
     private double price;
 
     public Plan() {}
 
-    public int getId() {
-        return id;
+    public int getCode() {
+        return code;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getName() {

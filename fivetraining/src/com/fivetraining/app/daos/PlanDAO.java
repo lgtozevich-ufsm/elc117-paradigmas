@@ -16,28 +16,23 @@ public class PlanDAO {
     }
 
     public void insert(Plan plan) throws SQLException {
-        String sql = "INSERT INTO plans(name, price) VALUES (?, ?)";
+        String sql = "INSERT INTO plans(code, name, price) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setString(1, plan.getName());
-            statement.setDouble(2, plan.getPrice());
+            statement.setInt(1, plan.getCode());
+            statement.setString(2, plan.getName());
+            statement.setDouble(3, plan.getPrice());
 
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
                 throw new SQLException("Failed to insert plan");
             }
-
-            ResultSet generatedKeys = statement.getGeneratedKeys();
-
-            if (generatedKeys.next()) {
-                plan.setId(generatedKeys.getInt(1));
-            }
         }
     }
 
     public Plan findById(int id) throws SQLException {
-        String sql = "SELECT id, name, price FROM plans WHERE id = ?";
+        String sql = "SELECT code, name, price FROM plans WHERE code = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -49,7 +44,7 @@ public class PlanDAO {
             }
 
             Plan plan = new Plan();
-            plan.setId(resultSet.getInt("id"));
+            plan.setCode(resultSet.getInt("code"));
             plan.setName(resultSet.getString("name"));
             plan.setPrice(resultSet.getDouble("price"));
 
@@ -59,14 +54,14 @@ public class PlanDAO {
 
     public List<Plan> findAll() throws SQLException {
         List<Plan> plans = new ArrayList<>();
-        String sql = "SELECT id, name, price FROM plans";
+        String sql = "SELECT code, name, price FROM plans";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 Plan plan = new Plan();
-                plan.setId(resultSet.getInt("id"));
+                plan.setCode(resultSet.getInt("code"));
                 plan.setName(resultSet.getString("name"));
                 plan.setPrice(resultSet.getDouble("price"));
 

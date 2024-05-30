@@ -28,7 +28,7 @@ public class ListPlansCommand extends ConsoleCommand {
 
             for (Plan plan : plans) {
                 interaction.getConsole().writeLine();
-                interaction.getConsole().writeLine("o  id: " + plan.getId());
+                interaction.getConsole().writeLine("o  código: " + plan.getCode());
                 interaction.getConsole().writeLine("|  nome: " + plan.getName());
                 interaction.getConsole().writeLine("`- valor: " + plan.getPrice());
             }

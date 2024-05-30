@@ -43,7 +43,7 @@ public class Main {
         guard.addItem(new SearchUserByCPFCommand(userDAO));
         guard.addItem(new SearchUserByNameCommand(userDAO));
         guard.addItem(new ConsoleSeparator());
-        guard.addItem(new SubscribeCommand(subscriptionDAO, userDAO));
+        guard.addItem(new SubscribeCommand(userDAO, planDAO, subscriptionDAO));
         guard.addItem(new ConsoleSeparator());
         guard.addItem(new RegisterProgramCommand(userDAO, programDAO));
         guard.addItem(new DeleteProgramCommand(programDAO, programExerciseDAO));
