@@ -44,7 +44,7 @@ public class UpdateUserCommand extends ConsoleCommand {
 
             userDAO.update(user);
 
-            interaction.getConsole().writeLine("O usuário \"" + user.getName() + "\" foi atualizado com sucesso!");
+            interaction.getConsole().writeLine("O usuário \"" + user.getName() + "\" foi atualizado com sucesso.");
             interaction.getConsole().writeLine();
             interaction.getConsole().writeLine("o  id: " + user.getId());
             interaction.getConsole().writeLine("|  cpf: " + user.getCpf());

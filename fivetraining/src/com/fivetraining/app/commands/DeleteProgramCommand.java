@@ -37,7 +37,7 @@ public class DeleteProgramCommand extends ConsoleCommand {
 
             programDAO.delete(program);
 
-            interaction.getConsole().writeLine("O programa \"" + program.getName() + "\" foi excluído com sucesso!");
+            interaction.getConsole().writeLine("O programa \"" + program.getName() + "\" foi excluído com sucesso.");
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
         }

@@ -83,7 +83,7 @@ public class StartWorkoutCommand extends ConsoleCommand {
                 workoutActivityDAO.insert(activity);
             }
 
-            interaction.getConsole().writeLine("O treino foi iniciado com sucesso!");
+            interaction.getConsole().writeLine("O treino foi iniciado com sucesso.");
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
         }

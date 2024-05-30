@@ -19,8 +19,8 @@ public class RegisterProgramCommand extends ConsoleCommand {
         this.userDAO = userDAO;
         this.programDAO = programDAO;
 
-        addParameter(ConsoleParameter.createString("cpf", true));
-        addParameter(ConsoleParameter.createString("nome", true));
+        addParameter(ConsoleParameter.createString("cpf do aluno", true));
+        addParameter(ConsoleParameter.createString("nome do programa", true));
     }
 
     @Override
@@ -30,8 +30,8 @@ public class RegisterProgramCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
-        String cpf = interaction.getArgument("cpf").asString();
-        String name = interaction.getArgument("nome").asString();
+        String cpf = interaction.getArgument("cpf do aluno").asString();
+        String name = interaction.getArgument("nome do programa").asString();
 
         try {
             User user = userDAO.findByCpf(cpf);
