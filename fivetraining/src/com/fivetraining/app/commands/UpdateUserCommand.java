@@ -30,18 +30,18 @@ public class UpdateUserCommand extends ConsoleCommand {
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
         String cpf = interaction.getArgument("cpf").asString();
-        String newCpf = interaction.getArgument("novo cpf").asString();
+        String newCPF = interaction.getArgument("novo cpf").asString();
         String newName = interaction.getArgument("novo nome").asString();
         LocalDate newBirthDate = interaction.getArgument("nova data de nascimento").asDate();
 
         try {
-            User user = userDAO.findByCpf(cpf);
+            User user = userDAO.findByCPF(cpf);
 
             if (user == null) {
                 throw new ConsoleCommandExecutionException("Nenhum usuário com o cpf \"" + cpf + "\" foi encontrado");
             }
 
-            user.setCpf(newCpf);
+            user.setCPF(newCPF);
             user.setName(newName);
             user.setBirthDate(newBirthDate);
 
@@ -50,7 +50,7 @@ public class UpdateUserCommand extends ConsoleCommand {
             interaction.getConsole().writeLine("O usuário \"" + user.getName() + "\" foi atualizado com sucesso.");
             interaction.getConsole().writeLine();
             interaction.getConsole().writeLine("o  id: " + user.getId());
-            interaction.getConsole().writeLine("|  cpf: " + user.getCpf());
+            interaction.getConsole().writeLine("|  cpf: " + user.getCPF());
             interaction.getConsole().writeLine("|  nome: " + user.getName());
             interaction.getConsole().writeLine("`- data de nascimento: " + user.getBirthDate());
         } catch (SQLException exception) {

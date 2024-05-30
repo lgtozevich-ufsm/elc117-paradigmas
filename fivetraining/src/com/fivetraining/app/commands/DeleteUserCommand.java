@@ -28,7 +28,7 @@ public class DeleteUserCommand extends ConsoleCommand {
         String cpf = interaction.getArgument("cpf").asString();
 
         try {
-            User user = userDAO.findByCpf(cpf);
+            User user = userDAO.findByCPF(cpf);
 
             if (user == null) {
                 throw new ConsoleCommandExecutionException("Nenhum usuário com o cpf \"" + cpf + "\" foi encontrado");

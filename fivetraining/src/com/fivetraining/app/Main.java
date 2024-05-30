@@ -40,7 +40,7 @@ public class Main {
         guard.addItem(new UpdateUserCommand(userDAO));
         guard.addItem(new DeleteUserCommand(userDAO));
         guard.addItem(new ConsoleSeparator());
-        guard.addItem(new SearchUserByCpfCommand(userDAO));
+        guard.addItem(new SearchUserByCPFCommand(userDAO));
         guard.addItem(new SearchUserByNameCommand(userDAO));
         guard.addItem(new ConsoleSeparator());
         guard.addItem(new SubscribeCommand(subscriptionDAO, userDAO));

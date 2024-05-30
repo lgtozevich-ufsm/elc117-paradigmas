@@ -34,7 +34,7 @@ public class SearchUserByNameCommand extends ConsoleCommand {
             for (User user : users) {
                 interaction.getConsole().writeLine();
                 interaction.getConsole().writeLine("o  id: " + user.getId());
-                interaction.getConsole().writeLine("|  cpf: " + user.getCpf());
+                interaction.getConsole().writeLine("|  cpf: " + user.getCPF());
                 interaction.getConsole().writeLine("|  nome: " + user.getName());
                 interaction.getConsole().writeLine("`- data de nascimento: " + user.getBirthDate());
             }

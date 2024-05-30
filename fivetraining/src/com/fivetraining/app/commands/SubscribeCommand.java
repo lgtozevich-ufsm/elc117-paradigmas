@@ -47,7 +47,7 @@ public class SubscribeCommand extends ConsoleCommand {
         String cardCvv = interaction.getArgument("cvc do cartão").asString();
 
         try {
-            User user = userDAO.findByCpf(cpf);
+            User user = userDAO.findByCPF(cpf);
 
             if (user == null) {
                 throw new ConsoleCommandExecutionException("Nenhum usuário com o cpf \"" + cpf + "\" foi encontrado");

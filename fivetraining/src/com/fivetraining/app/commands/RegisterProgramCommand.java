@@ -34,7 +34,7 @@ public class RegisterProgramCommand extends ConsoleCommand {
         String name = interaction.getArgument("nome do programa").asString();
 
         try {
-            User user = userDAO.findByCpf(cpf);
+            User user = userDAO.findByCPF(cpf);
 
             if (user == null) {
                 throw new ConsoleCommandExecutionException("Nenhum usuário com o CPF \"" + cpf + "\" foi encontrado");

@@ -33,7 +33,7 @@ public class RegisterUserCommand extends ConsoleCommand {
         LocalDate birthDate = interaction.getArgument("data de nascimento").asDate();
 
         User user = new User();
-        user.setCpf(cpf);
+        user.setCPF(cpf);
         user.setName(name);
         user.setBirthDate(birthDate);
 
@@ -43,7 +43,7 @@ public class RegisterUserCommand extends ConsoleCommand {
             interaction.getConsole().writeLine("O aluno foi registrado com sucesso.");
             interaction.getConsole().writeLine();
             interaction.getConsole().writeLine("o  id: " + user.getId());
-            interaction.getConsole().writeLine("|  cpf: " + user.getCpf());
+            interaction.getConsole().writeLine("|  cpf: " + user.getCPF());
             interaction.getConsole().writeLine("|  nome: " + user.getName());
             interaction.getConsole().writeLine("`- data de nascimento: " + user.getBirthDate());
         } catch (SQLException exception) {

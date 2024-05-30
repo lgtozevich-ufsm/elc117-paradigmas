@@ -20,7 +20,7 @@ public class UserDAO {
         String sql = "INSERT INTO users(cpf, name, birth_date) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setString(1, user.getCpf());
+            statement.setString(1, user.getCPF());
             statement.setString(2, user.getName());
             statement.setDate(3, Date.valueOf(user.getBirthDate()));
 
@@ -68,7 +68,7 @@ public class UserDAO {
         }
     }
 
-    public User findByCpf(String cpf) throws SQLException {
+    public User findByCPF(String cpf) throws SQLException {
         String sql = "SELECT id, cpf, name, birth_date FROM users WHERE cpf = ?";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
@@ -82,7 +82,7 @@ public class UserDAO {
 
             User user = new User();
             user.setId(resultSet.getInt(1));
-            user.setCpf(resultSet.getString(2));
+            user.setCPF(resultSet.getString(2));
             user.setName(resultSet.getString(3));
             user.setBirthDate(resultSet.getDate(4).toLocalDate());
 
@@ -101,7 +101,7 @@ public class UserDAO {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
-                user.setCpf(resultSet.getString("cpf"));
+                user.setCPF(resultSet.getString("cpf"));
                 user.setName(resultSet.getString("name"));
                 user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
 
@@ -112,7 +112,7 @@ public class UserDAO {
         return users;
     }
 
-    public List<User> findAllWithPartialCpf(String cpf) throws SQLException {
+    public List<User> findAllWithPartialCPF(String cpf) throws SQLException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT id, cpf, name, birth_date FROM users WHERE CHARINDEX(LOWER(?), LOWER(cpf)) > 0";
 
@@ -125,7 +125,7 @@ public class UserDAO {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
-                user.setCpf(resultSet.getString("cpf"));
+                user.setCPF(resultSet.getString("cpf"));
                 user.setName(resultSet.getString("name"));
                 user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
 
@@ -149,7 +149,7 @@ public class UserDAO {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("id"));
-                user.setCpf(resultSet.getString("cpf"));
+                user.setCPF(resultSet.getString("cpf"));
                 user.setName(resultSet.getString("name"));
                 user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
 
