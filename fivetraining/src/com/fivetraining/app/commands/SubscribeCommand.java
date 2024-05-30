@@ -22,7 +22,7 @@ public class SubscribeCommand extends ConsoleCommand {
         this.subscriptionDAO = subscriptionDAO;
         this.userDAO = userDAO;
 
-        addParameter(ConsoleParameter.createString("cpf do aluno", true));
+        addParameter(ConsoleParameter.createString("cpf", true));
         addParameter(ConsoleParameter.createInteger("código do plano", true));
         addParameter(ConsoleParameter.createDate("data de início", true));
         addParameter(ConsoleParameter.createDate("data de fim", true));
@@ -38,7 +38,7 @@ public class SubscribeCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
-        String cpf = interaction.getArgument("cpf do aluno").asString();
+        String cpf = interaction.getArgument("cpf").asString();
         int planId = interaction.getArgument("código do plano").asInteger();
         LocalDate startDate = interaction.getArgument("data de início").asDate();
         LocalDate endDate = interaction.getArgument("data de fim").asDate();

@@ -90,34 +90,61 @@ public class UserDAO {
         }
     }
 
-    public User findById(int id) throws SQLException {
-        String sql = "SELECT id, cpf, name, birth_date FROM users WHERE id = ?";
-
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
-            statement.setInt(1, id);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            if (!resultSet.next()) {
-                return null;
-            }
-
-            User user = new User();
-            user.setId(resultSet.getInt(1));
-            user.setCpf(resultSet.getString(2));
-            user.setName(resultSet.getString(3));
-            user.setBirthDate(resultSet.getDate(4).toLocalDate());
-
-            return user;
-        }
-    }
-
     public List<User> findAll() throws SQLException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT id, cpf, name, birth_date FROM users";
 
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql))
+        {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setCpf(resultSet.getString("cpf"));
+                user.setName(resultSet.getString("name"));
+                user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+
+                users.add(user);
+            }
+        }
+
+        return users;
+    }
+
+    public List<User> findAllWithPartialCpf(String cpf) throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT id, cpf, name, birth_date FROM users WHERE CHARINDEX(LOWER(?), LOWER(cpf)) > 0";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql))
+        {
+            statement.setString(1, cpf);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setCpf(resultSet.getString("cpf"));
+                user.setName(resultSet.getString("name"));
+                user.setBirthDate(resultSet.getDate("birth_date").toLocalDate());
+
+                users.add(user);
+            }
+        }
+
+        return users;
+    }
+
+    public List<User> findAllWithPartialName(String name) throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT id, cpf, name, birth_date FROM users WHERE CHARINDEX(LOWER(?), LOWER(name)) > 0";
+
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql))
+        {
+            statement.setString(1, name);
+
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 User user = new User();

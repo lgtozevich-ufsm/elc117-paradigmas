@@ -11,8 +11,6 @@ import com.fivetraining.console.items.ConsoleSeparator;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
@@ -38,10 +36,14 @@ public class Main {
         guard.addItem(new RegisterUserCommand(userDAO));
         guard.addItem(new RegisterPlanCommand(planDAO));
         guard.addItem(new RegisterExerciseCommand(exerciseDAO));
-        guard.addItem(new SubscribeCommand(subscriptionDAO, userDAO));
         guard.addItem(new ConsoleSeparator());
         guard.addItem(new UpdateUserCommand(userDAO));
         guard.addItem(new DeleteUserCommand(userDAO));
+        guard.addItem(new ConsoleSeparator());
+        guard.addItem(new SearchUserByCpfCommand(userDAO));
+        guard.addItem(new SearchUserByNameCommand(userDAO));
+        guard.addItem(new ConsoleSeparator());
+        guard.addItem(new SubscribeCommand(subscriptionDAO, userDAO));
         guard.addItem(new ConsoleSeparator());
         guard.addItem(new ListUsersCommand(userDAO));
         guard.addItem(new ListExercisesCommand(exerciseDAO));
