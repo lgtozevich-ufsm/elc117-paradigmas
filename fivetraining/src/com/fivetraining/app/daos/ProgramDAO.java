@@ -42,8 +42,6 @@ public class ProgramDAO {
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, program.getId());
 
-            statement.executeUpdate();
-
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
