@@ -55,6 +55,10 @@ public class StartWorkoutCommand extends ConsoleCommand {
                 throw new ConsoleCommandExecutionException("Nenhum programa com o id \"" + programId + "\" foi encontrado");
             }
 
+            if (program.getUserId() != userSession.getAuthenticatedUser().getId()) {
+                throw new ConsoleCommandExecutionException("Você não tem permissão para iniciar um treino com este programa.");
+            }
+
             Workout unfinishedWorkout = workoutDAO.findUnfinishedByUserId(userSession.getAuthenticatedUser().getId());
 
             if (unfinishedWorkout != null) {
