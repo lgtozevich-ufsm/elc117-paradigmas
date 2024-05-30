@@ -70,7 +70,7 @@ public class UpdateProgramExerciseCommand extends ConsoleCommand {
             interaction.getConsole().writeLine("|  músculos: " + exercise.getMuscles());
             interaction.getConsole().writeLine("|  carga: " + programExercise.getLoad());
             interaction.getConsole().writeLine("|  n° de séries: " + programExercise.getSets());
-            interaction.getConsole().writeLine("|  n° mínimo de repetições: " + programExercise.getMaximumRepetitions());
+            interaction.getConsole().writeLine("|  n° mínimo de repetições: " + programExercise.getMinimumRepetitions());
             interaction.getConsole().writeLine("|  n° máximo de repetições: " + programExercise.getMaximumRepetitions());
             interaction.getConsole().writeLine("`- minutos de descanso: " + programExercise.getRestingTime());
         } catch (SQLException exception) {

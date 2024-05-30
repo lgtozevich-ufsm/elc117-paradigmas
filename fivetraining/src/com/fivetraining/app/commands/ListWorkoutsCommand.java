@@ -60,7 +60,7 @@ public class ListWorkoutsCommand extends ConsoleCommand {
                     interaction.getConsole().writeLine("|    |  músculos: " + exercise.getMuscles());
                     interaction.getConsole().writeLine("|    |  carga: " + activity.getLoad());
                     interaction.getConsole().writeLine("|    |  n° de séries: " + activity.getSets());
-                    interaction.getConsole().writeLine("|    |  n° mínimo de repetições: " + activity.getMaximumRepetitions());
+                    interaction.getConsole().writeLine("|    |  n° mínimo de repetições: " + activity.getMinimumRepetitions());
                     interaction.getConsole().writeLine("|    |  n° máximo de repetições: " + activity.getMaximumRepetitions());
                     interaction.getConsole().writeLine("|    `- minutos de descanso: " + activity.getRestingTime());
                     interaction.getConsole().writeLine("|");
