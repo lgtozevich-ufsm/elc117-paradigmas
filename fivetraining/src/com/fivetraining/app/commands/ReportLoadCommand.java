@@ -43,11 +43,13 @@ public class ReportLoadCommand extends ConsoleCommand {
             for (Workout workout : workouts) {
                 WorkoutActivity activity = workoutActivityDAO.findByWorkoutIdAndExerciseCode(workout.getId(), exerciseCode);
 
-                if (activity == null) {
+                if (activity == null || !activity.isCompleted()) {
                     continue;
                 }
 
-                interaction.getConsole().writeLine("- " + workout.getStartTime().toLocalDate() + ": " + activity.getLoad() + " kg");
+                interaction.getConsole().write("o " + workout.getStartTime() + " - ");
+                interaction.getConsole().write(workout.getEndTime() != null ? workout.getEndTime().toString() : "(em andamento)");
+                interaction.getConsole().writeLine(": " + activity.getLoad() + " kg");
             }
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
