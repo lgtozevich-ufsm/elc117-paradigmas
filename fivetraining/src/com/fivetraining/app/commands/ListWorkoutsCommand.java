@@ -13,14 +13,12 @@ import java.util.List;
 public class ListWorkoutsCommand extends ConsoleCommand {
     private final UserSession userSession;
     private final ExerciseDAO exerciseDAO;
-    private final ProgramDAO programDAO;
     private final WorkoutDAO workoutDAO;
     private final WorkoutActivityDAO workoutActivityDAO;
 
-    public ListWorkoutsCommand(UserSession userSession, ExerciseDAO exerciseDAO, ProgramDAO programDAO, WorkoutDAO workoutDAO, WorkoutActivityDAO workoutActivityDAO) {
+    public ListWorkoutsCommand(UserSession userSession, ExerciseDAO exerciseDAO, WorkoutDAO workoutDAO, WorkoutActivityDAO workoutActivityDAO) {
         this.userSession = userSession;
         this.exerciseDAO = exerciseDAO;
-        this.programDAO = programDAO;
         this.workoutDAO = workoutDAO;
         this.workoutActivityDAO = workoutActivityDAO;
     }

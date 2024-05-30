@@ -15,13 +15,11 @@ import com.fivetraining.console.items.ConsoleCommand;
 import java.sql.SQLException;
 
 public class AddProgramExerciseCommand extends ConsoleCommand {
-    private final UserSession userSession;
     private final ExerciseDAO exerciseDAO;
     private final ProgramDAO programDAO;
     private final ProgramExerciseDAO programExerciseDAO;
 
-    public AddProgramExerciseCommand(UserSession userSession, ExerciseDAO exerciseDAO, ProgramDAO programDAO, ProgramExerciseDAO programExerciseDAO) {
-        this.userSession = userSession;
+    public AddProgramExerciseCommand(ExerciseDAO exerciseDAO, ProgramDAO programDAO, ProgramExerciseDAO programExerciseDAO) {
         this.exerciseDAO = exerciseDAO;
         this.programDAO = programDAO;
         this.programExerciseDAO = programExerciseDAO;
@@ -42,8 +40,6 @@ public class AddProgramExerciseCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
-        userSession.throwIfNotAuthenticated();
-
         int programId = interaction.getArgument("id do programa").asInteger();
         int exerciseCode = interaction.getArgument("código do exercício").asInteger();
         int load = interaction.getArgument("carga").asInteger();
@@ -76,7 +72,7 @@ public class AddProgramExerciseCommand extends ConsoleCommand {
 
             programExerciseDAO.insert(programExercise);
 
-            interaction.getConsole().writeLine("O exercício foi adicionado ao programa com sucesso.");
+            interaction.getConsole().writeLine("O exercício \"" + exercise.getName() + "\" foi adicionado ao programa com sucesso.");
             interaction.getConsole().writeLine();
             interaction.getConsole().writeLine("o  código: " + exercise.getCode());
             interaction.getConsole().writeLine("|  nome: " + exercise.getName());

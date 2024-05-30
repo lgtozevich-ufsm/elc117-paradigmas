@@ -6,7 +6,6 @@ import com.fivetraining.app.daos.ProgramDAO;
 import com.fivetraining.app.daos.WorkoutActivityDAO;
 import com.fivetraining.app.daos.WorkoutDAO;
 import com.fivetraining.app.models.Exercise;
-import com.fivetraining.app.models.Program;
 import com.fivetraining.app.models.Workout;
 import com.fivetraining.app.models.WorkoutActivity;
 import com.fivetraining.console.ConsoleInteraction;

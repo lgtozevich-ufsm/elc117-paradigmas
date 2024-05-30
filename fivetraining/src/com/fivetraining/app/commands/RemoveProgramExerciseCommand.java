@@ -13,12 +13,10 @@ import com.fivetraining.console.items.ConsoleCommand;
 import java.sql.SQLException;
 
 public class RemoveProgramExerciseCommand extends ConsoleCommand {
-    private final UserSession userSession;
     private final ExerciseDAO exerciseDAO;
     private final ProgramExerciseDAO programExerciseDAO;
 
-    public RemoveProgramExerciseCommand(UserSession userSession, ExerciseDAO exerciseDAO, ProgramExerciseDAO programExerciseDAO) {
-        this.userSession = userSession;
+    public RemoveProgramExerciseCommand(ExerciseDAO exerciseDAO, ProgramExerciseDAO programExerciseDAO) {
         this.exerciseDAO = exerciseDAO;
         this.programExerciseDAO = programExerciseDAO;
 
@@ -33,8 +31,6 @@ public class RemoveProgramExerciseCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
-        userSession.throwIfNotAuthenticated();
-
         int programId = interaction.getArgument("id do programa").asInteger();
         int exerciseCode = interaction.getArgument("código do exercício").asInteger();
 
@@ -49,7 +45,7 @@ public class RemoveProgramExerciseCommand extends ConsoleCommand {
 
             programExerciseDAO.delete(programExercise);
 
-            interaction.getConsole().writeLine("O exercício \"" + exercise.getName() + "\" foi removido do programa com sucesso!");
+            interaction.getConsole().writeLine("O exercício \"" + exercise.getName() + "\" foi removido do programa com sucesso.");
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
         }

@@ -1,6 +1,5 @@
 package com.fivetraining.app.commands;
 
-import com.fivetraining.app.UserSession;
 import com.fivetraining.app.daos.ProgramDAO;
 import com.fivetraining.app.daos.UserDAO;
 import com.fivetraining.app.models.Program;
@@ -13,13 +12,14 @@ import com.fivetraining.console.items.ConsoleCommand;
 import java.sql.SQLException;
 
 public class RegisterProgramCommand extends ConsoleCommand {
-    private final UserSession userSession;
+    private final UserDAO userDAO;
     private final ProgramDAO programDAO;
 
-    public RegisterProgramCommand(UserSession userSession, ProgramDAO programDAO) {
-        this.userSession = userSession;
+    public RegisterProgramCommand(UserDAO userDAO, ProgramDAO programDAO) {
+        this.userDAO = userDAO;
         this.programDAO = programDAO;
 
+        addParameter(ConsoleParameter.createString("cpf", true));
         addParameter(ConsoleParameter.createString("nome", true));
     }
 
@@ -30,18 +30,27 @@ public class RegisterProgramCommand extends ConsoleCommand {
 
     @Override
     public void run(ConsoleInteraction interaction) throws ConsoleCommandExecutionException {
-        userSession.throwIfNotAuthenticated();
-
+        String cpf = interaction.getArgument("cpf").asString();
         String name = interaction.getArgument("nome").asString();
 
         try {
+            User user = userDAO.findByCpf(cpf);
+
+            if (user == null) {
+                throw new ConsoleCommandExecutionException("Nenhum usuário com o CPF \"" + cpf + "\" foi encontrado");
+            }
+
             Program program = new Program();
-            program.setUserId(userSession.getAuthenticatedUser().getId());
+            program.setUserId(user.getId());
             program.setName(name);
 
             programDAO.insert(program);
 
-            interaction.getConsole().writeLine("O programa foi registrado com sucesso!");
+            interaction.getConsole().writeLine("O programa foi registrado com sucesso.");
+            interaction.getConsole().writeLine();
+            interaction.getConsole().writeLine("o  id: " + program.getId());
+            interaction.getConsole().writeLine("o  id do usuário: " + program.getUserId());
+            interaction.getConsole().writeLine("`- nome: " + program.getName());
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
         }
