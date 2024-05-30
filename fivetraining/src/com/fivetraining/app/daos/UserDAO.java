@@ -95,8 +95,7 @@ public class UserDAO {
         List<User> users = new ArrayList<>();
         String sql = "SELECT id, cpf, name, birth_date FROM users";
 
-        try (PreparedStatement statement = database.getConnection().prepareStatement(sql))
-        {
+        try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {

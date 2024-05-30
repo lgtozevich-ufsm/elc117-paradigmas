@@ -108,7 +108,7 @@ public class WorkoutDAO {
 
     public List<Workout> findAllWithUserIdInRange(int userId, LocalDateTime fromTime, LocalDateTime toTime) throws SQLException {
         List<Workout> workouts = new ArrayList<>();
-        String sql = "SELECT id, program_name, start_time, end_time FROM workouts WHERE user_id = ? AND start_time BETWEEN ? AND ?";
+        String sql = "SELECT id, program_name, start_time, end_time FROM workouts WHERE user_id = ? AND start_time BETWEEN ? AND ? ORDER BY start_time";
 
         try (PreparedStatement statement = database.getConnection().prepareStatement(sql)) {
             statement.setInt(1, userId);
