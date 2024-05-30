@@ -1,83 +1,169 @@
-reg-plano Simples 79.90
-reg-plano Gold 89.90
-reg-plano Premium 99.90
+reg-aluno 123.456.789-01 Fulano 1976-01-20
+reg-aluno 234.567.890-12 Ciclano 2000-01-01
+reg-aluno 106.910.061-91 Belcrano 1981-03-21
 
-reg-exerc 1 "Leg Press" "Quadríceps, Glúteos"
-reg-exerc 5 "Cadeira Adutora" "Adutores"
+list-alunos
+
+alt-aluno 106.910.061-91 106.910.060-91 Beltrano 1981-03-12
+
+list-alunos
+
+busc-aluno-cpf 56
+busc-aluno-nome lano
+
+busc-aluno-cpf 106.910.060-91
+busc-aluno-nome bElTraNo
+
+busc-aluno-cpf 128.366.320-11
+busc-aluno-nome Ze
+
+del-aluno 106.910.060-91
+
+list-alunos
+
+reg-plano 1 Simples 79.90
+reg-plano 2 Gold 89.90
+reg-plano 3 Premium 99.90
+reg-plano 3 Premium 99.90
+
+reg-exerc 01 "Leg Press" "Quadríceps, Glúteos"
+reg-exerc 05 "Cadeira Adutora" "Adutores"
 reg-exerc 20 "Supino Máquina" "Peitorais, Tríceps"
 reg-exerc 26 "Crucifixo Máquina" "Peitorais"
 reg-exerc 40 "Abdominal Máquina" "Abdominais"
-reg-exerc 50 "Desenvolvimento "Máquina Aberto" Deltoides, Trapézio, Tríceps"
+reg-exerc 50 "Desenvolvimento Máquina Aberto" "Deltoides, Trapézio, Tríceps"
+reg-exerc 50 "Desenvolvimento Máquina Aberto" "Deltoides, Trapézio, Tríceps"
 
-reg-aluno 1 Jaime 2005-07-25
+list-exercs
 
-insc-aluno 1 1 2022-01-01 2025-01-01 123 2030-01-01 123
+insc-aluno 234.567.890-12 3 2025-01-01 2025-12-31 "5589 6336 2519 4697" "2026-03-30" 853
+insc-aluno 234.567.890-12 1 2026-01-01 2026-12-31 "5308 9887 5759 7533" "2028-09-30" 304
+insc-aluno 234.567.890-12 4 2026-01-01 2026-12-31 "5308 9887 5759 7533" "2028-09-30" 304
 
-entrar 1
+list-inscs
 
-reg-prog "Treino A"
+reg-prog 123.456.789-01 "Treino A"
+add-exerc-prog 1 1 60 3 10 15 2
+add-exerc-prog 1 20 20 2 5 10 5
+add-exerc-prog 1 20 1 1 1 1 1
 
-add-exerc-prog 1 1 5 3 10 15 1
-add-exerc-prog 1 5 10 3 10 15 1
-add-exerc-prog 1 20 15 3 10 15 1
-add-exerc-prog 1 26 20 3 10 15 1
-add-exerc-prog 1 50 25 3 10 15 1
+reg-prog 123.456.789-01 "Treino B"
+add-exerc-prog 2 1 80 3 10 15 2
+add-exerc-prog 2 50 100 1000 80 100 1500
 
-inic-treino 1 2024-05-02T10:15:30
+reg-prog 234.567.890-12 "Treino A"
+add-exerc-prog 3 1 60 3 10 15 2
+add-exerc-prog 3 20 20 2 5 10 5
+
+reg-prog 234.567.890-12 "Treino B"
+add-exerc-prog 4 1 60 3 10 15 2
+add-exerc-prog 4 50 100 1000 80 100 1500
+
+entrar 123.456.789-01
+list-progs
+sair
+
+alt-exerc-prog 2 50 30 2 15 20 1.5
+
+entrar 123.456.789-01
+list-progs
+sair
+
+rm-exerc-prog 2 50
+
+entrar 123.456.789-01
+list-progs
+sair
+
+del-prog 1
+
+entrar 123.456.789-01
+list-progs
+sair
+
+entrar 234.567.890-12
+
+list-progs
+list-treinos
+
+inic-treino 2 2026-02-01T10:00:00
+inic-treino 3 2026-02-01T10:00:00
+ver-treino
+conc-treino 1
+ver-treino
+conc-treino 20
+ver-treino
+enc-treino 2026-02-01T11:00:00
+ver-treino
+
+list-treinos
+
+inic-treino 3 2026-02-02T10:00:00
+conc-treino 1
+conc-treino 20
+enc-treino 2026-02-02T11:00:00
+
+inic-treino 3 2026-02-03T16:00:00
+alt-treino 1 120
+ver-treino
+conc-treino 1
+conc-treino 20
+alt-treino 1 120
+enc-treino 2026-02-03T18:00:00
+
+list-treinos
+sair
+
+alt-exerc-prog 3 1 200 3 10 15 2
+entrar 234.567.890-12
+
+inic-treino 3 2026-02-04T10:00:00
+conc-treino 1
+conc-treino 20
+ver-treino
+enc-treino 2026-02-04T11:00:00
+
+inic-treino 4 2026-02-04T16:00:00
 conc-treino 1
 conc-treino 50
-enc-treino 2024-05-02T11:15:30
+enc-treino 2026-02-04T18:00:00
 
-inic-treino 1 2024-05-03T23:59:59
+inic-treino 4 2026-02-05T15:00:00
 conc-treino 1
 conc-treino 50
-enc-treino 2024-05-03T23:59:59
+enc-treino 2026-02-05T18:00:00
 
-inic-treino 1 2024-05-04T23:59:59
+inic-treino 4 2026-02-06T15:00:00
 conc-treino 1
 conc-treino 50
-enc-treino 2024-05-04T23:59:59
+enc-treino 2026-02-06T18:00:00
 
-inic-treino 1 2024-05-05T23:59:59
+inic-treino 3 2026-02-07T15:00:00
+conc-treino 20
+enc-treino 2026-02-07T18:00:00
+
+inic-treino 3 2026-02-08T15:00:00
 conc-treino 1
-conc-treino 50
-enc-treino 2024-05-05T23:59:59
+enc-treino 2026-02-08T18:00:00
 
-inic-treino 1 2024-05-06T23:59:59
+relat-carga 1
+relat-carga 20
+relat-presenca 2026-01-01T00:00:00 2026-02-02T23:59:59
+relat-presenca 2026-02-03T00:00:00 2026-02-28T23:59:59
+relat-presenca 2026-02-04T16:00:00 2026-02-28T23:59:59
+relat-presenca 2026-02-04T16:01:00 2026-02-28T23:59:59
+
+entrar 123.456.789-01
+
+list-progs
+list-treinos
+
+inic-treino 2 2026-02-08T15:00:00
+ver-treino
 conc-treino 1
-conc-treino 50
-enc-treino 2024-05-06T23:59:59
+enc-treino 2026-02-08T18:00:00
 
-inic-treino 1 2024-06-06T23:59:59
-conc-treino 1
-conc-treino 50
-enc-treino 2024-06-06T23:59:59
-
-inic-treino 1 2024-07-01T23:59:59
-conc-treino 1
-conc-treino 50
-enc-treino 2024-07-01T23:59:59
-
-alt-exerc-prog 1 50 50
-
-inic-treino 1 2024-07-02T23:59:59
-conc-treino 1
-conc-treino 50
-enc-treino 2024-07-02T23:59:59
-
-inic-treino 1 2024-07-03T23:59:59
-conc-treino 1
-conc-treino 50
-enc-treino 2024-07-03T23:59:59
-
-alt-exerc-prog 1 50 25
-
-inic-treino 1 2024-08-03T23:59:59
-conc-treino 1
-conc-treino 50
-enc-treino 2024-08-03T23:59:59
-
-inic-treino 1 2024-08-04T23:59:59
-conc-treino 1
-conc-treino 50
-enc-treino 2024-08-04T23:59:59
+relat-carga 1
+relat-carga 50
+relat-presenca 2026-01-01T00:00:00 2026-02-02T23:59:59
+relat-presenca 2026-02-03T00:00:00 2026-02-28T23:59:59
