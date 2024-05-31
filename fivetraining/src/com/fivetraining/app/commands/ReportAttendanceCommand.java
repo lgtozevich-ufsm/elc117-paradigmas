@@ -41,8 +41,9 @@ public class ReportAttendanceCommand extends ConsoleCommand {
             List<Workout> workouts = workoutDAO.findAllWithUserIdInRange(userSession.getAuthenticatedUser().getId(), fromTime, toTime);
 
             for (Workout workout : workouts) {
-                interaction.getConsole().write("o " + workout.getProgramName() + ": " + workout.getStartTime() + " - ");
-                interaction.getConsole().writeLine(workout.getEndTime() != null ? workout.getEndTime().toString() : "(em andamento)");
+                interaction.getConsole().write("o " + workout.getStartTime() + " - ");
+                interaction.getConsole().write(workout.getEndTime() != null ? workout.getEndTime().toString() : "(em andamento)");
+                interaction.getConsole().writeLine(": " + workout.getProgramName());
             }
         } catch (SQLException exception) {
             throw new ConsoleCommandExecutionException(exception.getMessage());
