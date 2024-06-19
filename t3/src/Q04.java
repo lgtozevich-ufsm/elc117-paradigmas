@@ -18,8 +18,7 @@ public class Q04 {
 
         System.out.println("Digite 10 números:");
 
-        List<Integer> numbers = IntStream
-                .rangeClosed(1, 10)
+        List<Integer> numbers = IntStream.rangeClosed(1, 10)
                 .map(i -> {
                     System.out.print("Número[" + i + "]: ");
                     return scanner.nextInt();

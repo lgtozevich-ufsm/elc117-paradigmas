@@ -8,7 +8,7 @@ public class Q05 {
         List<Double> adjustedPrices = readAdjustedPrices();
 
         System.out.println();
-        System.out.println("A média dos preços atualizados é R$ " + computeAdjustedPriceAverage(adjustedPrices).orElse(0.0));
+        System.out.println("A média dos preços atualizados é R$ " + computeAdjustedPriceAverage(adjustedPrices).orElse(0.0) + ".");
     }
 
     private static List<Double> readAdjustedPrices() {
@@ -27,7 +27,7 @@ public class Q05 {
                 break;
             }
 
-            System.out.println("- Preço: ");
+            System.out.print("- Preço: ");
             double price = scanner.nextDouble();
 
             if (price < 0.0) {
@@ -38,6 +38,7 @@ public class Q05 {
 
             System.out.println();
             System.out.println("O novo preço do produto " + code + " é R$ " + adjustedPrice);
+            System.out.println();
 
             adjustedPrices.add(adjustedPrice);
         }

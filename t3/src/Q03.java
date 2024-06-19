@@ -23,11 +23,12 @@ public class Q03 {
 
             double averageGrade = computeAverageGrade(grades);
 
-            System.out.print("O aluno " + code + " com as notas ");
-            System.out.print(grades.stream().map(x -> x.toString()).collect(Collectors.joining(", ")));
-            System.out.print(" foi ");
+            System.out.print("O aluno " + code + " foi ");
             System.out.print(averageGrade >= 5 ? "APROVADO" : "REPROVADO");
-            System.out.println("com média " + averageGrade + ".");
+            System.out.print(" com as notas ");
+            System.out.print(grades.stream().map(x -> x.toString()).collect(Collectors.joining(", ")));
+            System.out.println(" e com média " + averageGrade + ".");
+            System.out.println();
         });
 
         scanner.close();
