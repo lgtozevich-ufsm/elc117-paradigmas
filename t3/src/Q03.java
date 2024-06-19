@@ -11,27 +11,32 @@ public class Q03 {
 
             System.out.print("- Código: ");
             int code = scanner.nextInt();
-            List<Double> grades = IntStream.rangeClosed(1, 3).mapToDouble(j -> {
-                System.out.print("- Nota " + (j) + ": ");
-                return scanner.nextDouble();
-            }).boxed().collect(Collectors.toList());
 
+            List<Double> grades = IntStream.rangeClosed(1, 3)
+                .mapToDouble(j -> {
+                    System.out.print("- Nota " + j + ": ");
+                    return scanner.nextDouble();
+                })
+                .boxed()
+                .collect(Collectors.toList());
 
-            System.out.println("Código: " + code);
-            grades.forEach(grade -> System.out.println("Nota: " + grade));
 
             double averageGrade = computeAverageGrade(grades);
 
-            System.out.println("Média: " + averageGrade);
-            System.out.println(averageGrade >= 5 ? "Aprovado" : "Reprovado");
+            System.out.print("O aluno " + code + " com as notas ");
+            System.out.print(grades.stream().map(x -> x.toString()).collect(Collectors.joining(", ")));
+            System.out.print(" foi ");
+            System.out.print(averageGrade >= 5 ? "APROVADO" : "REPROVADO");
+            System.out.println("com média " + averageGrade + ".");
         });
+
+        scanner.close();
     }
 
     private static double computeAverageGrade(List<Double> grades) {
-        double maxGrade = grades.stream().max(Double::compareTo).orElse(0.0);
+        double maximumGrade = grades.stream().max(Double::compareTo).orElse(0.0);
+        double remainingGrade =  grades.stream().mapToDouble(Double::doubleValue).sum() - maximumGrade;
 
-        double averageGrade =  grades.stream().mapToDouble(Double::doubleValue).sum() - maxGrade;
-
-        return (maxGrade * 4 + averageGrade * 3) / 10;
+        return (maximumGrade * 4 + remainingGrade * 3) / 10;
     }
 }

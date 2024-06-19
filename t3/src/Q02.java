@@ -47,7 +47,7 @@ public class Q02 {
     }
 
     public static long countVotes(List<Integer> votes, int code) {
-        return votes.stream().filter((vote) -> vote == code).count();
+        return votes.stream().filter(vote -> vote == code).count();
     }
 
     public static boolean isVoteValid(int code) {
