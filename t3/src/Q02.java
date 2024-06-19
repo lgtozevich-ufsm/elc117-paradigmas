@@ -10,7 +10,7 @@ public class Q02 {
         System.out.println();
         System.out.println("- total de votos para cada candidato:");
 
-        IntStream.rangeClosed(1, 4).forEach((i) -> {
+        IntStream.rangeClosed(1, 4).forEach(i -> {
             System.out.println("  candidato " + i + ": " + countVotes(votes, i));
         });
 

@@ -38,6 +38,6 @@ public class Q03 {
         double maximumGrade = grades.stream().max(Double::compareTo).orElse(0.0);
         double remainingGrade =  grades.stream().mapToDouble(Double::doubleValue).sum() - maximumGrade;
 
-        return (maximumGrade * 4 + remainingGrade * 3) / 10;
+        return (maximumGrade * 4.0 + remainingGrade * 3.0) / 10.0;
     }
 }
