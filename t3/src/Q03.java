@@ -26,7 +26,7 @@ public class Q03 {
             System.out.print("O aluno " + code + " foi ");
             System.out.print(averageGrade >= 5 ? "APROVADO" : "REPROVADO");
             System.out.print(" com as notas ");
-            System.out.print(grades.stream().map(x -> x.toString()).collect(Collectors.joining(", ")));
+            System.out.print(grades.stream().map(Object::toString).collect(Collectors.joining(", ")));
             System.out.println(" e com média " + averageGrade + ".");
             System.out.println();
         });
