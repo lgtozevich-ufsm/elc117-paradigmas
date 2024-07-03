@@ -33,6 +33,12 @@ public class CharDescriptor extends TypeDescriptor {
 
     @Override
     public String getRandomValue() {
-        return "\"Random\"";
+        int length = this.size;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            builder.append(characters.charAt((int) (Math.random() * characters.length())));
+        }
+        return builder.toString();
     }
 }
