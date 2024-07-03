@@ -28,7 +28,7 @@ public class ModelTemplate implements Template {
 
         builder.append("}\n");
 
-        return new Resource(standard.getModelClassName(table), builder.toString());
+        return new Resource(standard.getModelClassName(table) + ".java", builder.toString());
     }
 
     private void appendGetter(StringBuilder builder, TemplateStandard standard, Column column, TypeDescriptor descriptor) {

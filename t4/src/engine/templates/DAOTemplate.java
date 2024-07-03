@@ -38,7 +38,7 @@ public class DAOTemplate implements Template {
 
         builder.append("}\n");
 
-        return new Resource(standard.getDAOClassName(table), builder.toString());
+        return new Resource(standard.getDAOClassName(table) + ".java", builder.toString());
     }
 
     private void appendConstructor(StringBuilder builder, TemplateStandard standard, Table table) {
