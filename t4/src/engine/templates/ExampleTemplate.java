@@ -25,7 +25,6 @@ public class ExampleTemplate implements Template {
         builder.append(standard.getExampleClassName(table));
         builder.append(" {\n");
 
-        builder.append("\n");
         builder.append("    public static void main(String[] args) {\n");
 
         builder.append("        try {\n");
@@ -143,6 +142,9 @@ public class ExampleTemplate implements Template {
         builder.append("(model);\n");
 
         builder.append("\n");
+        builder.append("        System.out.println(\"- \" + model);\n");
+
+        builder.append("\n");
         builder.append("        return model;\n");
 
         builder.append("    }\n");
@@ -183,6 +185,9 @@ public class ExampleTemplate implements Template {
         builder.append("        dao.");
         builder.append(standard.getDAOUpdateMethodName(table));
         builder.append("(model);\n");
+
+        builder.append("\n");
+        builder.append("        System.out.println(\"- \" + model);\n");
 
         builder.append("    }\n");
     }
@@ -239,7 +244,7 @@ public class ExampleTemplate implements Template {
         builder.append(");\n");
 
         builder.append("\n");
-        builder.append("        System.out.println(\"- \" + model.toString());\n");
+        builder.append("        System.out.println(\"- \" + model);\n");
 
         builder.append("    }\n");
     }
@@ -266,7 +271,7 @@ public class ExampleTemplate implements Template {
         builder.append("        for (");
         builder.append(standard.getModelClassName(table));
         builder.append(" model : models) {\n");
-        builder.append("            System.out.println(\"- \" + model.toString());\n");
+        builder.append("            System.out.println(\"- \" + model);\n");
         builder.append("        }\n");
 
         builder.append("    }\n");

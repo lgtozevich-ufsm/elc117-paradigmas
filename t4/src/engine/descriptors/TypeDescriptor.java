@@ -13,23 +13,23 @@ public abstract class TypeDescriptor {
 
     public static TypeDescriptor fromColumn(Column column) {
         switch (column.typeName()) {
+            case "BIT":
+                return new BitDescriptor(column.size());
+            case "TINYINT":
+                return new ByteDescriptor();
+            case "SMALLINT":
+                return new ShortDescriptor();
+            case "MEDIUMINT":
             case "INT":
                 return new IntegerDescriptor();
-            case "BIT":
-                return new BooleanDescriptor();
-            case "CHAR":
-            case "VARCHAR":
-            case "BINARY":
-            case "VARBINARY":
-            case "TINYBLOB":
-            case "TINYTEXT":
-            case "TEXT":
-            case "BLOB":
-            case "MEDIUMTEXT":
-            case "MEDIUMBLOB":
-            case "LONGTEXT":
-            case "LONGBLOB":
-                return new StringDescriptor(column.size());
+            case "BIGINT":
+                return new LongDescriptor();
+            case "FLOAT":
+                return new FloatDescriptor();
+            case "DOUBLE":
+                return new DoubleDescriptor();
+            case "DECIMAL":
+                return new DecimalDescriptor(column.size(), column.decimalDigits());
             case "DATE":
                 return new DateDescriptor();
             case "TIME":
@@ -37,18 +37,16 @@ public abstract class TypeDescriptor {
             case "DATETIME":
             case "TIMESTAMP":
                 return new TimestampDescriptor();
-            case "FLOAT":
-                return new FloatDescriptor();
-            case "DOUBLE":
-                return new DoubleDescriptor();
-            case "DECIMAL":
-                return new DecimalDescriptor(column.size(), column.decimalDigits());
-            case "BIGINT":
-                return new LongDescriptor();
-            case "SMALLINT":
-                return new ShortDescriptor();
+            case "CHAR":
+            case "VARCHAR":
+            case "TINYTEXT":
+            case "MEDIUMTEXT":
+            case "MEDIUMBLOB":
+            case "LONGTEXT":
+            case "TEXT":
+                return new StringDescriptor(column.size());
             default:
-                return null;
+                throw new IllegalArgumentException("Unknown column type: " + column.typeName());
         }
     }
 }

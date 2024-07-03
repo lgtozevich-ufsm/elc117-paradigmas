@@ -1,0 +1,33 @@
+BIT[(M)]
+TINYINT[(M)] [UNSIGNED] [ZEROFILL]
+BOOL, BOOLEAN = TINYINT(1)
+SMALLINT[(M)] [UNSIGNED] [ZEROFILL]
+MEDIUMINT[(M)] [UNSIGNED] [ZEROFILL]
+INT[(M)] [UNSIGNED] [ZEROFILL]
+INTEGER[(M)] [UNSIGNED] [ZEROFILL] = INT
+BIGINT[(M)] [UNSIGNED] [ZEROFILL]
+DECIMAL[(M[,D])] [UNSIGNED] [ZEROFILL]
+FLOAT(p) [UNSIGNED] [ZEROFILL]
+DOUBLE[(M,D)] [UNSIGNED] [ZEROFILL]
+
+DATE
+DATETIME[(fsp)]
+TIMESTAMP[(fsp)]
+TIME[(fsp)]
+YEAR[(4)]
+
+[NATIONAL] CHAR[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
+[NATIONAL] VARCHAR(M) [CHARACTER SET charset_name] [COLLATE collation_name]
+TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
+MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
+LONGTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
+TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
+BINARY[(M)]
+VARBINARY(M)
+TINYBLOB
+BLOB[(M)]
+MEDIUMBLOB
+LONGBLOB
+
+ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
+SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]

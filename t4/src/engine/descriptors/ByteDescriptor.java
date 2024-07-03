@@ -2,24 +2,24 @@ package engine.descriptors;
 
 import java.util.Random;
 
-public class TimeDescriptor extends TypeDescriptor {
+public class ByteDescriptor extends TypeDescriptor {
     @Override
     public String getJavaTypeName() {
-        return "java.sql.Time";
+        return "byte";
     }
 
     @Override
     public String getJdbcGetterMethodName() {
-        return "getTime";
+        return "getByte";
     }
 
     @Override
     public String getJdbcSetterMethodName() {
-        return "setTime";
+        return "setByte";
     }
 
     @Override
     public String getRandomValue() {
-        return "new java.sql.Time(" + Math.abs(new Random().nextLong()) + "L)";
+        return "(byte)" + String.valueOf(new Random().nextInt(Byte.MAX_VALUE + 1));
     }
 }

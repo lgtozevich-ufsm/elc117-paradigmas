@@ -1,7 +1,0 @@
-- Tabela
-    - Nome
-    - Colunas
-    - Chaves
-- Coluna
-    - Nome
-    - Tipo

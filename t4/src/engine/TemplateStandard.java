@@ -17,11 +17,11 @@ public class TemplateStandard {
     }
 
     public String getModelGetterName(Column column) {
-        return "get" + convertCamelCaseToPascalCase(column.name());
+        return "get" + TemplateUtils.convertCamelCaseToPascalCase(column.name());
     }
 
     public String getModelSetterName(Column column) {
-        return "set" + convertCamelCaseToPascalCase(column.name());
+        return "set" + TemplateUtils.convertCamelCaseToPascalCase(column.name());
     }
 
     public String getDAOInsertMethodName(Table table) {
@@ -72,7 +72,12 @@ public class TemplateStandard {
         return "listExample";
     }
 
-    private String convertCamelCaseToPascalCase(String name) {
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
+    public String getTableQualifiedName(Table table) {
+        return TemplateUtils.escapeIdentifier(table.catalog()) + "." + TemplateUtils.escapeIdentifier(table.name());
+    }
+
+    public String getColumnQualifiedName(Column column) {
+        return TemplateUtils.escapeIdentifier(column.tableCatalog()) + "." + TemplateUtils.escapeIdentifier(column.tableName()) + "." + TemplateUtils.escapeIdentifier(column.name());
     }
 }
+

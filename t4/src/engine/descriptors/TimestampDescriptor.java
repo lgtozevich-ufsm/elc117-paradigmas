@@ -1,7 +1,8 @@
 package engine.descriptors;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.Random;
 
 public class TimestampDescriptor extends TypeDescriptor {
     @Override
@@ -21,14 +22,20 @@ public class TimestampDescriptor extends TypeDescriptor {
 
     @Override
     public String getRandomValue() {
+        Random random = new Random();
 
-        LocalDateTime start = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
-        long days = (long) (Math.random() * 365 * 50);
-        long seconds = (long) (Math.random() * 24 * 60 * 60);
-        LocalDateTime randomDateTime = start.plusDays(days).plusSeconds(seconds);
+        int year = 1970 + random.nextInt(50);
+        int month = 1 + random.nextInt(12);
+        int day = 1 + random.nextInt(28);
 
-        Timestamp randomTimestamp = Timestamp.valueOf(randomDateTime);
-        return "new java.sql.Timestamp(" + randomTimestamp.getTime() + "L)";
+        int hour = random.nextInt(24);
+        int minute = random.nextInt(60);
+        int second = random.nextInt(60);
+        int nanosecond = random.nextInt(1000000);
 
+        LocalDateTime localDateTIme = LocalDateTime.of(year, month, day, hour, minute, second, nanosecond);
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTIme, ZonedDateTime.now().getZone());
+
+        return "new java.sql.Timestamp(" + zonedDateTime.toInstant().toEpochMilli() + "L)";
     }
 }

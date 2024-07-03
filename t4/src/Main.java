@@ -1,4 +1,5 @@
 import database.Scheme;
+import database.Table;
 import engine.Resource;
 import engine.TemplateSettings;
 import engine.TemplateStandard;
@@ -20,7 +21,7 @@ public class Main {
         String driver = "com.mysql.cj.jdbc.Driver";
 
         if (args.length < 5) {
-            System.out.println("Usage: java -jar generator.jar <url> <user> <password> <database> <output>");
+            System.out.println("Usage: <url> <user> <password> <database> <outputDirectory>");
             return;
         }
 
@@ -44,7 +45,7 @@ public class Main {
 
             TemplateStandard standard = new TemplateStandard();
 
-            for (var table : scheme.tables()) {
+            for (Table table : scheme.tables()) {
                 TemplateSettings settings = new TemplateSettings(driver, url, user, password, table);
 
                 for (Template template : templates) {
@@ -52,6 +53,7 @@ public class Main {
                 }
             }
 
+            connection.close();
         } catch (Exception exception) {
             exception.printStackTrace();
         }

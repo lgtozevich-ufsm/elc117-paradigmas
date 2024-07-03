@@ -22,7 +22,7 @@ public class DAOTemplate implements Template {
             throw new UnsupportedOperationException("No primary key columns detected");
         }
 
-        builder.append("class ");
+        builder.append("public class ");
         builder.append(standard.getDAOClassName(table));
         builder.append(" {\n");
 
@@ -68,9 +68,9 @@ public class DAOTemplate implements Template {
         builder.append(" model) throws java.sql.SQLException {\n");
 
         builder.append("        String sql = \"INSERT INTO ");
-        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append(standard.getTableQualifiedName(table));
         builder.append("(");
-        appendColumnQueryNames(builder, baseColumns);
+        appendColumnQueryNames(builder, standard, baseColumns);
         builder.append(") VALUES (");
         appendColumnQueryPlaceholders(builder, baseColumns);
         builder.append(")\";\n");
@@ -132,9 +132,9 @@ public class DAOTemplate implements Template {
 
         builder.append("        String sql = \"");
         builder.append("SELECT * FROM ");
-        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append(standard.getTableQualifiedName(table));
         builder.append(" WHERE ");
-        appendColumnQueryConditions(builder, primaryKeyColumns);
+        appendColumnQueryConditions(builder, standard, primaryKeyColumns);
         builder.append("\";\n");
 
         builder.append("\n");
@@ -182,11 +182,11 @@ public class DAOTemplate implements Template {
 
         builder.append("        String sql = \"");
         builder.append("UPDATE ");
-        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append(standard.getTableQualifiedName(table));
         builder.append(" SET ");
-        appendColumnQueryAssignments(builder, nonPrimaryKeyColumns);
+        appendColumnQueryAssignments(builder, standard, nonPrimaryKeyColumns);
         builder.append(" WHERE ");
-        appendColumnQueryConditions(builder, primaryKeyColumns);
+        appendColumnQueryConditions(builder, standard, primaryKeyColumns);
         builder.append("\";\n");
 
         builder.append("\n");
@@ -240,9 +240,9 @@ public class DAOTemplate implements Template {
 
         builder.append("        String sql = \"");
         builder.append("DELETE FROM ");
-        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append(standard.getTableQualifiedName(table));
         builder.append(" WHERE ");
-        appendColumnQueryConditions(builder, primaryKeyColumns);
+        appendColumnQueryConditions(builder, standard, primaryKeyColumns);
         builder.append("\";\n");
 
         builder.append("\n");
@@ -282,7 +282,7 @@ public class DAOTemplate implements Template {
 
         builder.append("        String sql = \"");
         builder.append("SELECT * FROM ");
-        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append(standard.getTableQualifiedName(table));
         builder.append("\";\n");
 
         builder.append("\n");
@@ -335,11 +335,10 @@ public class DAOTemplate implements Template {
         builder.append("    }\n");
     }
 
-    private void appendColumnQueryNames(StringBuilder builder, List<Column> columns) {
+    private void appendColumnQueryNames(StringBuilder builder, TemplateStandard standard, List<Column> columns) {
         builder.append(columns
                 .stream()
-                .map(Column::name)
-                .map(TemplateUtils::escapeIdentifier)
+                .map(c -> standard.getColumnQualifiedName(c))
                 .collect(Collectors.joining(", ")));
     }
 
@@ -350,17 +349,17 @@ public class DAOTemplate implements Template {
                 .collect(Collectors.joining(", ")));
     }
 
-    private void appendColumnQueryConditions(StringBuilder builder, List<Column> columns) {
+    private void appendColumnQueryConditions(StringBuilder builder, TemplateStandard standard, List<Column> columns) {
         builder.append(columns
                 .stream()
-                .map(column -> TemplateUtils.escapeIdentifier(column.name()) + " = ?")
+                .map(column -> standard.getColumnQualifiedName(column) + " = ?")
                 .collect(Collectors.joining(" AND ")));
     }
 
-    private void appendColumnQueryAssignments(StringBuilder builder, List<Column> columns) {
+    private void appendColumnQueryAssignments(StringBuilder builder, TemplateStandard standard, List<Column> columns) {
         builder.append(columns
                 .stream()
-                .map(column -> TemplateUtils.escapeIdentifier(column.name()) + " = ?")
+                .map(column -> standard.getColumnQualifiedName(column) + " = ?")
                 .collect(Collectors.joining(", ")));
     }
 
