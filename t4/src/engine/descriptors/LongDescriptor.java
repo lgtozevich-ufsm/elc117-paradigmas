@@ -22,6 +22,6 @@ public class LongDescriptor extends TypeDescriptor {
 
     public String getRandomValue() {
         int max = 100;
-        return new Random().nextInt(max) + "L)";
+        return new Random().nextInt(max) + "L";
     }
 }
