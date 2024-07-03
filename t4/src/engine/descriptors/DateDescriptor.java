@@ -1,4 +1,5 @@
 package engine.descriptors;
+
 import java.util.Random;
 import java.time.LocalDate;
 
@@ -33,6 +34,7 @@ public class DateDescriptor extends TypeDescriptor {
 
         LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
 
-        return randomDate.toString();
+        return "new java.sql.Date(" + randomDate.getYear() + ", " + randomDate.getMonthValue() + ", "
+                + randomDate.getDayOfMonth() + ")";
     }
 }
