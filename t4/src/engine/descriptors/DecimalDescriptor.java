@@ -1,19 +1,26 @@
 package engine.descriptors;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Random;
+
+import engine.TemplateUtils;
 
 public class DecimalDescriptor extends TypeDescriptor {
     private final int size;
+    private final int decimalDigits;
 
-    public DecimalDescriptor(int size) {
+    public DecimalDescriptor(int size, int decimalDigits) {
         this.size = size;
+        this.decimalDigits = decimalDigits;
     }
 
     public int getSize() {
         return size;
     }
+
+    public int getDecimalDigits() {
+        return decimalDigits;
+    }
+
 
     @Override
     public String getJavaTypeName() {
@@ -32,13 +39,11 @@ public class DecimalDescriptor extends TypeDescriptor {
 
     @Override
     public String getRandomValue() {
-
         Random random = new Random();
 
-        BigDecimal randomDecimal = new BigDecimal(random.nextDouble() * 1000);
+        int integerPart = random.nextInt(0, (int)Math.pow(10, size - decimalDigits) - 1);
+        int decimalPart = random.nextInt(0, (int)Math.pow(10, decimalDigits) - 1);
 
-        randomDecimal = randomDecimal.setScale(size, RoundingMode.HALF_UP);
-
-        return "new java.math.BigDecimal(\"" + randomDecimal.toString() + "\")";
+        return "new java.math.BigDecimal(" + TemplateUtils.escapeString(integerPart + "." + decimalPart) + ")";
     }
 }

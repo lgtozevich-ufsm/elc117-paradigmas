@@ -1,3 +1,5 @@
+USE olympics;
+
 create table example (
     random_int int,
     random_string varchar(255),
@@ -13,5 +15,6 @@ create table example (
     random_char char(1),
     random_bigint bigint,
     random_smallint smallint,
+    random_timestamp timestamp,
     primary_key int primary key auto_increment
 );

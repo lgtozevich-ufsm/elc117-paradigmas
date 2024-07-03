@@ -1,11 +1,8 @@
 package engine.descriptors;
 
-public class SmallIntDescriptor extends TypeDescriptor {
+import java.util.Random;
 
-    public String getSQLTypeName() {
-        return "SMALLINT";
-    }
-
+public class ShortDescriptor extends TypeDescriptor {
     public String getJavaTypeName() {
         return "short";
     }
@@ -19,6 +16,6 @@ public class SmallIntDescriptor extends TypeDescriptor {
     }
 
     public String getRandomValue() {
-        return String.valueOf((short) (Math.random() * 100));
+        return String.valueOf(new Random().nextInt(1, 100));
     }
 }

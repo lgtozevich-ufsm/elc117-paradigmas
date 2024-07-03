@@ -38,6 +38,7 @@ public record Column(
         String name,
         String typeName,
         int size,
+        int decimalDigits,
         boolean nullable,
         boolean autoIncrement,
         boolean generated
@@ -50,6 +51,7 @@ public record Column(
             String columnName = resultSet.getString("COLUMN_NAME");
             String columnTypeName = resultSet.getString("TYPE_NAME");
             int columnSize = resultSet.getInt("COLUMN_SIZE");
+            int columnDecimalDigits = resultSet.getInt("DECIMAL_DIGITS");
             String columnIsNullable = resultSet.getString("IS_NULLABLE");
             String columnIsAutoIncrement = resultSet.getString("IS_AUTOINCREMENT");
             String columnGenerated = resultSet.getString("IS_GENERATEDCOLUMN");
@@ -60,6 +62,7 @@ public record Column(
                     columnName,
                     columnTypeName,
                     columnSize,
+                    columnDecimalDigits,
                     columnIsNullable.equals("YES"),
                     columnIsAutoIncrement.equals("YES"),
                     columnGenerated.equals("YES")

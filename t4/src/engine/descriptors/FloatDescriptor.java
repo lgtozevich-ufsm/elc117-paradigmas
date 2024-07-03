@@ -1,5 +1,7 @@
 package engine.descriptors;
 
+import java.util.Random;
+
 public class FloatDescriptor extends TypeDescriptor {
     @Override
     public String getJavaTypeName() {
@@ -18,6 +20,6 @@ public class FloatDescriptor extends TypeDescriptor {
 
     @Override
     public String getRandomValue() {
-        return String.valueOf(Math.random() * 100.0f);
+        return Math.floor(new Random().nextFloat(1.0f, 1000.0f)) / 100.0f + "f";
     }
 }

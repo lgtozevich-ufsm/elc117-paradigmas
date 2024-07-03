@@ -1,5 +1,7 @@
 package engine.descriptors;
 
+import java.util.Random;
+
 public class IntegerDescriptor extends TypeDescriptor {
     @Override
     public String getJavaTypeName() {
@@ -18,6 +20,6 @@ public class IntegerDescriptor extends TypeDescriptor {
 
     @Override
     public String getRandomValue() {
-        return String.valueOf((int) (Math.random() * 100));
+        return String.valueOf(new Random().nextInt(1, 100));
     }
 }

@@ -13,7 +13,7 @@ public abstract class TypeDescriptor {
         {
             case "INT":
                 return new IntegerDescriptor();
-            case "BOOL":
+            case "BIT":
                 return new BooleanDescriptor();
             case "CHAR":
             case "VARCHAR":
@@ -41,11 +41,11 @@ public abstract class TypeDescriptor {
             case "DOUBLE":
                 return new DoubleDescriptor();
             case "DECIMAL":
-                return new DecimalDescriptor(column.size());
+                return new DecimalDescriptor(column.size(), column.decimalDigits());
             case "BIGINT":
                 return new BigIntDescriptor();
             case "SMALLINT":
-                return new SmallIntDescriptor();
+                return new ShortDescriptor();
             default:
                 return null;
         }
