@@ -12,6 +12,30 @@ public class TemplateStandard {
         return table.name() + "DAO";
     }
 
+    public String getDAOInsertMethodName(Table table) {
+        return "insert";
+    }
+
+    public String getDAOUpdateMethodName(Table table) {
+        return "update";
+    }
+
+    public String getDAODeleteMethodName(Table table) {
+        return "delete";
+    }
+
+    public String getDAOGetMethodName(Table table) {
+        return "get";
+    }
+
+    public String getDAOListMethodName(Table table) {
+        return "list";
+    }
+
+    public String getDAOMapMethodName(Table table) {
+        return "map";
+    }
+
     public String getModelGetterName(Column column) {
         return "get" + convertCamelCaseToPascalCase(column.name());
     }

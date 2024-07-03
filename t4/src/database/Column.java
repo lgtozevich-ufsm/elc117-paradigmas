@@ -37,6 +37,7 @@ public record Column(
         String tableName,
         String name,
         String typeName,
+        int size,
         boolean nullable,
         boolean autoIncrement,
         boolean generated
@@ -48,6 +49,7 @@ public record Column(
         while (resultSet.next()) {
             String columnName = resultSet.getString("COLUMN_NAME");
             String columnTypeName = resultSet.getString("TYPE_NAME");
+            int columnSize = resultSet.getInt("COLUMN_SIZE");
             String columnIsNullable = resultSet.getString("IS_NULLABLE");
             String columnIsAutoIncrement = resultSet.getString("IS_AUTOINCREMENT");
             String columnGenerated = resultSet.getString("IS_GENERATEDCOLUMN");
@@ -57,6 +59,7 @@ public record Column(
                     tableName,
                     columnName,
                     columnTypeName,
+                    columnSize,
                     columnIsNullable.equals("YES"),
                     columnIsAutoIncrement.equals("YES"),
                     columnGenerated.equals("YES")
