@@ -16,6 +16,28 @@ public abstract class TypeDescriptor {
                 return new IntegerDescriptor();
             case "CHAR":
                 return new CharDescriptor(column.size());
+            case "BOOL":
+                return new BoolDescriptor();
+            case "VARCHAR":
+                return new VarcharDescriptor(column.size());
+            case "TEXT":
+                return new TextDescriptor();
+            case "LONGTEXT":
+                return new LongTextDescriptor();
+            case "DATE":
+                return new DateDescriptor();
+            case "TIME":
+                return new TimeDescriptor();
+            case "DATETIME":
+                return new DateTimeDescriptor();
+            case "TIMESTAMP":
+                return new TimestampDescriptor();
+            case "FLOAT":
+                return new FloatDescriptor();
+            case "DOUBLE":
+                return new DoubleDescriptor();
+            case "DECIMAL":
+                return new DecimalDescriptor(column.size());          
             default:
                 return null;
         }
