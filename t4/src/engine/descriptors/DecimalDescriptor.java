@@ -1,4 +1,5 @@
 package engine.descriptors;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
@@ -39,10 +40,10 @@ public class DecimalDescriptor extends TypeDescriptor {
 
         Random random = new Random();
 
-        BigDecimal randomDecimal = new BigDecimal(random.nextDouble() * 1000); 
+        BigDecimal randomDecimal = new BigDecimal(random.nextDouble() * 1000);
 
         randomDecimal = randomDecimal.setScale(size, RoundingMode.HALF_UP);
 
-        return randomDecimal.toString();
+        return "new java.math.BigDecimal(\"" + randomDecimal.toString() + "\")";
     }
 }

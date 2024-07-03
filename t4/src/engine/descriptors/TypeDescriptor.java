@@ -37,7 +37,11 @@ public abstract class TypeDescriptor {
             case "DOUBLE":
                 return new DoubleDescriptor();
             case "DECIMAL":
-                return new DecimalDescriptor(column.size());          
+                return new DecimalDescriptor(column.size());
+            case "BIGINT":
+                return new BigIntDescriptor();
+            case "SMALLINT":
+                return new SmallIntDescriptor();
             default:
                 return null;
         }
