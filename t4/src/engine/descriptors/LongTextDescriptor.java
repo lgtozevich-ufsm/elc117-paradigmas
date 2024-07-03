@@ -1,5 +1,6 @@
 package engine.descriptors;
 import java.util.Random;
+
 public class LongTextDescriptor extends TypeDescriptor {
 
     private static final int DEFAULT_TEXT_LENGTH = 200;
