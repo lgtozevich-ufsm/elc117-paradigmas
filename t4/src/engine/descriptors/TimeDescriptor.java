@@ -5,11 +5,6 @@ import java.util.Random;
 
 public class TimeDescriptor extends TypeDescriptor {
     @Override
-    public String getSQLTypeName() {
-        return "TIME";
-    }
-
-    @Override
     public String getJavaTypeName() {
         return "java.sql.Time";
     }

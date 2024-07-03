@@ -16,11 +16,6 @@ public class DecimalDescriptor extends TypeDescriptor {
     }
 
     @Override
-    public String getSQLTypeName() {
-        return "DECIMAL(" + size + ")";
-    }
-
-    @Override
     public String getJavaTypeName() {
         return "java.math.BigDecimal";
     }

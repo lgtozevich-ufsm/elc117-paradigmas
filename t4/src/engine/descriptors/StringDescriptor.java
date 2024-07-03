@@ -1,11 +1,13 @@
 package engine.descriptors;
 import java.util.Random;
 
-public class TextDescriptor extends TypeDescriptor {
-    private static final int DEFAULT_TEXT_LENGTH = 20;
-    @Override
-    public String getSQLTypeName() {
-        return "TEXT";
+import engine.TemplateUtils;
+
+public class StringDescriptor extends TypeDescriptor {
+    private final int size;
+
+    public StringDescriptor(int size) {
+        this.size = size;
     }
 
     @Override
@@ -25,18 +27,18 @@ public class TextDescriptor extends TypeDescriptor {
 
     @Override
     public String getRandomValue() {
-
-        int length = DEFAULT_TEXT_LENGTH;
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ";
+
+        Random random = new Random();
+        StringBuilder builder = new StringBuilder();
+
+        int length = random.nextInt(Math.min(size, 16)) + 1;
 
         for (int i = 0; i < length; i++) {
             char randomChar = characters.charAt(random.nextInt(characters.length()));
-            sb.append(randomChar);
+            builder.append(randomChar);
         }
 
-        return sb.toString();
+        return TemplateUtils.escapeString(builder.toString());
     }
 }

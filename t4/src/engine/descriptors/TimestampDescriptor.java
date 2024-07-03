@@ -5,11 +5,6 @@ import java.time.LocalDateTime;
 
 public class TimestampDescriptor extends TypeDescriptor {
     @Override
-    public String getSQLTypeName() {
-        return "TIMESTAMP";
-    }
-
-    @Override
     public String getJavaTypeName() {
         return "java.sql.Timestamp";
     }

@@ -47,6 +47,13 @@ public record Table(String catalog, String name, List<Column> columns, List<Key>
                 .toList());
     }
 
+    public List<Column> nonPrimaryKeyBaseColumns() {
+        return Collections.unmodifiableList(baseColumns())
+                .stream()
+                .filter(c -> keys().stream().noneMatch(k -> k.columnName().equals(c.name())))
+                .toList();
+    }
+
     public static List<Table> extractTablesFromCatalog(DatabaseMetaData metaData, String tableCatalog)
             throws SQLException {
         List<Table> tables = new ArrayList<>();

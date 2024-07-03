@@ -3,7 +3,6 @@ package engine.descriptors;
 import database.Column;
 
 public abstract class TypeDescriptor {
-    public abstract String getSQLTypeName();
     public abstract String getJavaTypeName();
     public abstract String getJdbcGetterMethodName();
     public abstract String getJdbcSetterMethodName();
@@ -14,16 +13,21 @@ public abstract class TypeDescriptor {
         {
             case "INT":
                 return new IntegerDescriptor();
-            case "CHAR":
-                return new CharDescriptor(column.size());
             case "BOOL":
-                return new BoolDescriptor();
+                return new BooleanDescriptor();
+            case "CHAR":
             case "VARCHAR":
-                return new VarcharDescriptor(column.size());
+            case "BINARY":
+            case "VARBINARY":
+            case "TINYBLOB":
+            case "TINYTEXT":
             case "TEXT":
-                return new TextDescriptor();
+            case "BLOB":
+            case "MEDIUMTEXT":
+            case "MEDIUMBLOB":
             case "LONGTEXT":
-                return new LongTextDescriptor();
+            case "LONGBLOB":
+                return new StringDescriptor(column.size());
             case "DATE":
                 return new DateDescriptor();
             case "TIME":

@@ -2,11 +2,6 @@ package engine.descriptors;
 
 public class DoubleDescriptor extends TypeDescriptor {
     @Override
-    public String getSQLTypeName() {
-        return "DOUBLE";
-    }
-
-    @Override
     public String getJavaTypeName() {
         return "double";
     }

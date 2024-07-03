@@ -1,11 +1,6 @@
 package engine.descriptors;
 
-public class BoolDescriptor extends TypeDescriptor {
-    @Override
-    public String getSQLTypeName() {
-        return "BOOL";
-    }
-
+public class BooleanDescriptor extends TypeDescriptor {
     @Override
     public String getJavaTypeName() {
         return "boolean";
@@ -23,6 +18,6 @@ public class BoolDescriptor extends TypeDescriptor {
 
     @Override
     public String getRandomValue() {
-        return String.valueOf(Math.random() > 0.5);
+        return Math.random() > 0.5 ? "true" : "false";
     }
 }

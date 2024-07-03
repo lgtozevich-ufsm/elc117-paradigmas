@@ -2,11 +2,6 @@ package engine.descriptors;
 
 public class FloatDescriptor extends TypeDescriptor {
     @Override
-    public String getSQLTypeName() {
-        return "FLOAT";
-    }
-
-    @Override
     public String getJavaTypeName() {
         return "float";
     }

@@ -2,11 +2,6 @@ package engine.descriptors;
 
 public class IntegerDescriptor extends TypeDescriptor {
     @Override
-    public String getSQLTypeName() {
-        return "INT";
-    }
-
-    @Override
     public String getJavaTypeName() {
         return "int";
     }

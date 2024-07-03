@@ -6,11 +6,6 @@ import java.util.Random;
 
 public class DateTimeDescriptor extends TypeDescriptor {
     @Override
-    public String getSQLTypeName() {
-        return "DATETIME";
-    }
-
-    @Override
     public String getJavaTypeName() {
         return "java.sql.Timestamp";
     }

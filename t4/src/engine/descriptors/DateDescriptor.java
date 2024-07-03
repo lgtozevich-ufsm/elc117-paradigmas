@@ -5,11 +5,6 @@ import java.time.LocalDate;
 
 public class DateDescriptor extends TypeDescriptor {
     @Override
-    public String getSQLTypeName() {
-        return "DATE";
-    }
-
-    @Override
     public String getJavaTypeName() {
         return "java.sql.Date";
     }

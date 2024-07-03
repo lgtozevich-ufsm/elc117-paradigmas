@@ -48,6 +48,30 @@ public class TemplateStandard {
         return "map";
     }
 
+    public String getExampleClassName(Table table) {
+        return getModelClassName(table) + "Example";
+    }
+
+    public String getExampleInsertMethodName(Table table) {
+        return "insertExample";
+    }
+
+    public String getExampleUpdateMethodName(Table table) {
+        return "updateExample";
+    }
+
+    public String getExampleDeleteMethodName(Table table) {
+        return "deleteExample";
+    }
+
+    public String getExampleGetMethodName(Table table) {
+        return "getExample";
+    }
+
+    public String getExampleListMethodName(Table table) {
+        return "listExample";
+    }
+
     private String convertCamelCaseToPascalCase(String name) {
         return name.substring(0, 1).toUpperCase() + name.substring(1);
     }

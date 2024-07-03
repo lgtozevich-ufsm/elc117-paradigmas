@@ -170,10 +170,8 @@ public class DAOTemplate implements Template {
     }
 
     private void appendUpdateMethod(StringBuilder builder, TemplateStandard standard, Table table) {
-        List<Column> baseColumns = table.baseColumns();
         List<Column> primaryKeyColumns = table.primaryKeyColumns();
-        
-        List<Column> updatableColumns = baseColumns.stream().filter(c -> !primaryKeyColumns.contains(c)).collect(Collectors.toList());
+        List<Column> nonPrimaryKeyColumns =  table.nonPrimaryKeyBaseColumns();
 
         builder.append("\n");
         builder.append("    public void ");
@@ -186,7 +184,7 @@ public class DAOTemplate implements Template {
         builder.append("UPDATE ");
         builder.append(TemplateUtils.escapeIdentifier(table.name()));
         builder.append(" SET ");
-        appendColumnQueryAssignments(builder, updatableColumns);
+        appendColumnQueryAssignments(builder, nonPrimaryKeyColumns);
         builder.append(" WHERE ");
         appendColumnQueryConditions(builder, primaryKeyColumns);
         builder.append("\";\n");
@@ -194,8 +192,8 @@ public class DAOTemplate implements Template {
         builder.append("\n");
         builder.append("        try (java.sql.PreparedStatement statement = connection.prepareStatement(sql)) {\n");
 
-        for (int i = 0; i < updatableColumns.size(); i++) {
-            Column column = updatableColumns.get(i);
+        for (int i = 0; i < nonPrimaryKeyColumns.size(); i++) {
+            Column column = nonPrimaryKeyColumns.get(i);
             TypeDescriptor descriptor = TypeDescriptor.fromColumn(column);
 
             builder.append("            statement.");
@@ -214,7 +212,7 @@ public class DAOTemplate implements Template {
             builder.append("            statement.");
             builder.append(descriptor.getJdbcSetterMethodName());
             builder.append("(");
-            builder.append(updatableColumns.size() + i + 1);
+            builder.append(nonPrimaryKeyColumns.size() + i + 1);
             builder.append(", model.");
             builder.append(standard.getModelGetterName(column));
             builder.append("());\n");
@@ -237,8 +235,8 @@ public class DAOTemplate implements Template {
         builder.append("    public void ");
         builder.append(standard.getDAODeleteMethodName(table));
         builder.append("(");
-        appendColumnMethodParameters(builder, standard, primaryKeyColumns);
-        builder.append(") throws java.sql.SQLException {\n");
+        builder.append(standard.getModelClassName(table));
+        builder.append(" model) throws java.sql.SQLException {\n");
 
         builder.append("        String sql = \"");
         builder.append("DELETE FROM ");
@@ -258,9 +256,9 @@ public class DAOTemplate implements Template {
             builder.append(descriptor.getJdbcSetterMethodName());
             builder.append("(");
             builder.append(i + 1);
-            builder.append(", ");
-            builder.append(standard.getModelAttributeName(column));
-            builder.append(");\n");
+            builder.append(", model.");
+            builder.append(standard.getModelGetterName(column));
+            builder.append("());\n");
         }
 
         builder.append("\n");
