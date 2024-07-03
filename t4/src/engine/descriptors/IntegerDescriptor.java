@@ -23,6 +23,6 @@ public class IntegerDescriptor extends TypeDescriptor {
 
     @Override
     public String getRandomValue() {
-        return "123";
+        return String.valueOf((int) (Math.random() * 100));
     }
 }
