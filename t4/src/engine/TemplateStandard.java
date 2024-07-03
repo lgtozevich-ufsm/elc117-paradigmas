@@ -77,7 +77,8 @@ public class TemplateStandard {
     }
 
     public String getColumnQualifiedName(Column column) {
-        return TemplateUtils.escapeIdentifier(column.tableCatalog()) + "." + TemplateUtils.escapeIdentifier(column.tableName()) + "." + TemplateUtils.escapeIdentifier(column.name());
+        return TemplateUtils.escapeIdentifier(column.tableCatalog()) + "."
+                + TemplateUtils.escapeIdentifier(column.tableName()) + "."
+                + TemplateUtils.escapeIdentifier(column.name());
     }
 }
-
