@@ -4,13 +4,15 @@ import database.Column;
 
 public abstract class TypeDescriptor {
     public abstract String getJavaTypeName();
+
     public abstract String getJdbcGetterMethodName();
+
     public abstract String getJdbcSetterMethodName();
+
     public abstract String getRandomValue();
 
     public static TypeDescriptor fromColumn(Column column) {
-        switch (column.typeName())
-        {
+        switch (column.typeName()) {
             case "INT":
                 return new IntegerDescriptor();
             case "BOOL":
@@ -43,7 +45,7 @@ public abstract class TypeDescriptor {
             case "DECIMAL":
                 return new DecimalDescriptor(column.size());
             case "BIGINT":
-                return new BigIntDescriptor();
+                return new LongDescriptor();
             case "SMALLINT":
                 return new SmallIntDescriptor();
             default:
