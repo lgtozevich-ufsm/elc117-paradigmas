@@ -4,13 +4,15 @@ import database.Column;
 
 public abstract class TypeDescriptor {
     public abstract String getJavaTypeName();
+
     public abstract String getJdbcGetterMethodName();
+
     public abstract String getJdbcSetterMethodName();
+
     public abstract String getRandomValue();
 
     public static TypeDescriptor fromColumn(Column column) {
-        switch (column.typeName())
-        {
+        switch (column.typeName()) {
             case "INT":
                 return new IntegerDescriptor();
             case "BIT":
@@ -33,7 +35,6 @@ public abstract class TypeDescriptor {
             case "TIME":
                 return new TimeDescriptor();
             case "DATETIME":
-                return new DateTimeDescriptor();
             case "TIMESTAMP":
                 return new TimestampDescriptor();
             case "FLOAT":
@@ -43,7 +44,7 @@ public abstract class TypeDescriptor {
             case "DECIMAL":
                 return new DecimalDescriptor(column.size(), column.decimalDigits());
             case "BIGINT":
-                return new BigIntDescriptor();
+                return new LongDescriptor();
             case "SMALLINT":
                 return new ShortDescriptor();
             default:

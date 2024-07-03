@@ -1,6 +1,8 @@
 package engine.descriptors;
 
-public class BigIntDescriptor extends TypeDescriptor {
+import java.util.Random;
+
+public class LongDescriptor extends TypeDescriptor {
 
     public String getSQLTypeName() {
         return "BIGINT";
@@ -19,6 +21,7 @@ public class BigIntDescriptor extends TypeDescriptor {
     }
 
     public String getRandomValue() {
-        return "new Long(" + (long) (Math.random() * Long.MAX_VALUE) + "L)";
+        int max = 100;
+        return new Random().nextInt(max) + "L";
     }
 }
