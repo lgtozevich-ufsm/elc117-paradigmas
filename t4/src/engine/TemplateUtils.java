@@ -5,8 +5,8 @@ public class TemplateUtils {
         return "\"" + value.replace("\"", "\\\"") + "\"";
     }
     
-    public static String escapeColumnName(String value) {
-        return "`" + value.replace("\"", "\\\"") + "`";
+    public static String escapeIdentifier(String value) {
+        return "`" + value + "`";
     }
 
     public static String convertCamelCaseToPascalCase(String name) {

@@ -5,40 +5,48 @@ import java.util.stream.Collectors;
 
 import database.Column;
 import database.Table;
+import engine.Resource;
 import engine.TemplateSettings;
 import engine.TemplateStandard;
 import engine.TemplateUtils;
+import engine.descriptors.TypeDescriptor;
 
 public class DAOTemplate implements Template {
     @Override
-    public String render(TemplateStandard standard, TemplateSettings settings) {
+    public Resource render(TemplateStandard standard, TemplateSettings settings) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("class ")
-                .append(standard.getDAOTypeName(settings.table()))
-                .append(" {\n");
+        Table table = settings.table();
 
-        builder.append("    private Connection connection;\n");
+        if (table.primaryKeyColumns().isEmpty()) {
+            throw new UnsupportedOperationException("No primary key columns detected");
+        }
 
-        appendConstructor(builder, standard, settings.table());
-        appendInsertMethod(builder, standard, settings.table());
-        appendUpdateMethod(builder, standard, settings.table());
-        appendDeleteMethod(builder, standard, settings.table());
-        appendGetMethod(builder, standard, settings.table());
-        appendListMethod(builder, standard, settings.table());
-        appendMapMethod(builder, standard, settings.table());
+        builder.append("class ");
+        builder.append(standard.getDAOClassName(table));
+        builder.append(" {\n");
+
+        builder.append("    private java.sql.Connection connection;\n");
+
+        appendConstructor(builder, standard, table);
+        appendInsertMethod(builder, standard, table);
+        appendUpdateMethod(builder, standard, table);
+        appendDeleteMethod(builder, standard, table);
+        appendGetMethod(builder, standard, table);
+        appendListMethod(builder, standard, table);
+        appendMapMethod(builder, standard, table);
 
         builder.append("}\n");
 
-        return builder.toString();
+        return new Resource(standard.getDAOClassName(table), builder.toString());
     }
 
     private void appendConstructor(StringBuilder builder, TemplateStandard standard, Table table) {
         builder.append("\n");
 
-        builder.append("    public ")
-                .append(standard.getModelTypeName(table))
-                .append("DAO(Connection connection) {\n");
+        builder.append("    public ");
+        builder.append(standard.getDAOClassName(table));
+        builder.append("(java.sql.Connection connection) {\n");
 
         builder.append("        this.connection = connection;\n");
         builder.append("    }\n");
@@ -53,61 +61,55 @@ public class DAOTemplate implements Template {
         }
 
         builder.append("\n");
+        builder.append("    public void ");
+        builder.append(standard.getDAOInsertMethodName(table));
+        builder.append("(");
+        builder.append(standard.getModelClassName(table));
+        builder.append(" model) throws java.sql.SQLException {\n");
 
-        builder.append("   public void")
-                .append(standard.getDAOInsertMethodName(table))
-                .append("(")
-                .append(standard.getModelTypeName(table))
-                .append(" model) throws SQLException {\n");
-
-        builder.append("        String sql = \"INSERT INTO ")
-                .append(table.name())
-                .append(")")
-                .append(baseColumns
-                        .stream()
-                        .map(Column::name)
-                        .map(TemplateUtils::escapeColumnName)
-                        .collect(Collectors.joining(", ")))
-                .append(") VALUES (")
-                .append(baseColumns
-                        .stream()
-                        .map(_ -> "?")
-                        .collect(Collectors.joining(", ")))
-                .append(")\";\n");
+        builder.append("        String sql = \"INSERT INTO ");
+        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append("(");
+        appendColumnQueryNames(builder, baseColumns);
+        builder.append(") VALUES (");
+        appendColumnQueryPlaceholders(builder, baseColumns);
+        builder.append(")\";\n");
 
         builder.append("\n");
-        builder.append("        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {\n");
+        builder.append(
+                "        try (java.sql.PreparedStatement statement = connection.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {\n");
 
         for (int i = 0; i < baseColumns.size(); i++) {
             Column column = baseColumns.get(i);
-            TypeSpecification type = TypeSpecification.fromDatabaseTypeName(column.typeName());
+            TypeDescriptor columnDescriptor = TypeDescriptor.fromColumn(column);
 
-            builder.append("            statement.")
-                    .append(type.getJdbcSetterMethodName())
-                    .append("(")
-                    .append(i + 1)
-                    .append(", ");
-
-            builder.append("model.")
-                    .append(standard.getModelGetterName(column))
-                    .append("());\n");
+            builder.append("            statement.");
+            builder.append(columnDescriptor.getJdbcSetterMethodName());
+            builder.append("(");
+            builder.append(i + 1);
+            builder.append(", ");
+            builder.append("model.");
+            builder.append(standard.getModelGetterName(column));
+            builder.append("());\n");
         }
 
-        builder.append("            statement.executeUpdate();\n");
         builder.append("\n");
+        builder.append("            statement.executeUpdate();\n");
 
         if (!autoIncrementedColumns.isEmpty()) {
             Column autoIncrementedColumn = autoIncrementedColumns.getFirst();
+            TypeDescriptor autoIncrementedColumnDescriptor = TypeDescriptor.fromColumn(autoIncrementedColumn);
 
-            builder.append("            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {\n");
+            builder.append("\n");
+            builder.append("            try (java.sql.ResultSet generatedKeys = statement.getGeneratedKeys()) {\n");
             builder.append("                if (generatedKeys.next()) {\n");
 
-            builder.append("                        model.")
-                    .append(standard.getModelSetterName(autoIncrementedColumn))
-                    .append("(generatedKeys.")
-                    .append(TypeSpecification.fromDatabaseTypeName(autoIncrementedColumn.typeName()).getJdbcGetterMethodName())
-                    .append("(1));\n");
-                    
+            builder.append("                    model.");
+            builder.append(standard.getModelSetterName(autoIncrementedColumn));
+            builder.append("(generatedKeys.");
+            builder.append(autoIncrementedColumnDescriptor.getJdbcGetterMethodName());
+            builder.append("(1));\n");
+
             builder.append("                }\n");
             builder.append("            }\n");
         }
@@ -116,32 +118,184 @@ public class DAOTemplate implements Template {
         builder.append("    }\n");
     }
 
+    private void appendGetMethod(StringBuilder builder, TemplateStandard standard, Table table) {
+        List<Column> primaryKeyColumns = table.primaryKeyColumns();
+
+        builder.append("\n");
+        builder.append("    public ");
+        builder.append(standard.getModelClassName(table));
+        builder.append(" ");
+        builder.append(standard.getDAOGetMethodName(table));
+        builder.append("(");
+        appendColumnMethodParameters(builder, standard, primaryKeyColumns);
+        builder.append(") throws java.sql.SQLException {\n");
+
+        builder.append("        String sql = \"");
+        builder.append("SELECT * FROM ");
+        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append(" WHERE ");
+        appendColumnQueryConditions(builder, primaryKeyColumns);
+        builder.append("\";\n");
+
+        builder.append("\n");
+        builder.append("        try (java.sql.PreparedStatement statement = connection.prepareStatement(sql)) {\n");
+
+        for (int i = 0; i < primaryKeyColumns.size(); i++) {
+            Column column = primaryKeyColumns.get(i);
+            TypeDescriptor descriptor = TypeDescriptor.fromColumn(column);
+
+            builder.append("            statement.");
+            builder.append(descriptor.getJdbcSetterMethodName());
+            builder.append("(");
+            builder.append(i + 1);
+            builder.append(", ");
+            builder.append(standard.getModelAttributeName(column));
+            builder.append(");\n");
+        }
+
+        builder.append("\n");
+        builder.append("            java.sql.ResultSet resultSet = statement.executeQuery();\n");
+        builder.append("\n");
+        builder.append("            if (resultSet.next()) {\n");
+
+        builder.append("                return ");
+        builder.append(standard.getDAOMapMethodName(table));
+        builder.append("(resultSet);\n");
+
+        builder.append("            }\n");
+        builder.append("        }\n");
+        builder.append("\n");
+        builder.append("        return null;\n");
+        builder.append("    }\n");
+    }
+
+    private void appendUpdateMethod(StringBuilder builder, TemplateStandard standard, Table table) {
+        List<Column> baseColumns = table.baseColumns();
+        List<Column> primaryKeyColumns = table.primaryKeyColumns();
+        
+        List<Column> updatableColumns = baseColumns.stream().filter(c -> !primaryKeyColumns.contains(c)).collect(Collectors.toList());
+
+        builder.append("\n");
+        builder.append("    public void ");
+        builder.append(standard.getDAOUpdateMethodName(table));
+        builder.append("(");
+        builder.append(standard.getModelClassName(table));
+        builder.append(" model) throws java.sql.SQLException {\n");
+
+        builder.append("        String sql = \"");
+        builder.append("UPDATE ");
+        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append(" SET ");
+        appendColumnQueryAssignments(builder, updatableColumns);
+        builder.append(" WHERE ");
+        appendColumnQueryConditions(builder, primaryKeyColumns);
+        builder.append("\";\n");
+
+        builder.append("\n");
+        builder.append("        try (java.sql.PreparedStatement statement = connection.prepareStatement(sql)) {\n");
+
+        for (int i = 0; i < updatableColumns.size(); i++) {
+            Column column = updatableColumns.get(i);
+            TypeDescriptor descriptor = TypeDescriptor.fromColumn(column);
+
+            builder.append("            statement.");
+            builder.append(descriptor.getJdbcSetterMethodName());
+            builder.append("(");
+            builder.append(i + 1);
+            builder.append(", model.");
+            builder.append(standard.getModelGetterName(column));
+            builder.append("());\n");
+        }
+
+        for (int i = 0; i < primaryKeyColumns.size(); i++) {
+            Column column = primaryKeyColumns.get(i);
+            TypeDescriptor descriptor = TypeDescriptor.fromColumn(column);
+
+            builder.append("            statement.");
+            builder.append(descriptor.getJdbcSetterMethodName());
+            builder.append("(");
+            builder.append(updatableColumns.size() + i + 1);
+            builder.append(", model.");
+            builder.append(standard.getModelGetterName(column));
+            builder.append("());\n");
+        }
+
+        builder.append("\n");
+        builder.append("            statement.executeUpdate();\n");
+        builder.append("        }\n");
+        builder.append("    }\n");
+    }
+
+    private void appendDeleteMethod(StringBuilder builder, TemplateStandard standard, Table table) {
+        List<Column> primaryKeyColumns = table.primaryKeyColumns();
+
+        if (primaryKeyColumns.size() == 0) {
+            throw new UnsupportedOperationException("No primary key columns detected");
+        }
+
+        builder.append("\n");
+        builder.append("    public void ");
+        builder.append(standard.getDAODeleteMethodName(table));
+        builder.append("(");
+        appendColumnMethodParameters(builder, standard, primaryKeyColumns);
+        builder.append(") throws java.sql.SQLException {\n");
+
+        builder.append("        String sql = \"");
+        builder.append("DELETE FROM ");
+        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append(" WHERE ");
+        appendColumnQueryConditions(builder, primaryKeyColumns);
+        builder.append("\";\n");
+
+        builder.append("\n");
+        builder.append("        try (java.sql.PreparedStatement statement = connection.prepareStatement(sql)) {\n");
+
+        for (int i = 0; i < primaryKeyColumns.size(); i++) {
+            Column column = primaryKeyColumns.get(i);
+            TypeDescriptor descriptor = TypeDescriptor.fromColumn(column);
+
+            builder.append("            statement.");
+            builder.append(descriptor.getJdbcSetterMethodName());
+            builder.append("(");
+            builder.append(i + 1);
+            builder.append(", ");
+            builder.append(standard.getModelAttributeName(column));
+            builder.append(");\n");
+        }
+
+        builder.append("\n");
+        builder.append("            statement.executeUpdate();\n");
+        builder.append("        }\n");
+        builder.append("    }\n");
+    }
+
     private void appendListMethod(StringBuilder builder, TemplateStandard standard, Table table) {
         builder.append("\n");
+        builder.append("    public ");
+        builder.append("java.util.List<");
+        builder.append(standard.getModelClassName(table));
+        builder.append("> ");
+        builder.append(standard.getDAOListMethodName(table));
+        builder.append("() throws java.sql.SQLException {\n");
 
-        builder.append("    public ")
-                .append("java.util.List<")
-                .append(table.name())
-                .append("> ")
-                .append(standard.getDAOListMethodName(table))
-                .append("() throws SQLException {\n");
+        builder.append("        java.util.List<");
+        builder.append(standard.getModelClassName(table));
+        builder.append("> models = new java.util.ArrayList<>();\n");
 
-        builder.append("List<")
-                .append(table.name())
-                .append("> models = new java.util.ArrayList<>();\n");
-
-        builder.append("        String sql = \"")
-                .append("SELECT * FROM ")
-                .append(table.name());
+        builder.append("        String sql = \"");
+        builder.append("SELECT * FROM ");
+        builder.append(TemplateUtils.escapeIdentifier(table.name()));
+        builder.append("\";\n");
 
         builder.append("\n");
-        builder.append("        try (PreparedStatement statement = connection.prepareStatement(sql)) {\n");
-        builder.append("            ResultSet resultSet = statement.executeQuery();\n");
+        builder.append("        try (java.sql.PreparedStatement statement = connection.prepareStatement(sql)) {\n");
+        builder.append("            java.sql.ResultSet resultSet = statement.executeQuery();\n");
+        builder.append("\n");
         builder.append("            while (resultSet.next()) {\n");
 
-        builder.append("                models.add(")
-                .append(standard.getDAOMapMethodName(table))
-                .append("(resultSet);\n");
+        builder.append("                models.add(");
+        builder.append(standard.getDAOMapMethodName(table));
+        builder.append("(resultSet));\n");
 
         builder.append("            }\n");
         builder.append("        }\n");
@@ -150,38 +304,72 @@ public class DAOTemplate implements Template {
         builder.append("    }\n");
     }
 
-
-
     private void appendMapMethod(StringBuilder builder, TemplateStandard standard, Table table) {
         List<Column> baseColumns = table.baseColumns();
 
         builder.append("\n");
+        builder.append("    private ");
+        builder.append(standard.getModelClassName(table));
+        builder.append(" ");
+        builder.append(standard.getDAOMapMethodName(table));
+        builder.append("(java.sql.ResultSet resultSet) throws java.sql.SQLException {\n");
 
-        builder.append("    private ")
-                .append(standard.getModelTypeName(table))
-                .append(" ")
-                .append(standard.getDAOMapMethodName(table))
-                .append("(ResultSet resultSet) throws SQLException {\n");
-
-        builder.append("        ")
-                .append(standard.getModelTypeName(table))
-                .append(" model = new ")
-                .append(standard.getModelTypeName(table))
-                .append("();\n");
+        builder.append("        ");
+        builder.append(standard.getModelClassName(table));
+        builder.append(" model = new ");
+        builder.append(standard.getModelClassName(table));
+        builder.append("();\n");
 
         for (Column column : baseColumns) {
-            TypeSpecification type = TypeSpecification.fromDatabaseTypeName(column.typeName());
+            TypeDescriptor columnDescriptor = TypeDescriptor.fromColumn(column);
 
-            builder.append("        model.")
-                    .append(standard.getModelSetterName(column))
-                    .append("(resultSet.")
-                    .append(type.getJdbcGetterMethodName())
-                    .append("(\"")
-                    .append(TemplateUtils.escapeColumnName(column.name()))
-                    .append("\"));\n");
+            builder.append("        model.");
+            builder.append(standard.getModelSetterName(column));
+            builder.append("(resultSet.");
+            builder.append(columnDescriptor.getJdbcGetterMethodName());
+            builder.append("(");
+            builder.append(TemplateUtils.escapeString(column.name()));
+            builder.append("));\n");
         }
 
+        builder.append("\n");
         builder.append("        return model;\n");
         builder.append("    }\n");
+    }
+
+    private void appendColumnQueryNames(StringBuilder builder, List<Column> columns) {
+        builder.append(columns
+                .stream()
+                .map(Column::name)
+                .map(TemplateUtils::escapeIdentifier)
+                .collect(Collectors.joining(", ")));
+    }
+
+    private void appendColumnQueryPlaceholders(StringBuilder builder, List<Column> columns) {
+        builder.append(columns
+                .stream()
+                .map(c -> "?")
+                .collect(Collectors.joining(", ")));
+    }
+
+    private void appendColumnQueryConditions(StringBuilder builder, List<Column> columns) {
+        builder.append(columns
+                .stream()
+                .map(column -> TemplateUtils.escapeIdentifier(column.name()) + " = ?")
+                .collect(Collectors.joining(" AND ")));
+    }
+
+    private void appendColumnQueryAssignments(StringBuilder builder, List<Column> columns) {
+        builder.append(columns
+                .stream()
+                .map(column -> TemplateUtils.escapeIdentifier(column.name()) + " = ?")
+                .collect(Collectors.joining(", ")));
+    }
+
+    private void appendColumnMethodParameters(StringBuilder builder, TemplateStandard standard, List<Column> columns) {
+        builder.append(columns
+                .stream()
+                .map(c -> TypeDescriptor.fromColumn(c).getJavaTypeName() + " " + standard.getModelAttributeName(c))
+                .collect(Collectors.joining(", ")));
     }
 }

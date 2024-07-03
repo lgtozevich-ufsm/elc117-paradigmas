@@ -9,7 +9,7 @@ public abstract class TypeDescriptor {
     public abstract String getJdbcSetterMethodName();
     public abstract String getRandomValue();
 
-    public static TypeDescriptor fromDatabaseTypeName(Column column) {
+    public static TypeDescriptor fromColumn(Column column) {
         switch (column.typeName())
         {
             case "INT":

@@ -1,6 +1,7 @@
 package engine.templates;
 
 import database.Column;
+import engine.Resource;
 import engine.TemplateUtils;
 import engine.TemplateSettings;
 import engine.TemplateStandard;
@@ -8,26 +9,26 @@ import engine.descriptors.TypeDescriptor;
 
 public class ModelTemplate implements Template {
     @Override
-    public String render(TemplateStandard standard, TemplateSettings settings) {
+    public Resource render(TemplateStandard standard, TemplateSettings settings) {
         StringBuilder builder = new StringBuilder();
         var table = settings.table();
 
-        builder.append("public class ").append(standard.getModelTypeName(table)).append(" {\n");
+        builder.append("public class ").append(standard.getModelClassName(table)).append(" {\n");
 
         for (Column column : table.columns()) {
-            TypeDescriptor descriptor = TypeDescriptor.fromDatabaseTypeName(column);
+            TypeDescriptor descriptor = TypeDescriptor.fromColumn(column);
             builder.append("    private ").append(descriptor.getJavaTypeName()).append(" ").append(column.name()).append(";\n");
         }
 
         for (Column column : table.columns()) {
-            TypeDescriptor descriptor = TypeDescriptor.fromDatabaseTypeName(column);
+            TypeDescriptor descriptor = TypeDescriptor.fromColumn(column);
             appendGetter(builder, standard, column, descriptor);
             appendSetter(builder, standard, column, descriptor);
         }
 
         builder.append("}\n");
 
-        return builder.toString();
+        return new Resource(standard.getModelClassName(table), builder.toString());
     }
 
     private void appendGetter(StringBuilder builder, TemplateStandard standard, Column column, TypeDescriptor descriptor) {

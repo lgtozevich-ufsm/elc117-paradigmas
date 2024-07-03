@@ -4,12 +4,24 @@ import database.Column;
 import database.Table;
 
 public class TemplateStandard {
-    public String getModelTypeName(Table table) {
-        return table.name();
+    public String getModelClassName(Table table) {
+        return TemplateUtils.convertCamelCaseToPascalCase(table.name());
     }
 
-    public String getDAOTypeName(Table table) {
-        return table.name() + "DAO";
+    public String getDAOClassName(Table table) {
+        return getModelClassName(table) + "DAO";
+    }
+
+    public String getModelAttributeName(Column column) {
+        return column.name();
+    }
+
+    public String getModelGetterName(Column column) {
+        return "get" + convertCamelCaseToPascalCase(column.name());
+    }
+
+    public String getModelSetterName(Column column) {
+        return "set" + convertCamelCaseToPascalCase(column.name());
     }
 
     public String getDAOInsertMethodName(Table table) {
@@ -34,14 +46,6 @@ public class TemplateStandard {
 
     public String getDAOMapMethodName(Table table) {
         return "map";
-    }
-
-    public String getModelGetterName(Column column) {
-        return "get" + convertCamelCaseToPascalCase(column.name());
-    }
-
-    public String getModelSetterName(Column column) {
-        return "set" + convertCamelCaseToPascalCase(column.name());
     }
 
     private String convertCamelCaseToPascalCase(String name) {

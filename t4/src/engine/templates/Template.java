@@ -1,8 +1,9 @@
 package engine.templates;
 
+import engine.Resource;
 import engine.TemplateSettings;
 import engine.TemplateStandard;
 
 public interface Template {
-    String render(TemplateStandard standard, TemplateSettings settings);
+    Resource render(TemplateStandard standard, TemplateSettings settings);
 }

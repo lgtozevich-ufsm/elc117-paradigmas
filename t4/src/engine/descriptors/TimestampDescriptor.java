@@ -1,7 +1,6 @@
 package engine.descriptors;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Random;
 
 public class TimestampDescriptor extends TypeDescriptor {
     @Override
