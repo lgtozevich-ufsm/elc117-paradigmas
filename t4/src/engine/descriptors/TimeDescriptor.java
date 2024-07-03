@@ -1,6 +1,5 @@
 package engine.descriptors;
 
-import java.sql.Time;
 import java.util.Random;
 
 public class TimeDescriptor extends TypeDescriptor {
@@ -22,8 +21,9 @@ public class TimeDescriptor extends TypeDescriptor {
     @Override
     public String getRandomValue() {
         Random random = new Random();
-        int millisInDay = 24 * 60 * 60 * 1000;
-        Time time = new Time((long) random.nextInt(millisInDay));
-        return "new java.sql.Time(" + time.toString() + ")";
+
+        long ms = Math.abs(random.nextLong());
+        return "new java.sql.Time(" + String.valueOf(ms) + "L)";
+    
     }
 }

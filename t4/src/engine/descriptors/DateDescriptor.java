@@ -1,7 +1,6 @@
 package engine.descriptors;
 
 import java.util.Random;
-import java.util.Date;
 
 public class DateDescriptor extends TypeDescriptor {
     @Override
@@ -24,6 +23,6 @@ public class DateDescriptor extends TypeDescriptor {
         Random random = new Random();
 
         long ms = Math.abs(random.nextLong());
-        return "new java.sql.Date(" + String.valueOf(ms) + ")";
+        return "new java.sql.Date(" + String.valueOf(ms) + "L)";
     }
 }

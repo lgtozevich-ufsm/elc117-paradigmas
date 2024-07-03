@@ -16,6 +16,6 @@ public class ShortDescriptor extends TypeDescriptor {
     }
 
     public String getRandomValue() {
-        return String.valueOf(new Random().nextInt(1, 100));
+        return "(short)" + String.valueOf(new Random().nextInt(1, 100));
     }
 }
