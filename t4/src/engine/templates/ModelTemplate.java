@@ -1,10 +1,10 @@
 package engine.templates;
 
 import database.Column;
-import engine.Template;
+import engine.TemplateUtils;
 import engine.TemplateSettings;
 import engine.TemplateStandard;
-import engine.TypeSpecification;
+import engine.descriptors.TypeDescriptor;
 
 public class ModelTemplate implements Template {
     @Override
@@ -15,13 +15,14 @@ public class ModelTemplate implements Template {
         builder.append("public class ").append(standard.getModelTypeName(table)).append(" {\n");
 
         for (Column column : table.columns()) {
-            TypeSpecification type = TypeSpecification.fromDatabaseTypeName(column.typeName());
-            builder.append("    private ").append(type.getJavaTypeName()).append(" ").append(column.name()).append(";\n");
+            TypeDescriptor descriptor = TypeDescriptor.fromDatabaseTypeName(column);
+            builder.append("    private ").append(descriptor.getJavaTypeName()).append(" ").append(column.name()).append(";\n");
         }
 
         for (Column column : table.columns()) {
-            appendGetter(builder, standard, column);
-            appendSetter(builder, standard, column);
+            TypeDescriptor descriptor = TypeDescriptor.fromDatabaseTypeName(column);
+            appendGetter(builder, standard, column, descriptor);
+            appendSetter(builder, standard, column, descriptor);
         }
 
         builder.append("}\n");
@@ -29,16 +30,14 @@ public class ModelTemplate implements Template {
         return builder.toString();
     }
 
-    private void appendGetter(StringBuilder builder, TemplateStandard standard, Column column) {
-        TypeSpecification type = TypeSpecification.fromDatabaseTypeName(column.typeName());
-        builder.append("    public ").append(type.getJavaTypeName()).append(" ").append(standard.getModelGetterName(column)).append("() {\n");
+    private void appendGetter(StringBuilder builder, TemplateStandard standard, Column column, TypeDescriptor descriptor) {
+        builder.append("    public ").append(descriptor.getJavaTypeName()).append(" ").append(standard.getModelGetterName(column)).append("() {\n");
         builder.append("        return ").append(column.name()).append(";\n");
         builder.append("    }\n");
     }
 
-    private void appendSetter(StringBuilder builder, TemplateStandard standard, Column column) {
-        TypeSpecification type = TypeSpecification.fromDatabaseTypeName(column.typeName());
-        builder.append("    public void ").append(standard.getModelSetterName(column)).append("(").append(type.getJavaTypeName()).append(" ").append(column.name()).append(") {\n");
+    private void appendSetter(StringBuilder builder, TemplateStandard standard, Column column, TypeDescriptor descriptor) {
+        builder.append("    public void ").append(standard.getModelSetterName(column)).append("(").append(descriptor.getJavaTypeName()).append(" ").append(column.name()).append(") {\n");
         builder.append("        this.").append(column.name()).append(" = ").append(column.name()).append(";\n");
         builder.append("    }\n");
     }
