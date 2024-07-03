@@ -35,7 +35,6 @@ public abstract class TypeDescriptor {
             case "TIME":
                 return new TimeDescriptor();
             case "DATETIME":
-                return new DateTimeDescriptor();
             case "TIMESTAMP":
                 return new TimestampDescriptor();
             case "FLOAT":
