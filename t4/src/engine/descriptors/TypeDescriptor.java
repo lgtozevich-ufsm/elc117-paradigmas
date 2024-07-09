@@ -41,7 +41,6 @@ public abstract class TypeDescriptor {
             case "VARCHAR":
             case "TINYTEXT":
             case "MEDIUMTEXT":
-            case "MEDIUMBLOB":
             case "LONGTEXT":
             case "TEXT":
                 return new StringDescriptor(column.size());
