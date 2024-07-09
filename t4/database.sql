@@ -1,72 +1,114 @@
-DROP DATABASE IF EXISTS tests;
+DROP DATABASE IF EXISTS example;
 
-CREATE DATABASE tests;
-USE tests;
+CREATE DATABASE example;
+USE example;
 
-CREATE TABLE Test(
+CREATE TABLE test(
     id INT PRIMARY KEY AUTO_INCREMENT,
-
-    -- BIT[(M)]
-    -- testBit BIT(20),
-    -- TINYINT[(M)] [UNSIGNED] [ZEROFILL]
     testTinyInt TINYINT,
-    -- BOOL, BOOLEAN = TINYINT(1)
     testBoolean BOOLEAN,
-    -- SMALLINT[(M)] [UNSIGNED] [ZEROFILL]
     testSmallInt SMALLINT,
-    -- MEDIUMINT[(M)] [UNSIGNED] [ZEROFILL]
     testMediumInt MEDIUMINT,
-    -- INT[(M)] [UNSIGNED] [ZEROFILL]
-    -- INTEGER[(M)] [UNSIGNED] [ZEROFILL]
     testInt INT,
-    -- BIGINT[(M)] [UNSIGNED] [ZEROFILL]
     testBigInt BIGINT,
-    -- DECIMAL[(M[,D])] [UNSIGNED] [ZEROFILL]
     testDecimal DECIMAL(5, 2),
-    -- FLOAT(p) [UNSIGNED] [ZEROFILL]
     testFloat FLOAT,
     testFloat27 FLOAT(27),
-    -- DOUBLE[(M,D)] [UNSIGNED] [ZEROFILL]
     testDouble DOUBLE,
-
-    -- DATE
     testDate DATE,
-    -- DATETIME[(fsp)]
     testDateTime DATETIME,
-    -- TIMESTAMP[(fsp)]
     testTimestamp TIMESTAMP,
-    -- TIME[(fsp)]
     testTime TIME,
-    -- YEAR[(4)]
-    -- testYear YEAR,
-
-    -- [NATIONAL] CHAR[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
     testChar CHAR,
-    -- [NATIONAL] VARCHAR(M) [CHARACTER SET charset_name] [COLLATE collation_name]
     testVarChar VARCHAR(200),
-    -- TINYTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
     testTinyText TINYTEXT,
-    -- MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
     testMediumText MEDIUMTEXT,
-    -- LONGTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
     testLongText LONGTEXT,
-    -- TEXT[(M)] [CHARACTER SET charset_name] [COLLATE collation_name]
     testText TEXT
-    -- BINARY[(M)]
-    -- testBinary BINARY,
-    -- VARBINARY(M)
-    -- testVarBinary VARBINARY,
-    -- TINYBLOB
-    -- testTinyBlob TINYBLOB,
-    -- BLOB[(M)]
-    -- testBlob BLOB,
-    -- MEDIUMBLOB
-    -- testMediumBlob MEDIUMBLOB
-    -- LONGBLOB
-    -- testLongBlob LONGBLOB,
-
-    -- ENUM('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
-    -- SET('value1','value2',...) [CHARACTER SET charset_name] [COLLATE collation_name]
 );
 
-INSERT INTO Test(`tests`.`Test`.`testText`) VALUES ('HELLO');
+DROP DATABASE IF EXISTS fivetraining;
+
+CREATE DATABASE fivetraining;
+USE fivetraining;
+
+CREATE TABLE IF NOT EXISTS users(
+    id INTEGER,
+    cpf VARCHAR(20) UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    birth_date DATE NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS exercises(
+    code INTEGER NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    muscles TEXT NOT NULL,
+    PRIMARY KEY (code)
+);
+
+CREATE TABLE IF NOT EXISTS plans(
+    code INTEGER NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    price DOUBLE NOT NULL,
+    PRIMARY KEY (code)
+);
+
+CREATE TABLE IF NOT EXISTS subscriptions(
+    id INTEGER,
+    user_id INTEGER NOT NULL,
+    plan_code INTEGER NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    card_number VARCHAR(255) NOT NULL,
+    card_expiry_date DATE NOT NULL,
+    card_cvv VARCHAR(10) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (plan_code) REFERENCES plans(code)
+);
+
+CREATE TABLE IF NOT EXISTS programs(
+    id INTEGER,
+    user_id INTEGER NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS program_exercises(
+    program_id INTEGER NOT NULL,
+    exercise_code INTEGER NOT NULL,
+    `load` INTEGER NOT NULL,
+    sets INTEGER NOT NULL,
+    minimum_repetitions INTEGER NOT NULL,
+    maximum_repetitions INTEGER NOT NULL,
+    resting_time DOUBLE NOT NULL,
+    PRIMARY KEY (program_id, exercise_code),
+    FOREIGN KEY (program_id) REFERENCES programs(id) ON DELETE CASCADE,
+    FOREIGN KEY (exercise_code) REFERENCES exercises(code)
+);
+
+CREATE TABLE IF NOT EXISTS workouts(
+    id INTEGER,
+    user_id INTEGER NOT NULL,
+    program_name VARCHAR(100) NOT NULL,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS workout_activities(
+    workout_id INTEGER NOT NULL,
+    exercise_code INTEGER NOT NULL,
+    `load` INTEGER NOT NULL,
+    sets INTEGER NOT NULL,
+    minimum_repetitions INTEGER NOT NULL,
+    maximum_repetitions INTEGER NOT NULL,
+    resting_time DOUBLE NOT NULL,
+    completed BOOLEAN NOT NULL,
+    PRIMARY KEY (workout_id, exercise_code),
+    FOREIGN KEY (workout_id) REFERENCES workouts(id),
+    FOREIGN KEY (exercise_code) REFERENCES exercises(code)
+);

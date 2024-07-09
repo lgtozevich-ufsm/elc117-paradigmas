@@ -19,14 +19,14 @@ public class DAOTemplate implements Template {
         Table table = settings.table();
 
         if (table.primaryKeyColumns().isEmpty()) {
-            throw new UnsupportedOperationException("No primary key columns detected");
+            throw new UnsupportedOperationException("No primary key available to uniquely identify rows.");
         }
 
         builder.append("public class ");
         builder.append(standard.getDAOClassName(table));
         builder.append(" {\n");
 
-        builder.append("    private java.sql.Connection connection;\n");
+        builder.append("    private final java.sql.Connection connection;\n");
 
         appendConstructor(builder, standard, table);
         appendInsertMethod(builder, standard, table);
@@ -227,10 +227,6 @@ public class DAOTemplate implements Template {
     private void appendDeleteMethod(StringBuilder builder, TemplateStandard standard, Table table) {
         List<Column> primaryKeyColumns = table.primaryKeyColumns();
 
-        if (primaryKeyColumns.size() == 0) {
-            throw new UnsupportedOperationException("No primary key columns detected");
-        }
-
         builder.append("\n");
         builder.append("    public void ");
         builder.append(standard.getDAODeleteMethodName(table));
@@ -338,7 +334,7 @@ public class DAOTemplate implements Template {
     private void appendColumnQueryNames(StringBuilder builder, TemplateStandard standard, List<Column> columns) {
         builder.append(columns
                 .stream()
-                .map(c -> standard.getColumnQualifiedName(c))
+                .map(standard::getColumnQualifiedName)
                 .collect(Collectors.joining(", ")));
     }
 
